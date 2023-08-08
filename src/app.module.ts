@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './modules/auth/auth.module';
 import typeorm from './config/typeorm';
+import { AuthGuard } from './modules/auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -20,9 +20,15 @@ import typeorm from './config/typeorm';
         configService.get('typeorm'),
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
