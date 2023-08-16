@@ -3,10 +3,11 @@ import {
   BeforeUpdate,
   BeforeInsert,
   PrimaryGeneratedColumn,
+  BaseEntity,
 } from 'typeorm';
 import { IsDate } from 'class-validator';
 
-export abstract class AuditEntity {
+export abstract class AuditEntity extends BaseEntity {
   @Column()
   @PrimaryGeneratedColumn('uuid')
   id: string;

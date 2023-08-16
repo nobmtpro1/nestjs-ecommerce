@@ -13,6 +13,9 @@ const config = {
   database: `${process.env.DATABASE_NAME}`,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
+  cli: {
+    migrationsDir: 'src/migrations',
+  },
   autoLoadEntities: true,
   synchronize: false,
 };
