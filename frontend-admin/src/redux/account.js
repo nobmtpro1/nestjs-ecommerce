@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { LOCAL_STORAGE_ACCOUNT } from "../constants/localstorage";
 
 const initialState = {
-  account: JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT))
-    ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT))
+  account: JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT) || null)
+    ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT) || null)
     : null,
 };
 

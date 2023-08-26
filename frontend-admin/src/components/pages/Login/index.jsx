@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import axios from "../../../ultils/axios";
+import { ROUTE_DASHBOARD } from "../../../constants/routes";
+import { useSelector } from "react-redux";
+import { API_LOGIN } from "../../../constants/api";
+import { LOCAL_STORAGE_ACCOUNT } from "../../../constants/localstorage";
 
 const Login = () => {
+  const account = useSelector((state) => state?.account?.account);
+
+  useEffect(() => {
+    if (account?.access_token) {
+      window.location.href = ROUTE_DASHBOARD;
+    }
+  }, []);
+
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
     axios
-      .get("/user")
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .post(API_LOGIN, values)
+      .then((res) => {
+        localStorage.setItem(LOCAL_STORAGE_ACCOUNT, JSON.stringify(res?.data));
+        window.location.href = ROUTE_DASHBOARD;
+      })
+      .catch((err) => alert(err?.response?.data?.message));
   };
   return (
     <div className="h-screen w-screen flex justify-center items-center flex-col">
@@ -23,17 +38,17 @@ const Login = () => {
         onFinish={onFinish}
       >
         <Form.Item
-          name="username"
+          name="email"
           rules={[
             {
               required: true,
-              message: "Please input your Username!",
+              message: "Please input your email!",
             },
           ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
+            placeholder="Email"
           />
         </Form.Item>
         <Form.Item

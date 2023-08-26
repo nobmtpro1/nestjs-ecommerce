@@ -10,7 +10,7 @@ const Layout = () => {
   const account = useSelector((state) => state?.account?.account);
 
   useEffect(() => {
-    if (!account) {
+    if (!account?.access_token) {
       window.location.href = ROUTE_LOGIN;
     }
   }, []);
