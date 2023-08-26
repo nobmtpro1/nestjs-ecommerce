@@ -1,7 +1,7 @@
-import { Breadcrumb, Space, Table, Tag, theme } from "antd";
+import { Breadcrumb, Button, Col, Row, Space, Table, Tag, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { ROUTE_PRODUCT } from "../../../constants/routes";
+import { ROUTE_PRODUCT, ROUTE_PRODUCT_ADD } from "../../../constants/routes";
 import { Link } from "react-router-dom";
 import axios from "../../../ultils/axios";
 import { API_PRODUCT_ALL } from "../../../constants/api";
@@ -62,6 +62,13 @@ const Product = () => {
           background: colorBgContainer,
         }}
       >
+        <Row className="mb-5">
+          <Col>
+            <Link to={ROUTE_PRODUCT_ADD}>
+              <Button primary>Add</Button>
+            </Link>
+          </Col>
+        </Row>
         <Table columns={columns} dataSource={data} />
       </div>
     </Content>
