@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import typeorm from './config/typeorm';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -21,14 +22,10 @@ import { APP_GUARD } from '@nestjs/core';
     }),
     UserModule,
     AuthModule,
+    ProductModule,
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-  ],
+  providers: [],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
