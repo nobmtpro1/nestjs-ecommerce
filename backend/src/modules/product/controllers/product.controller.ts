@@ -10,7 +10,12 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('all')
-  async all(): Promise<Product[]> {
+  async all() {
     return await this.productService.all();
+  }
+
+  @Get('create')
+  async getCreate() {
+    return await this.productService.getCreate();
   }
 }

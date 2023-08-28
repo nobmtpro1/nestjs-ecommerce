@@ -17,14 +17,17 @@ const Login = () => {
   }, []);
 
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
     axios
       .post(API_LOGIN, values)
       .then((res) => {
+        if (res?.status != 200) {
+          alert(res?.data?.message);
+          return;
+        }
         localStorage.setItem(LOCAL_STORAGE_ACCOUNT, JSON.stringify(res?.data));
-        window.location.href = ROUTE_DASHBOARD;
+        window.location.href = window.location.href;
       })
-      .catch((err) => alert(err?.response?.data?.message));
+      .catch((err) => console.log(err));
   };
   return (
     <div className="h-screen w-screen flex justify-center items-center flex-col">
