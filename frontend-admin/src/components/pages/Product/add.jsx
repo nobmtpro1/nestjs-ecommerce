@@ -30,6 +30,7 @@ const ProductAdd = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const [initData, setInitData] = useState(null);
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     axios.get(API_PRODUCT_CREATE).then((res) => {
@@ -42,7 +43,16 @@ const ProductAdd = () => {
   }, []);
 
   const onFinish = (values) => {
-    console.log(values);
+    const data = {
+      ...values,
+      description,
+    };
+    console.log(data);
+  };
+
+  const handleChangeDescription = (html) => {
+    console.log(html);
+    setDescription(html);
   };
 
   console.log(initData);
@@ -118,8 +128,8 @@ const ProductAdd = () => {
             <TextArea rows={4} name="shortDescription" />
           </Form.Item>
 
-          <Form.Item label="Description" name="description">
-            <TextEditor />
+          <Form.Item label="Description">
+            <TextEditor handleChange={handleChangeDescription} />
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 14, offset: 4 }}>

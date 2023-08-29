@@ -1,46 +1,78 @@
-import React from "react";
-import ReactQuill from "react-quill";
+import React, { Component } from "react";
+import ReactQuill, { Quill } from "react-quill";
+// #1 import quill-image-uploader
+import ImageUploader from "quill-image-uploader";
 import "react-quill/dist/quill.snow.css";
-const imageHandler = () => {
-  const input = document.createElement("input");
+import { generateImageUrl } from "../../../ultils/helper";
+import axios from "../../../ultils/axios";
+import { API_UPLOAD_IMAGE } from "../../../constants/api";
+// #2 register module
+Quill.register("modules/imageUploader", ImageUploader);
 
-  input.setAttribute("type", "file");
-  input.setAttribute("accept", "image/*");
-  input.click();
+class Editor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { editorHtml: "" };
+    this.handleChange = this.handleChange.bind(this);
+    this.textInput = React.createRef();
+  }
 
-  input.onchange = async () => {
-    var file = input.files[0];
-    var formData = new FormData();
+  handleChange(html) {
+    this.setState({ editorHtml: html });
+    this.props.handleChange(html);
+  }
 
-    formData.append("image", file);
-
-    var fileName = file.name;
-
-    const res = await this.uploadFiles(file, fileName, quillObj);
-  };
-};
-const TextEditor = ({ value, onChange, placeholder }) => {
-  const modules = {
-    toolbar: {
-      container: [
-        [{ header: [1, 2, false] }],
-        ["bold", "italic", "underline", "strike", "blockquote"],
-        [
-          { list: "ordered" },
-          { list: "bullet" },
-          { indent: "-1" },
-          { indent: "+1" },
-        ],
-        ["link", "code", "image"],
-        ["clean"],
+  handleSubmit() {
+    const editor = this.reactQuillRef.getEditor();
+    this.setState({
+      editorHtml: editor,
+    });
+  }
+  modules = {
+    // #3 Add "image" to the toolbar
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
       ],
-      handlers: {
-        image: imageHandler,
+      ["link", "image"],
+      ["clean"],
+    ],
+    // # 4 Add module and upload function
+    imageUploader: {
+      upload: (file) => {
+        return new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          axios({
+            method: "post",
+            url: API_UPLOAD_IMAGE,
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+          }).then((res) => {
+            console.log(res);
+            if (res?.data?.statusCode != 200) {
+              reject("Upload failed");
+              alert("Upload error");
+              return;
+            }
+            resolve(
+              generateImageUrl(
+                res?.data?.data.destination,
+                res?.data?.data.filename
+              )
+            );
+          });
+        });
       },
     },
   };
 
-  const formats = [
+  formats = [
     "header",
     "bold",
     "italic",
@@ -51,20 +83,26 @@ const TextEditor = ({ value, onChange, placeholder }) => {
     "bullet",
     "indent",
     "link",
-    "code",
+    "image",
+    "imageBlot", // #5 Optinal if using custom formats
   ];
-  return (
-    <>
-      <ReactQuill
-        theme="snow"
-        value={value || ""}
-        modules={modules}
-        formats={formats}
-        onChange={onChange}
-        placeholder={placeholder}
-      />
-    </>
-  );
-};
 
-export default TextEditor;
+  render() {
+    return (
+      <>
+        <ReactQuill
+          onChange={this.handleChange}
+          theme="snow"
+          style={{
+            minHeight: "25vh",
+          }}
+          modules={this.modules}
+          formats={this.formats}
+          value={this.state.editorHtml}
+        />
+      </>
+    );
+  }
+}
+
+export default Editor;

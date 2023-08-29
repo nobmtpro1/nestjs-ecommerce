@@ -5,15 +5,15 @@ import { DataSource } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import typeorm from './config/typeorm';
-import { AuthGuard } from './modules/auth/auth.guard';
-import { APP_GUARD } from '@nestjs/core';
 import { ProductModule } from './modules/product/product.module';
+import { CommonModule } from './modules/common/common.module';
+import multer from './config/multer';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeorm],
+      load: [typeorm, multer],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -23,6 +23,7 @@ import { ProductModule } from './modules/product/product.module';
     UserModule,
     AuthModule,
     ProductModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],
