@@ -10,27 +10,24 @@ import {
 } from "antd";
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTE_PRODUCT } from "../../../constants/routes";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "../.././../ultils/axios";
 import { API_PRODUCT_CREATE } from "../../../constants/api";
 import TextArea from "antd/es/input/TextArea";
 import TextEditor from "../../common/TextEditor";
-
-const normFile = (e) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e?.fileList;
-};
+import { normFile } from "../../../ultils/helper";
+import { toast } from "react-toastify";
 
 const ProductAdd = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const navigate = useNavigate();
   const [initData, setInitData] = useState(null);
   const [description, setDescription] = useState("");
+  const [form] = Form.useForm();
 
   useEffect(() => {
     axios.get(API_PRODUCT_CREATE).then((res) => {
@@ -43,19 +40,37 @@ const ProductAdd = () => {
   }, []);
 
   const onFinish = (values) => {
-    const data = {
-      ...values,
-      description,
-    };
-    console.log(data);
+    const formData = new FormData();
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+    formData.set("image", values?.image?.[0]?.originFileObj);
+    formData.append("description", description);
+
+    axios({
+      method: "post",
+      url: API_PRODUCT_CREATE,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then((res) => {
+      const resData = res?.data;
+      console.log(res);
+      if (resData?.statusCode != 200) {
+        toast.error(
+          Array.isArray(resData?.message)
+            ? resData?.message?.[0]
+            : resData?.message
+        );
+      } else {
+        toast.success("Success!");
+        form.resetFields();
+      }
+    });
   };
 
   const handleChangeDescription = (html) => {
-    console.log(html);
     setDescription(html);
   };
-
-  console.log(initData);
 
   return (
     <Content className="mx-5">
@@ -72,6 +87,7 @@ const ProductAdd = () => {
         }}
       >
         <Form
+          form={form}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
           layout="horizontal"
@@ -124,8 +140,8 @@ const ProductAdd = () => {
             </Upload>
           </Form.Item>
 
-          <Form.Item label="Short description">
-            <TextArea rows={4} name="shortDescription" />
+          <Form.Item label="Short description" name="shortDescription">
+            <TextArea rows={4} />
           </Form.Item>
 
           <Form.Item label="Description">

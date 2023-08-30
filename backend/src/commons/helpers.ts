@@ -10,3 +10,7 @@ export const comparePassword = async (password: string, hashword: string) => {
   const resp = await bcrypt?.compare(password, hashword);
   return resp;
 };
+
+export const generateFilePath = (file) => {
+  return `${file?.destination}/${file.filename}`;
+};

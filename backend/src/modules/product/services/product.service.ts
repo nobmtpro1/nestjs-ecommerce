@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
 import { ProductType, productTypes } from 'src/commons/enums/product-type.enum';
+import { generateFilePath } from 'src/commons/helpers';
 
 @Injectable()
 export class ProductService {
@@ -16,9 +17,20 @@ export class ProductService {
     return products;
   }
 
-  async getCreate() {
+  async getProductTypes() {
     return {
       productTypes: productTypes,
     };
+  }
+
+  async create(body, image) {
+    const product = this.productRepository.create({
+      ...body,
+      image: generateFilePath(image),
+    });
+    const created = await this.productRepository.save(product, {
+      reload: true,
+    });
+    return created;
   }
 }

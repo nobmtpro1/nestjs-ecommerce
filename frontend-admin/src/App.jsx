@@ -11,11 +11,14 @@ import {
 import Login from "./components/pages/Login";
 import Layout from "./components/common/Layout";
 import ProductAdd from "./components/pages/Product/add";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
+      <ToastContainer />
+      <Routes forceRefresh={true}>
         <Route path={ROUTE_LOGIN} element={<Login />} />
         <Route element={<Layout />}>
           <Route path={ROUTE_PRODUCT} element={<Product />} />

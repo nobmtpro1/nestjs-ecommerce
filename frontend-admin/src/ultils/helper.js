@@ -10,3 +10,10 @@ export const logout = () => {
 export const generateImageUrl = (path, filename) => {
   return `${API_URL}/${path}/${filename}`;
 };
+
+export const normFile = (e) => {
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e?.fileList;
+};
