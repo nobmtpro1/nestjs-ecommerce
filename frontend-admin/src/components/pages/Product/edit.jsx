@@ -5,12 +5,14 @@ import { Link } from "react-router-dom";
 import { ROUTE_PRODUCT } from "../../../constants/routes";
 import useFetchInitData from "./utils/useFetchInitData";
 import ProductForm from "./ProductForm";
+import useFetchProduct from "./utils/useFetchProduct";
 
-const ProductAdd = () => {
+const ProductEdit = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const [initData] = useFetchInitData();
+  const [product] = useFetchProduct();
 
   return (
     <Content className="mx-5">
@@ -26,10 +28,10 @@ const ProductAdd = () => {
           background: colorBgContainer,
         }}
       >
-        <ProductForm initData={initData} />
+        <ProductForm initData={initData} product={product} />
       </div>
     </Content>
   );
 };
 
-export default ProductAdd;
+export default ProductEdit;

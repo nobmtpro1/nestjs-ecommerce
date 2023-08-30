@@ -1,10 +1,15 @@
 import { Breadcrumb, Button, Col, Row, Space, Table, Tag, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { ROUTE_PRODUCT, ROUTE_PRODUCT_ADD } from "../../../constants/routes";
+import {
+  ROUTE_PRODUCT,
+  ROUTE_PRODUCT_ADD,
+  ROUTE_PRODUCT_EDIT,
+} from "../../../constants/routes";
 import { Link } from "react-router-dom";
 import axios from "../../../ultils/axios";
 import { API_PRODUCT_ALL } from "../../../constants/api";
+import { STORAGE_URL } from "../../../constants/config";
 
 const Product = () => {
   const {
@@ -26,7 +31,7 @@ const Product = () => {
       key: "image",
       render: (text) => (
         <a>
-          <img className="w-12" src={text} />
+          <img className="w-12" src={STORAGE_URL + "/" + text} />
         </a>
       ),
     },
@@ -41,7 +46,7 @@ const Product = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <a>Edit</a>
+          <Link to={ROUTE_PRODUCT_EDIT.replace(":id", record?.id)}>Edit</Link>
           <a>Delete</a>
         </Space>
       ),

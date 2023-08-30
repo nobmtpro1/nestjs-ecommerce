@@ -12,10 +12,18 @@ Quill.register("modules/imageUploader", ImageUploader);
 class Editor extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = { editorHtml: "" };
     this.handleChange = this.handleChange.bind(this);
     this.textInput = React.createRef();
   }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps?.defaultValue !== this.props.defaultValue) {
+      console.log(nextProps);
+      this.setState({ ...this.state, editorHtml: nextProps?.defaultValue });
+    }
+  };
 
   handleChange(html) {
     this.setState({ editorHtml: html });

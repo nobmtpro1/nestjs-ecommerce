@@ -1,4 +1,4 @@
-import { ProductType } from 'src/commons/enums/product-type.enum';
+import { ProductType } from 'src/modules/product/enums/product-type.enum';
 import { AuditEntity } from 'src/entities/audit.entity';
 import { Entity, Column } from 'typeorm';
 
