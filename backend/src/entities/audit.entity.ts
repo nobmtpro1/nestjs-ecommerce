@@ -1,31 +1,26 @@
 import {
   Column,
-  BeforeUpdate,
-  BeforeInsert,
   PrimaryGeneratedColumn,
   BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { IsDate } from 'class-validator';
 
 export abstract class AuditEntity extends BaseEntity {
   @Column()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
-  @IsDate()
-  public updatedAt: Date;
-
-  @Column({ nullable: true })
-  @IsDate()
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   public createdAt: Date;
 
-  @BeforeUpdate()
-  public setUpdatedAt() {
-    this.updatedAt = new Date();
-  }
-  @BeforeInsert()
-  public setCreatedAtAt() {
-    this.createdAt = new Date();
-  }
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  public updatedAt: Date;
 }

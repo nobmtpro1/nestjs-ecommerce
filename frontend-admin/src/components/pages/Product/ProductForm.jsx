@@ -1,80 +1,35 @@
 import { Button, Form, Input, Select, Upload } from "antd";
 import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import axios from "../../../ultils/axios";
-import { API_PRODUCT_CREATE } from "../../../constants/api";
 import TextArea from "antd/es/input/TextArea";
 import TextEditor from "../../common/TextEditor";
-import { normFile } from "../../../ultils/helper";
-import { toast } from "react-toastify";
+import { requestSubmitForm, useProductFields } from "./helpers";
 
 const ProductForm = ({ initData, product }) => {
   const [description, setDescription] = useState("");
   const [form] = Form.useForm();
-  const [productFields, setProductFields] = useState([]);
   const [fileList, setFileList] = useState([]);
-
-  useEffect(() => {
-    if (product) {
-      const pFields = [
-        {
-          name: "type",
-          value: product.type,
-        },
-        {
-          name: "name",
-          value: product.name,
-        },
-        {
-          name: "shortDescription",
-          value: product.shortDescription,
-        },
-      ];
-      setProductFields(pFields);
-      setFileList([
-        {
-          uid: "-xxx",
-          name: "image.png",
-          status: "done",
-          url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-        },
-      ]);
-    }
-  }, [product]);
+  const [productFields] = useProductFields(
+    product,
+    setFileList,
+    setDescription
+  );
 
   const onFinish = (values) => {
     const formData = new FormData();
     for (const key in values) {
       formData.append(key, values[key]);
     }
-    formData.set("image", values?.image?.[0]?.originFileObj);
+    formData.set("image", fileList?.[0]?.originFileObj);
     formData.append("description", description);
 
-    axios({
-      method: "post",
-      url: API_PRODUCT_CREATE,
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
-    }).then((res) => {
-      const resData = res?.data;
-      console.log(res);
-      if (resData?.statusCode != 200) {
-        toast.error(
-          Array.isArray(resData?.message)
-            ? resData?.message?.[0]
-            : resData?.message
-        );
-      } else {
-        toast.success("Success!");
-        form.resetFields();
-      }
-    });
+    requestSubmitForm(formData, form, product);
   };
 
   const handleChangeDescription = (html) => {
     setDescription(html);
   };
-  
+
   return (
     <Form
       form={form}
@@ -117,17 +72,13 @@ const ProductForm = ({ initData, product }) => {
         <Input />
       </Form.Item>
 
-      <Form.Item
-        name="image"
-        label="Upload"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-      >
+      <Form.Item name="image" label="Upload">
         <Upload
           listType="picture-card"
           maxCount={1}
           accept="image/*"
           fileList={fileList}
+          onChange={({ fileList: newFileList }) => setFileList(newFileList)}
         >
           <div>
             <PlusOutlined />

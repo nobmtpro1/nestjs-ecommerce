@@ -27,10 +27,13 @@ export class ProductService {
   }
 
   async create(body, image) {
-    const product = this.productRepository.create({
+    const data = {
       ...body,
-      image: generateFilePath(image),
-    });
+    };
+    if (image) {
+      data.image = generateFilePath(image);
+    }
+    const product = this.productRepository.create(data);
     const created = await this.productRepository.save(product, {
       reload: true,
     });
@@ -42,11 +45,21 @@ export class ProductService {
     return product;
   }
 
-  async update(id, body, image) {
-    const product = this.productRepository.update(id, {
+  async update(product, body, image) {
+    const data = {
       ...body,
-      image: generateFilePath(image),
-    });
-    return product;
+    };
+
+    if (image?.filename) {
+      data.image = generateFilePath(image);
+    } else {
+      data.image = product?.image;
+    }
+    console.log('_____________', data);
+    const updatedProduct = await this.productRepository.update(
+      product.id,
+      data,
+    );
+    return updatedProduct;
   }
 }

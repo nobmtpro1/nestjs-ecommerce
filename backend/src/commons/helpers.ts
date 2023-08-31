@@ -12,5 +12,5 @@ export const comparePassword = async (password: string, hashword: string) => {
 };
 
 export const generateFilePath = (file) => {
-  return `${file?.destination}/${file.filename}`;
+  return `${file?.destination}/${file?.filename}`;
 };

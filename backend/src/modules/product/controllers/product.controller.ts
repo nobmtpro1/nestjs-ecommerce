@@ -90,7 +90,11 @@ export class ProductController {
     if (!product) {
       return new ResponseError('Not Found');
     }
-    const updatedProduct = await this.productService.update(id, body, image);
+    const updatedProduct = await this.productService.update(
+      product,
+      body,
+      image,
+    );
     return new ResponseSuccess('Success', updatedProduct);
   }
 }

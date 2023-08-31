@@ -3,8 +3,8 @@ import { Content } from "antd/es/layout/layout";
 import React from "react";
 import { Link } from "react-router-dom";
 import { ROUTE_PRODUCT } from "../../../constants/routes";
-import useFetchInitData from "./utils/useFetchInitData";
 import ProductForm from "./ProductForm";
+import { useFetchInitData } from "./helpers";
 
 const ProductAdd = () => {
   const {
