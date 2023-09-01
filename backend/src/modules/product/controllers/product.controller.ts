@@ -8,6 +8,7 @@ import {
   ParseFilePipe,
   Post,
   UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,6 +19,8 @@ import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
 import { Public } from 'src/commons/decorators';
 import LocalFilesInterceptor from 'src/commons/interceptor/local-file.interceptor';
 import { ImageService } from 'src/modules/image/services/image.service';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/config/multer';
 
 @UseGuards(AuthGuard)
 @Controller('product')
@@ -39,27 +42,25 @@ export class ProductController {
 
   @Post('create')
   @UseInterceptors(
-    LocalFilesInterceptor({
-      fieldName: 'image',
-      path: '/images',
-    }),
+    FileFieldsInterceptor(
+      [
+        { name: 'image', maxCount: 1 },
+        { name: 'gallery', maxCount: 10 },
+      ],
+      multerOptions,
+    ),
   )
   async postCreate(
-    @UploadedFile(
-      new ParseFilePipe({
-        fileIsRequired: false,
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({ fileType: 'image/*' }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
+    @UploadedFiles()
+    files: {
+      image?: Express.Multer.File[];
+      gallery?: Express.Multer.File[];
+    },
     @Body() body: CreateProductDto,
   ) {
-    console.log(image);
+    console.log(files);
     console.log(body);
-    const createdImage = await this.imageService.create(image);
+    const createdImage = await this.imageService.create(files?.image?.[0]);
     const product = await this.productService.create(body, createdImage);
     return new ResponseSuccess('Success', product);
   }
@@ -71,39 +72,14 @@ export class ProductController {
   }
 
   @Post('update/:id')
-  @UseInterceptors(
-    LocalFilesInterceptor({
-      fieldName: 'image',
-      path: '/images',
-    }),
-  )
-  async update(
-    @UploadedFile(
-      new ParseFilePipe({
-        fileIsRequired: false,
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({ fileType: 'image/*' }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
-    @Body() body: CreateProductDto,
-    @Param('id') id,
-  ) {
+  async update(@Body() body: CreateProductDto, @Param('id') id) {
+    console.log(body)
     const product = await this.productService.findById(id);
     if (!product) {
       return new ResponseError('Not Found');
     }
-    let createdImage;
-    if (image) {
-      createdImage = await this.imageService.create(image);
-    }
-    const updatedProduct = await this.productService.update(
-      product,
-      body,
-      createdImage,
-    );
+
+    const updatedProduct = await this.productService.update(product, body);
     return new ResponseSuccess('Success', updatedProduct);
   }
 }

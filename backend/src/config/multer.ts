@@ -1,7 +1,12 @@
-import { registerAs } from '@nestjs/config';
+import { Guid } from 'guid-typescript';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
-const config = {
-  uploadDestination: 'public',
+export const multerOptions = {
+  storage: diskStorage({
+    destination: 'public/uploads',
+    filename: (req, file, cb) => {
+      cb(null, `${Guid.create().toString()}${extname(file.originalname)}`);
+    },
+  }),
 };
-
-export default registerAs('multer', () => config);

@@ -12,10 +12,25 @@ export class ImageService {
   ) {}
 
   async create(file) {
-    const image = this.imageRepository.create({ src: generateFilePath(file) });
-    const created = await this.imageRepository.save(image, {
-      reload: true,
-    });
-    return created;
+    if (file) {
+      const image = this.imageRepository.create({
+        src: generateFilePath(file),
+      });
+      const created = await this.imageRepository.save(image, {
+        reload: true,
+      });
+      return created;
+    }
+    return null;
+  }
+
+  async bulkCreate(files) {
+    const createdFiles = [];
+    for (const file of files) {
+      if (file) {
+        createdFiles.push(await this.create(file));
+      }
+    }
+    return createdFiles;
   }
 }

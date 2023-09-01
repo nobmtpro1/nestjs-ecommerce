@@ -13,4 +13,6 @@ export class CreateProductDto {
   shortDescription!: string;
 
   description!: string;
+
+  imageId!: string;
 }

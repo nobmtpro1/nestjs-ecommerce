@@ -6,14 +6,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import typeorm from './config/typeorm';
 import { ProductModule } from './modules/product/product.module';
-import multer from './config/multer';
 import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeorm, multer],
+      load: [typeorm],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

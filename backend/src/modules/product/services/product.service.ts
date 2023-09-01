@@ -44,26 +44,19 @@ export class ProductService {
   async findById(id) {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: { image: true },
+      relations: { image: true, gallery: true },
     });
     return product;
   }
 
-  async update(product, body, image) {
-    const data = {
-      ...body,
-    };
-
-    if (image) {
-      data.image = image;
-    } else {
-      data.image = product?.image;
-    }
-    console.log('_____________', data);
-    const updatedProduct = await this.productRepository.update(
-      product.id,
-      data,
-    );
+  async update(product, body) {
+    const updatedProduct = await this.productRepository.update(product.id, {
+      type: body?.type,
+      name: body?.name,
+      shortDescription: body?.shortDescription,
+      description: body?.description,
+      image: { id: body?.imageId },
+    });
     return updatedProduct;
   }
 }

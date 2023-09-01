@@ -4,30 +4,33 @@ import { PlusOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import TextEditor from "../../common/TextEditor";
 import { requestSubmitForm, useProductFields } from "./helpers";
+import { uploadImages } from "ultils/helper";
 
 const ProductForm = ({ initData, product }) => {
   const [description, setDescription] = useState("");
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
+  const [gallery, setGallery] = useState([]);
   const [productFields] = useProductFields(
     product,
     setFileList,
-    setDescription
+    setDescription,
+    setGallery
   );
 
   const onFinish = (values) => {
-    const formData = new FormData();
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
-    formData.set("image", fileList?.[0]?.originFileObj);
-    formData.append("description", description);
-
-    requestSubmitForm(formData, form, product);
+    values.imageId = fileList?.[0]?.uid;
+    values.description = description;
+    requestSubmitForm(values, form, product);
   };
 
   const handleChangeDescription = (html) => {
     setDescription(html);
+  };
+
+  const handleChangeUpload = async ({ file, fileList, event }) => {
+    const images = await uploadImages(fileList);
+    setFileList(images);
   };
 
   return (
@@ -72,13 +75,28 @@ const ProductForm = ({ initData, product }) => {
         <Input />
       </Form.Item>
 
-      <Form.Item name="image" label="Upload">
+      <Form.Item label="Image">
         <Upload
           listType="picture-card"
           maxCount={1}
           accept="image/*"
           fileList={fileList}
-          onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+          onChange={handleChangeUpload}
+        >
+          <div>
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+          </div>
+        </Upload>
+      </Form.Item>
+
+      <Form.Item name="gallery" label="Gallery">
+        <Upload
+          listType="picture-card"
+          maxCount={10}
+          accept="image/*"
+          fileList={gallery}
+          onChange={({ fileList: newGallery }) => setGallery(newGallery)}
         >
           <div>
             <PlusOutlined />

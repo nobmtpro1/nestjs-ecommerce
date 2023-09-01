@@ -9,14 +9,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { STORAGE_URL } from "constants/config";
 
-export const requestSubmitForm = async (formData, form, product) => {
+export const requestSubmitForm = async (data, form, product) => {
   return await axios({
     method: "post",
     url: product
       ? API_PRODUCT_UPDATE.replace(":id", product?.id)
       : API_PRODUCT_CREATE,
-    data: formData,
-    headers: { "Content-Type": "multipart/form-data" },
+    data: data,
   }).then((res) => {
     const resData = res?.data;
     console.log(res);
@@ -70,7 +69,12 @@ export const useFetchProduct = () => {
   return [product];
 };
 
-export const useProductFields = (product, setFileList, setDescription) => {
+export const useProductFields = (
+  product,
+  setFileList,
+  setDescription,
+  setGallery
+) => {
   const [productFields, setProductFields] = useState([]);
   useEffect(() => {
     if (product) {
@@ -98,6 +102,14 @@ export const useProductFields = (product, setFileList, setDescription) => {
           url: STORAGE_URL + "/" + product?.image?.src,
         },
       ]);
+      setGallery(
+        product?.gallery?.map((image) => ({
+          uid: image?.id,
+          name: image?.src,
+          status: "done",
+          url: STORAGE_URL + "/" + image?.src,
+        }))
+      );
     }
   }, [product]);
 

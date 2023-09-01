@@ -55,7 +55,7 @@ class Editor extends Component {
       upload: (file) => {
         return new Promise((resolve, reject) => {
           const formData = new FormData();
-          formData.append("file", file);
+          formData.append("images", file);
           axios({
             method: "post",
             url: API_UPLOAD_IMAGE,
@@ -68,7 +68,7 @@ class Editor extends Component {
               alert("Upload error");
               return;
             }
-            resolve(generateImageUrl(res?.data?.data?.src));
+            resolve(generateImageUrl(res?.data?.data?.[0]?.src));
           });
         });
       },
