@@ -2,11 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
-import {
-  ProductType,
-  productTypes,
-} from 'src/modules/product/enums/product-type.enum';
-import { generateFilePath } from 'src/commons/helpers';
+import { productTypes } from 'src/modules/product/enums/product-type.enum';
 
 @Injectable()
 export class ProductService {
@@ -16,7 +12,12 @@ export class ProductService {
   ) {}
 
   async all() {
-    const products = await this.productRepository.find();
+    const products = await this.productRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: { image: true },
+    });
     return products;
   }
 
@@ -31,7 +32,7 @@ export class ProductService {
       ...body,
     };
     if (image) {
-      data.image = generateFilePath(image);
+      data.image = image;
     }
     const product = this.productRepository.create(data);
     const created = await this.productRepository.save(product, {
@@ -41,7 +42,10 @@ export class ProductService {
   }
 
   async findById(id) {
-    const product = await this.productRepository.findOneBy({ id: id });
+    const product = await this.productRepository.findOne({
+      where: { id },
+      relations: { image: true },
+    });
     return product;
   }
 
@@ -50,8 +54,8 @@ export class ProductService {
       ...body,
     };
 
-    if (image?.filename) {
-      data.image = generateFilePath(image);
+    if (image) {
+      data.image = image;
     } else {
       data.image = product?.image;
     }

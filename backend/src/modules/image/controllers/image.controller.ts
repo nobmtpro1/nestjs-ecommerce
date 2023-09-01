@@ -10,13 +10,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '../../auth/auth.guard';
-import LocalFilesInterceptor from '../interceptors/local-file.interceptor';
+import LocalFilesInterceptor from '../../../commons/interceptor/local-file.interceptor';
 import { ResponseSuccess } from 'src/commons/dtos/response.dto';
+import { ImageService } from '../services/image.service';
 
 @UseGuards(AuthGuard)
-@Controller('upload')
-export class UploadController {
-  @Post('image')
+@Controller('image')
+export class ImageController {
+  constructor(private readonly imageService: ImageService) {}
+
+  @Post('upload')
   @UseInterceptors(
     LocalFilesInterceptor({
       fieldName: 'file',
@@ -34,7 +37,7 @@ export class UploadController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
-    return new ResponseSuccess('Upload success', file);
+    const image = await this.imageService.create(file);
+    return new ResponseSuccess('Upload success', image);
   }
 }

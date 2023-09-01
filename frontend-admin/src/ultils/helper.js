@@ -7,8 +7,8 @@ export const logout = () => {
   window.location.href = ROUTE_LOGIN;
 };
 
-export const generateImageUrl = (path, filename) => {
-  return `${API_URL}/${path}/${filename}`;
+export const generateImageUrl = (src) => {
+  return `${API_URL}/${src}`;
 };
 
 export const normFile = (e) => {

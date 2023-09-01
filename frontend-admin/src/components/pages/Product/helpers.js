@@ -95,7 +95,7 @@ export const useProductFields = (product, setFileList, setDescription) => {
           uid: "-1",
           name: "image.png",
           status: "done",
-          url: STORAGE_URL + "/" + product?.image,
+          url: STORAGE_URL + "/" + product?.image?.src,
         },
       ]);
     }

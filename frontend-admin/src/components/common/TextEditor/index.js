@@ -68,12 +68,7 @@ class Editor extends Component {
               alert("Upload error");
               return;
             }
-            resolve(
-              generateImageUrl(
-                res?.data?.data.destination,
-                res?.data?.data.filename
-              )
-            );
+            resolve(generateImageUrl(res?.data?.data?.src));
           });
         });
       },

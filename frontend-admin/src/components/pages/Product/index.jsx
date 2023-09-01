@@ -31,7 +31,7 @@ const Product = () => {
       key: "image",
       render: (text) => (
         <a>
-          <img className="w-12" src={STORAGE_URL + "/" + text} />
+          <img className="w-12" src={STORAGE_URL + "/" + text?.src} />
         </a>
       ),
     },

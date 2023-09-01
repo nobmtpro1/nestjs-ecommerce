@@ -6,8 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import typeorm from './config/typeorm';
 import { ProductModule } from './modules/product/product.module';
-import { CommonModule } from './modules/common/common.module';
 import multer from './config/multer';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import multer from './config/multer';
     UserModule,
     AuthModule,
     ProductModule,
-    CommonModule,
+    ImageModule,
   ],
   controllers: [],
   providers: [],
