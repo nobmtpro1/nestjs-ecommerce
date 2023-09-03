@@ -1,13 +1,11 @@
-import { Breadcrumb, theme } from "antd";
+import { Breadcrumb } from "antd";
 import { Content } from "antd/es/layout/layout";
 import React from "react";
 import { Link } from "react-router-dom";
 import { ROUTE_DASHBOARD } from "../../../constants/routes";
+import LayoutContent from "components/common/LayoutContent";
 
 const Dashboard = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
   return (
     <Content className="mx-5">
       <Breadcrumb className="my-5">
@@ -16,14 +14,9 @@ const Dashboard = () => {
           <Link to={ROUTE_DASHBOARD}>Dashboard</Link>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <div
-        className="p-5 min-h-full"
-        style={{
-          background: colorBgContainer,
-        }}
-      >
+      <LayoutContent>
         <h1 className="text-3xl font-bold underline">Dashboard</h1>
-      </div>
+      </LayoutContent>
     </Content>
   );
 };

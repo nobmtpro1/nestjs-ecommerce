@@ -4,25 +4,30 @@ import Sider from "antd/es/layout/Sider";
 import { Col, Menu, Row } from "antd";
 import { PieChartOutlined } from "@ant-design/icons";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
   const items = [
-    getItem(
-      "Dashboard",
-      "1",
-      <Link to={ROUTE_DASHBOARD}>
-        <PieChartOutlined />
-      </Link>
-    ),
-    getItem(
-      "Product",
-      "2",
-      <Link to={ROUTE_PRODUCT}>
-        <PieChartOutlined />
-      </Link>
-    ),
+    {
+      label: "Dashboard",
+      key: ROUTE_DASHBOARD,
+      icon: (
+        <Link to={ROUTE_DASHBOARD}>
+          <PieChartOutlined />
+        </Link>
+      ),
+    },
+    {
+      label: "Product",
+      key: ROUTE_PRODUCT,
+      icon: (
+        <Link to={ROUTE_PRODUCT}>
+          <PieChartOutlined />
+        </Link>
+      ),
+    },
 
     // getItem("User", "sub1", <UserOutlined />, [
     //   getItem("Tom", "3"),
@@ -36,14 +41,6 @@ const Sidebar = () => {
     // getItem("Files", "9", <FileOutlined />),
   ];
 
-  function getItem(label, key, icon, children) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-    };
-  }
   return (
     <Sider
       collapsible
@@ -63,7 +60,7 @@ const Sidebar = () => {
 
       <Menu
         theme="dark"
-        defaultSelectedKeys={["1"]}
+        defaultSelectedKeys={[location?.pathname]}
         mode="inline"
         items={items}
       />

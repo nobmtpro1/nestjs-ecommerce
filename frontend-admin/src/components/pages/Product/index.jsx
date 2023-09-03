@@ -1,21 +1,18 @@
-import { Breadcrumb, Button, Col, Row, Space, Table, Tag, theme } from "antd";
+import { Breadcrumb, Button, Col, Row, Space, Table } from "antd";
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import {
-  ROUTE_PRODUCT,
-  ROUTE_PRODUCT_ADD,
-  ROUTE_PRODUCT_EDIT,
-} from "../../../constants/routes";
-import { Link } from "react-router-dom";
+import { ROUTE_PRODUCT } from "../../../constants/routes";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "../../../ultils/axios";
 import { API_PRODUCT_ALL } from "../../../constants/api";
 import { STORAGE_URL } from "../../../constants/config";
+import LayoutContent from "components/common/LayoutContent";
+import ProductAdd from "./add";
+import ProductEdit from "./edit";
 
 const Product = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
   const [data, setData] = useState([]);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     axios
@@ -46,7 +43,7 @@ const Product = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link to={ROUTE_PRODUCT_EDIT.replace(":id", record?.id)}>Edit</Link>
+          <Link to={ROUTE_PRODUCT + "?action=edit&id=" + record?.id}>Edit</Link>
           <a>Delete</a>
         </Space>
       ),
@@ -61,21 +58,24 @@ const Product = () => {
           <Link to={ROUTE_PRODUCT}>Product</Link>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <div
-        className="p-5 min-h-full"
-        style={{
-          background: colorBgContainer,
-        }}
-      >
-        <Row className="mb-5">
-          <Col>
-            <Link to={ROUTE_PRODUCT_ADD}>
-              <Button primary>Add</Button>
-            </Link>
-          </Col>
-        </Row>
-        <Table columns={columns} dataSource={data} />
-      </div>
+      <LayoutContent>
+        {searchParams.get("action") == "add" ? (
+          <ProductAdd />
+        ) : searchParams.get("action") == "edit" ? (
+          <ProductEdit />
+        ) : (
+          <>
+            <Row className="mb-5">
+              <Col>
+                <Link to={ROUTE_PRODUCT + "?action=add"}>
+                  <Button primary>Add</Button>
+                </Link>
+              </Col>
+            </Row>
+            <Table columns={columns} dataSource={data} />
+          </>
+        )}
+      </LayoutContent>
     </Content>
   );
 };

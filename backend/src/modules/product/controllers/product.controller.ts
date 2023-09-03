@@ -3,7 +3,6 @@ import { AuthGuard } from '../../auth/auth.guard';
 import { ProductService } from '../services/product.service';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
-import { ImageService } from 'src/modules/image/services/image.service';
 
 @UseGuards(AuthGuard)
 @Controller('product')

@@ -17,7 +17,7 @@ const Layout = () => {
   return (
     <>
       {account && (
-        <Lay className="min-h-screen">
+        <Lay className="min-h-screen overflow-hidden">
           <Sidebar />
           <Lay>
             <Header />
