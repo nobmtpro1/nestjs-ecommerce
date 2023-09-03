@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
 import { productTypes } from 'src/modules/product/enums/product-type.enum';
+import { Image } from 'src/entities/image.entity';
 
 @Injectable()
 export class ProductService {
@@ -27,14 +28,20 @@ export class ProductService {
     };
   }
 
-  async create(body, image) {
-    const data = {
-      ...body,
-    };
-    if (image) {
-      data.image = image;
-    }
-    const product = this.productRepository.create(data);
+  async create(body) {
+    const product = this.productRepository.create({
+      type: body?.type,
+      name: body?.name,
+      shortDescription: body?.shortDescription,
+      description: body?.description,
+    });
+    const image = new Image();
+    image.id = body?.imageId;
+    product.image = image;
+    product.gallery = body?.gallery?.map((imageId) => ({
+      ...new Image(),
+      id: imageId,
+    }));
     const created = await this.productRepository.save(product, {
       reload: true,
     });
@@ -55,8 +62,14 @@ export class ProductService {
       name: body?.name,
       shortDescription: body?.shortDescription,
       description: body?.description,
-      image: { id: body?.imageId },
     });
+    product.image = { ...new Image(), id: body?.imageId };
+    product.gallery = body?.gallery?.map((imageId) => ({
+      ...new Image(),
+      id: imageId,
+    }));
+
+    product.save();
     return updatedProduct;
   }
 }

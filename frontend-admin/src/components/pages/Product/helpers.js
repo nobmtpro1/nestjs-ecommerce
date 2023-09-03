@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { STORAGE_URL } from "constants/config";
+import { uploadImages } from "ultils/helper";
 
 export const requestSubmitForm = async (data, form, product) => {
   return await axios({
@@ -96,8 +97,8 @@ export const useProductFields = (
       setDescription(product?.description);
       setFileList([
         {
-          uid: "-1",
-          name: "image.png",
+          uid: product?.image?.id,
+          name: product?.image?.src,
           status: "done",
           url: STORAGE_URL + "/" + product?.image?.src,
         },
@@ -114,4 +115,28 @@ export const useProductFields = (
   }, [product]);
 
   return [productFields];
+};
+
+export const handleChangeUpload = async (
+  file,
+  fileList,
+  event,
+  handle,
+  quantity
+) => {
+  if (file?.status == "removed") {
+    handle((prev) => prev?.filter((x) => x?.uid != file?.uid));
+  } else {
+    const images = await uploadImages(fileList);
+    if (images) {
+      if (quantity == 1) {
+        handle(images);
+      } else {
+        if (fileList?.length >= quantity) {
+          return;
+        }
+        handle((prev) => [...prev, ...images]);
+      }
+    }
+  }
 };

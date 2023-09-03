@@ -1,10 +1,13 @@
 import { Button, Form, Input, Select, Upload } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import TextEditor from "../../common/TextEditor";
-import { requestSubmitForm, useProductFields } from "./helpers";
-import { uploadImages } from "ultils/helper";
+import {
+  handleChangeUpload,
+  requestSubmitForm,
+  useProductFields,
+} from "./helpers";
 
 const ProductForm = ({ initData, product }) => {
   const [description, setDescription] = useState("");
@@ -21,6 +24,10 @@ const ProductForm = ({ initData, product }) => {
   const onFinish = (values) => {
     values.imageId = fileList?.[0]?.uid;
     values.description = description;
+    values.gallery = [];
+    gallery?.forEach((image) => {
+      values.gallery?.push(image?.uid);
+    });
     requestSubmitForm(values, form, product);
   };
 
@@ -28,9 +35,12 @@ const ProductForm = ({ initData, product }) => {
     setDescription(html);
   };
 
-  const handleChangeUpload = async ({ file, fileList, event }) => {
-    const images = await uploadImages(fileList);
-    setFileList(images);
+  const handleChangeImage = async ({ file, fileList, event }) => {
+    handleChangeUpload(file, fileList, event, setFileList, 1);
+  };
+
+  const handleChangeGallery = async ({ file, fileList, event }) => {
+    handleChangeUpload(file, fileList, event, setGallery, 10);
   };
 
   return (
@@ -81,7 +91,7 @@ const ProductForm = ({ initData, product }) => {
           maxCount={1}
           accept="image/*"
           fileList={fileList}
-          onChange={handleChangeUpload}
+          onChange={handleChangeImage}
         >
           <div>
             <PlusOutlined />
@@ -96,7 +106,7 @@ const ProductForm = ({ initData, product }) => {
           maxCount={10}
           accept="image/*"
           fileList={gallery}
-          onChange={({ fileList: newGallery }) => setGallery(newGallery)}
+          onChange={handleChangeGallery}
         >
           <div>
             <PlusOutlined />
