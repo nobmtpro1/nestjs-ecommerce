@@ -1,4 +1,4 @@
-import { ProductType } from 'src/modules/product/enums/product-type.enum';
+import { ProductType } from 'src/entities/enums/product-type.enum';
 import { AuditEntity } from 'src/entities/audit.entity';
 import {
   Entity,
@@ -9,6 +9,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Image } from './image.entity';
+import { ProductStatus } from './enums/is-active.enum';
+import { ProductCategory } from './product-category.entity';
 
 @Entity()
 export class Product extends AuditEntity {
@@ -31,4 +33,14 @@ export class Product extends AuditEntity {
   @ManyToMany(() => Image)
   @JoinTable()
   gallery: Image[];
+
+  @Column('int', { default: ProductStatus.ACTIVE })
+  status: ProductStatus;
+
+  @Column('varchar', { length: 1000 })
+  slug: string;
+
+  @ManyToMany(() => ProductCategory)
+  @JoinTable()
+  categories: ProductCategory[];
 }

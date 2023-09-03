@@ -53,6 +53,16 @@ const ProductForm = ({ initData, product }) => {
       onFinish={onFinish}
       fields={productFields}
     >
+      <Form.Item label="Status" name="status">
+        <Select>
+          {initData?.productStatus?.map((e, i) => (
+            <Select.Option value={e?.value} key={i}>
+              {e?.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
       <Form.Item
         label="Type"
         name="type"
@@ -66,6 +76,16 @@ const ProductForm = ({ initData, product }) => {
         <Select>
           {initData?.productTypes?.map((e, i) => (
             <Select.Option value={e?.value} key={i}>
+              {e?.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      <Form.Item label="Categories" name="categories">
+        <Select mode="multiple" allowClear>
+          {initData?.productCategories?.map((e, i) => (
+            <Select.Option value={e?.id} key={i}>
               {e?.name}
             </Select.Option>
           ))}

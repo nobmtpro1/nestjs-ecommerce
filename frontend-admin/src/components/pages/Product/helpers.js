@@ -5,7 +5,7 @@ import {
   API_PRODUCT_UPDATE,
 } from "constants/api";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { STORAGE_URL } from "constants/config";
 import { uploadImages } from "ultils/helper";
@@ -38,10 +38,11 @@ export const useFetchInitData = () => {
 
   useEffect(() => {
     axios.get(API_PRODUCT_CREATE).then((res) => {
-      if (res?.status != 200) {
-        alert(res?.data?.message);
+      const resData = res?.data;
+      if (resData?.statusCode != 200) {
+        toast.error(res?.message);
       } else {
-        setInitData(res?.data);
+        setInitData(resData?.data);
       }
     });
   }, []);
@@ -50,22 +51,24 @@ export const useFetchInitData = () => {
 
 export const useFetchProduct = () => {
   const [product, setProduct] = useState(null);
-  let { id } = useParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    axios.get(API_PRODUCT_FIND_BY_ID.replace(":id", id)).then((res) => {
-      const resData = res?.data;
-      console.log(res);
-      if (resData?.statusCode != 200) {
-        toast.error(
-          Array.isArray(resData?.message)
-            ? resData?.message?.[0]
-            : resData?.message
-        );
-      } else {
-        setProduct(resData?.data);
-      }
-    });
+    axios
+      .get(API_PRODUCT_FIND_BY_ID.replace(":id", searchParams?.get("id")))
+      .then((res) => {
+        const resData = res?.data;
+        console.log(res);
+        if (resData?.statusCode != 200) {
+          toast.error(
+            Array.isArray(resData?.message)
+              ? resData?.message?.[0]
+              : resData?.message
+          );
+        } else {
+          setProduct(resData?.data);
+        }
+      });
   }, []);
   return [product];
 };
@@ -81,6 +84,10 @@ export const useProductFields = (
     if (product) {
       const pFields = [
         {
+          name: "status",
+          value: product?.status,
+        },
+        {
           name: "type",
           value: product?.type,
         },
@@ -91,6 +98,10 @@ export const useProductFields = (
         {
           name: "shortDescription",
           value: product?.shortDescription,
+        },
+        {
+          name: "categories",
+          value: product?.categories?.map((category) => category?.id),
         },
       ];
       setProductFields(pFields);

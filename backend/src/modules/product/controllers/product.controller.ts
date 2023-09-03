@@ -3,12 +3,18 @@ import { AuthGuard } from '../../auth/auth.guard';
 import { ProductService } from '../services/product.service';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
+import { Public } from 'src/commons/decorators';
+import { ProductCategoryService } from '../services/product-category.service';
 
 @UseGuards(AuthGuard)
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly productCategoryService: ProductCategoryService,
+  ) {}
 
+  @Public()
   @Get('all')
   async all() {
     return await this.productService.all();
@@ -16,7 +22,14 @@ export class ProductController {
 
   @Get('create')
   async getCreate() {
-    return await this.productService.getProductTypes();
+    const productCategories = await this.productCategoryService.all();
+    const productTypes = await this.productService.getProductTypes();
+    const productStatus = await this.productService.getProductStatus();
+    return new ResponseSuccess('Success', {
+      productTypes,
+      productCategories,
+      productStatus,
+    });
   }
 
   @Post('create')
@@ -26,6 +39,7 @@ export class ProductController {
     return new ResponseSuccess('Success', product);
   }
 
+  @Public()
   @Get('find-by-id/:id')
   async findById(@Param('id') id) {
     const product = await this.productService.findById(id);
