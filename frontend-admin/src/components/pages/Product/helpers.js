@@ -103,6 +103,14 @@ export const useProductFields = (
           name: "categories",
           value: product?.categories?.map((category) => category?.id),
         },
+        {
+          name: "tags",
+          value: product?.tags?.map((tag) => tag?.id),
+        },
+        {
+          name: "slug",
+          value: product?.slug,
+        },
       ];
       setProductFields(pFields);
       setDescription(product?.description);

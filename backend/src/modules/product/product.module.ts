@@ -6,12 +6,24 @@ import { ProductService } from './services/product.service';
 import { ProductCategoryController } from './controllers/product-category.controller';
 import { ProductCategoryService } from './services/product-category.service';
 import { ProductCategory } from 'src/entities/product-category.entity';
+import { ProductTagService } from './services/product-tag.service';
+import { ProductTag } from 'src/entities/product-tag.entity';
+import { ProductTagController } from './controllers/product-tag.controller';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, ProductCategory])],
-  controllers: [ProductController, ProductCategoryController],
-  providers: [ProductService, ProductCategoryService],
-  exports: [TypeOrmModule, ProductService, ProductCategoryService],
+  imports: [TypeOrmModule.forFeature([Product, ProductCategory, ProductTag])],
+  controllers: [
+    ProductController,
+    ProductCategoryController,
+    ProductTagController,
+  ],
+  providers: [ProductService, ProductCategoryService, ProductTagService],
+  exports: [
+    TypeOrmModule,
+    ProductService,
+    ProductCategoryService,
+    ProductTagService,
+  ],
 })
 export class ProductModule {}

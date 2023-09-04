@@ -22,13 +22,19 @@ const ProductForm = ({ initData, product }) => {
   );
 
   const onFinish = (values) => {
-    values.imageId = fileList?.[0]?.uid;
-    values.description = description;
-    values.gallery = [];
-    gallery?.forEach((image) => {
-      values.gallery?.push(image?.uid);
-    });
-    requestSubmitForm(values, form, product);
+    const data = {
+      imageId: fileList?.[0]?.uid || null,
+      description: description || "",
+      gallery: gallery?.map((image) => image?.uid) || [],
+      shortDescription: values?.shortDescription || "",
+      name: values?.name || null,
+      slug: values?.slug || null,
+      status: values?.status || null,
+      type: values?.type || null,
+      categories: values?.categories || [],
+      tags: values?.tags || [],
+    };
+    requestSubmitForm(data, form, product);
   };
 
   const handleChangeDescription = (html) => {
@@ -98,7 +104,20 @@ const ProductForm = ({ initData, product }) => {
         rules={[
           {
             required: true,
-            message: "Please enter description",
+            message: "Please enter name",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Slug"
+        name="slug"
+        rules={[
+          {
+            required: true,
+            message: "Please enter slug",
           },
         ]}
       >
@@ -135,8 +154,12 @@ const ProductForm = ({ initData, product }) => {
         </Upload>
       </Form.Item>
 
-      <Form.Item label="Short description" name="shortDescription">
-        <TextArea rows={4} />
+      <Form.Item
+        label="Short description"
+        name="shortDescription"
+        defaultValue=""
+      >
+        <TextArea rows={4} value={""} />
       </Form.Item>
 
       <Form.Item label="Description">
@@ -144,6 +167,16 @@ const ProductForm = ({ initData, product }) => {
           defaultValue={product?.description}
           handleChange={handleChangeDescription}
         />
+      </Form.Item>
+
+      <Form.Item label="Tags" name="tags">
+        <Select mode="multiple" allowClear>
+          {initData?.productTags?.map((e, i) => (
+            <Select.Option value={e?.id} key={i}>
+              {e?.name}
+            </Select.Option>
+          ))}
+        </Select>
       </Form.Item>
 
       <Form.Item wrapperCol={{ span: 14, offset: 4 }}>

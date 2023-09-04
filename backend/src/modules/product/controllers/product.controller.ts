@@ -5,6 +5,7 @@ import { CreateProductDto } from '../dtos/create-product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
 import { Public } from 'src/commons/decorators';
 import { ProductCategoryService } from '../services/product-category.service';
+import { ProductTagService } from '../services/product-tag.service';
 
 @UseGuards(AuthGuard)
 @Controller('product')
@@ -12,6 +13,7 @@ export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly productCategoryService: ProductCategoryService,
+    private readonly productTagService: ProductTagService,
   ) {}
 
   @Public()
@@ -25,10 +27,12 @@ export class ProductController {
     const productCategories = await this.productCategoryService.all();
     const productTypes = await this.productService.getProductTypes();
     const productStatus = await this.productService.getProductStatus();
+    const productTags = await this.productTagService.all();
     return new ResponseSuccess('Success', {
       productTypes,
       productCategories,
       productStatus,
+      productTags,
     });
   }
 

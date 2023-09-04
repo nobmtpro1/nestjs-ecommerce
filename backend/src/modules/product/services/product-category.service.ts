@@ -15,7 +15,7 @@ export class ProductCategoryService {
       order: {
         createdAt: 'DESC',
       },
-      relations: { image: true },
+      relations: { image: true, products: true },
     });
     return products;
   }

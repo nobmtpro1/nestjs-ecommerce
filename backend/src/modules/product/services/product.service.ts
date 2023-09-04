@@ -9,6 +9,9 @@ import {
   ProductStatus,
   productStatus,
 } from 'src/entities/enums/is-active.enum';
+import { ProductTag } from 'src/entities/product-tag.entity';
+import slugify from 'slugify';
+import { Guid } from 'guid-typescript';
 
 @Injectable()
 export class ProductService {
@@ -36,10 +39,12 @@ export class ProductService {
   }
 
   async create(body) {
+    const slug = await this.generateSlug(body?.slug);
     const product = this.productRepository.create({
       status: body?.status,
       type: body?.type,
       name: body?.name,
+      slug: slug,
       shortDescription: body?.shortDescription,
       description: body?.description,
       categories: body?.categories?.map((id) => ({
@@ -49,6 +54,10 @@ export class ProductService {
     });
     product.categories = body?.categories?.map((id) => ({
       ...new ProductCategory(),
+      id,
+    }));
+    product.tags = body?.tags?.map((id) => ({
+      ...new ProductTag(),
       id,
     }));
     const image = new Image();
@@ -67,7 +76,7 @@ export class ProductService {
   async findById(id) {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: { image: true, gallery: true, categories: true },
+      relations: { image: true, gallery: true, categories: true, tags: true },
     });
     return product;
   }
@@ -78,9 +87,14 @@ export class ProductService {
     product.shortDescription = body?.shortDescription;
     product.description = body?.description;
     product.type = body?.type;
+    product.slug = await this.generateSlug(body?.slug);
 
     product.categories = body?.categories?.map((id) => ({
       ...new ProductCategory(),
+      id,
+    }));
+    product.tags = body?.tags?.map((id) => ({
+      ...new ProductTag(),
       id,
     }));
     product.image = { ...new Image(), id: body?.imageId };
@@ -91,5 +105,16 @@ export class ProductService {
 
     product.save();
     return product;
+  }
+
+  async generateSlug(inputSlug) {
+    let slug = slugify(inputSlug);
+    const product = await this.productRepository.findOne({
+      where: { slug: slug },
+    });
+    if (product) {
+      slug = slug + '-' + Guid.create().toString();
+    }
+    return slug;
   }
 }

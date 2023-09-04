@@ -15,11 +15,13 @@ const Product = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    axios
-      .get(API_PRODUCT_ALL)
-      .then((res) => setData(res?.data))
-      .catch((err) => alert(err?.response?.data?.message));
-  }, []);
+    if (!searchParams.get("action")) {
+      axios
+        .get(API_PRODUCT_ALL)
+        .then((res) => setData(res?.data))
+        .catch((err) => alert(err?.response?.data?.message));
+    }
+  }, [searchParams]);
 
   const columns = [
     {
