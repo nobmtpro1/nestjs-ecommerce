@@ -10,6 +10,7 @@ import LayoutContent from "components/common/LayoutContent";
 import ProductAdd from "./add";
 import ProductEdit from "./edit";
 import { toast } from "react-toastify";
+import SearchForm from "./SearchForm";
 
 const Product = () => {
   const [data, setData] = useState([]);
@@ -89,6 +90,9 @@ const Product = () => {
                   <Button primary>Add</Button>
                 </Link>
               </Col>
+            </Row>
+            <Row className="mb-5">
+              <SearchForm />
             </Row>
             <Table columns={columns} dataSource={data} />
           </>
