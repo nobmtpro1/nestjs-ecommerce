@@ -23,6 +23,7 @@ const ProductForm = ({ initData, product }) => {
 
   const onFinish = (values) => {
     const data = {
+      id: product?.id,
       imageId: fileList?.[0]?.uid || null,
       description: description || "",
       gallery: gallery?.map((image) => image?.uid) || [],

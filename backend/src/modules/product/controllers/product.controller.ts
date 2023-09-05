@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '../../auth/auth.guard';
@@ -26,13 +27,14 @@ export class ProductController {
   ) {}
 
   @Public()
-  @Get('all')
-  async all() {
-    return await this.productService.all();
+  @Get('')
+  async get() {
+    const products = await this.productService.get();
+    return new ResponseSuccess('Success', products);
   }
 
-  @Get('create')
-  async getCreate() {
+  @Get('related-data')
+  async getRelatedData() {
     const productCategories = await this.productCategoryService.all();
     const productTypes = await this.productService.getProductTypes();
     const productStatus = await this.productService.getProductStatus();
@@ -45,23 +47,22 @@ export class ProductController {
     });
   }
 
-  @Post('create')
+  @Post('')
   async postCreate(@Body() body: CreateProductDto) {
-    console.log(body);
     const product = await this.productService.create(body);
     return new ResponseSuccess('Success', product);
   }
 
   @Public()
-  @Get('find-by-id/:id')
+  @Get(':id')
   async findById(@Param('id') id) {
     const product = await this.productService.findById(id);
     return new ResponseSuccess('Success', product);
   }
 
-  @Post('update/:id')
-  async update(@Body() body: CreateProductDto, @Param('id') id) {
-    const product = await this.productService.findById(id);
+  @Put('')
+  async update(@Body() body: CreateProductDto) {
+    const product = await this.productService.findById(body?.id);
     if (!product) {
       return new ResponseError('Not Found');
     }

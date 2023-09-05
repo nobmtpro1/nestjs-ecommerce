@@ -1,25 +1,18 @@
 import axios from "ultils/axios";
-import {
-  API_PRODUCT_CREATE,
-  API_PRODUCT_FIND_BY_ID,
-  API_PRODUCT_UPDATE,
-} from "constants/api";
+import { API_PRODUCT, API_PRODUCT_RELATED_DATA } from "constants/api";
 import { toast } from "react-toastify";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { STORAGE_URL } from "constants/config";
 import { uploadImages } from "ultils/helper";
 
 export const requestSubmitForm = async (data, form, product) => {
   return await axios({
-    method: "post",
-    url: product
-      ? API_PRODUCT_UPDATE.replace(":id", product?.id)
-      : API_PRODUCT_CREATE,
+    method: product ? "put" : "post",
+    url: API_PRODUCT,
     data: data,
   }).then((res) => {
     const resData = res?.data;
-    console.log(res);
     if (resData?.statusCode != 200) {
       toast.error(
         Array.isArray(resData?.message)
@@ -37,7 +30,7 @@ export const useFetchInitData = () => {
   const [initData, setInitData] = useState(null);
 
   useEffect(() => {
-    axios.get(API_PRODUCT_CREATE).then((res) => {
+    axios.get(API_PRODUCT_RELATED_DATA).then((res) => {
       const resData = res?.data;
       if (resData?.statusCode != 200) {
         toast.error(res?.message);
@@ -54,21 +47,19 @@ export const useFetchProduct = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    axios
-      .get(API_PRODUCT_FIND_BY_ID.replace(":id", searchParams?.get("id")))
-      .then((res) => {
-        const resData = res?.data;
-        console.log(res);
-        if (resData?.statusCode != 200) {
-          toast.error(
-            Array.isArray(resData?.message)
-              ? resData?.message?.[0]
-              : resData?.message
-          );
-        } else {
-          setProduct(resData?.data);
-        }
-      });
+    axios.get(API_PRODUCT + "/" + searchParams?.get("id")).then((res) => {
+      const resData = res?.data;
+      console.log(res);
+      if (resData?.statusCode != 200) {
+        toast.error(
+          Array.isArray(resData?.message)
+            ? resData?.message?.[0]
+            : resData?.message
+        );
+      } else {
+        setProduct(resData?.data);
+      }
+    });
   }, []);
   return [product];
 };

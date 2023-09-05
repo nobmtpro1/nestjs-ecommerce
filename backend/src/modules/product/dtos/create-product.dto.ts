@@ -2,6 +2,8 @@ import { IsEmpty, IsNotEmpty, Length, MaxLength } from 'class-validator';
 import { ProductType } from 'src/entities/enums/product-type.enum';
 
 export class CreateProductDto {
+  id!: string;
+
   @IsNotEmpty()
   type: ProductType;
 

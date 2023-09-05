@@ -20,7 +20,7 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) {}
 
-  async all() {
+  async get() {
     const products = await this.productRepository.find({
       order: {
         createdAt: 'DESC',

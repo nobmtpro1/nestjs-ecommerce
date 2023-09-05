@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ROUTE_PRODUCT } from "../../../constants/routes";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "../../../ultils/axios";
-import { API_PRODUCT, API_PRODUCT_ALL } from "../../../constants/api";
+import { API_PRODUCT } from "../../../constants/api";
 import { STORAGE_URL } from "../../../constants/config";
 import LayoutContent from "components/common/LayoutContent";
 import ProductAdd from "./add";
@@ -17,10 +17,7 @@ const Product = () => {
 
   useEffect(() => {
     if (!searchParams.get("action")) {
-      axios
-        .get(API_PRODUCT_ALL)
-        .then((res) => setData(res?.data))
-        .catch((err) => alert(err?.response?.data?.message));
+      axios.get(API_PRODUCT).then((res) => setData(res?.data?.data));
     }
   }, [searchParams]);
 
