@@ -3,8 +3,17 @@ import { ROUTE_DASHBOARD, ROUTE_PRODUCT } from "../../../constants/routes";
 import Sider from "antd/es/layout/Sider";
 import { Col, Menu, Row } from "antd";
 import { PieChartOutlined } from "@ant-design/icons";
-
 import { Link, useLocation } from "react-router-dom";
+
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
+}
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -20,25 +29,25 @@ const Sidebar = () => {
       ),
     },
     {
-      label: "Product",
-      key: ROUTE_PRODUCT,
+      label: "Catalogue",
+      key: "catalogue",
       icon: (
         <Link to={ROUTE_PRODUCT}>
           <PieChartOutlined />
         </Link>
       ),
+      children: [
+        {
+          label: "Product",
+          key: ROUTE_PRODUCT,
+          icon: (
+            <Link to={ROUTE_PRODUCT}>
+              <PieChartOutlined />
+            </Link>
+          ),
+        },
+      ],
     },
-
-    // getItem("User", "sub1", <UserOutlined />, [
-    //   getItem("Tom", "3"),
-    //   getItem("Bill", "4"),
-    //   getItem("Alex", "5"),
-    // ]),
-    // getItem("Team", "sub2", <TeamOutlined />, [
-    //   getItem("Team 1", "6"),
-    //   getItem("Team 2", "8"),
-    // ]),
-    // getItem("Files", "9", <FileOutlined />),
   ];
 
   return (
@@ -63,6 +72,7 @@ const Sidebar = () => {
         defaultSelectedKeys={[location?.pathname]}
         mode="inline"
         items={items}
+        defaultOpenKeys={["catalogue"]}
       />
     </Sider>
   );

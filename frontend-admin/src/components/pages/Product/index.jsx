@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react";
 import { ROUTE_PRODUCT } from "../../../constants/routes";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "../../../ultils/axios";
-import { API_PRODUCT_ALL } from "../../../constants/api";
+import { API_PRODUCT, API_PRODUCT_ALL } from "../../../constants/api";
 import { STORAGE_URL } from "../../../constants/config";
 import LayoutContent from "components/common/LayoutContent";
 import ProductAdd from "./add";
 import ProductEdit from "./edit";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const [data, setData] = useState([]);
@@ -41,16 +42,34 @@ const Product = () => {
       render: (text) => <a>{text}</a>,
     },
     {
+      title: "Created at",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => <a>{text}</a>,
+      defaultSortOrder: "descend",
+      sorter: (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
           <Link to={ROUTE_PRODUCT + "?action=edit&id=" + record?.id}>Edit</Link>
-          <a>Delete</a>
+          <a onClick={() => handleDelete(record?.id)}>Delete</a>
         </Space>
       ),
     },
   ];
+
+  const handleDelete = (id) => {
+    if (confirm("Are you sure?")) {
+      axios.delete(API_PRODUCT, { data: { id } }).then((res) => {
+        toast.success("Delete success");
+        setData((prev) => prev?.filter((x) => x?.id != id));
+      });
+    }
+  };
 
   return (
     <Content className="mx-5">

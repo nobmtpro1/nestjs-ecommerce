@@ -41,7 +41,7 @@ export class ProductService {
   async create(body) {
     const slug = await this.generateSlug(body?.slug);
     const product = this.productRepository.create({
-      status: body?.status,
+      status: body?.status || '',
       type: body?.type,
       name: body?.name,
       slug: slug,
@@ -82,7 +82,7 @@ export class ProductService {
   }
 
   async update(product, body) {
-    product.status = body?.status;
+    product.status = body?.status || '';
     product.name = body?.name;
     product.shortDescription = body?.shortDescription;
     product.description = body?.description;
@@ -116,5 +116,10 @@ export class ProductService {
       slug = slug + '-' + Guid.create().toString();
     }
     return slug;
+  }
+
+  async delete(product) {
+    await this.productRepository.remove(product);
+    return product;
   }
 }

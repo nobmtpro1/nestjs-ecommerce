@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '../../auth/auth.guard';
 import { ProductService } from '../services/product.service';
 import { CreateProductDto } from '../dtos/create-product.dto';
@@ -6,6 +14,7 @@ import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
 import { Public } from 'src/commons/decorators';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
+import { DeleteProductDto } from '../dtos/delete-product.dto';
 
 @UseGuards(AuthGuard)
 @Controller('product')
@@ -58,5 +67,15 @@ export class ProductController {
     }
     const updatedProduct = await this.productService.update(product, body);
     return new ResponseSuccess('Success', updatedProduct);
+  }
+
+  @Delete('')
+  async delete(@Body() body: DeleteProductDto) {
+    const product = await this.productService.findById(body?.id);
+    if (!product) {
+      return new ResponseError('Not Found');
+    }
+    const deletedProduct = await this.productService.delete(product);
+    return new ResponseSuccess('Success', deletedProduct);
   }
 }

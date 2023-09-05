@@ -13,7 +13,6 @@ export class CreateProductDto {
   @Length(1, 255)
   slug: string;
 
-  @IsEmpty()
   @MaxLength(255)
   shortDescription!: string;
 
