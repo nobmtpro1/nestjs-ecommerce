@@ -18,7 +18,9 @@ const Product = () => {
 
   useEffect(() => {
     if (!searchParams.get("action")) {
-      axios.get(API_PRODUCT).then((res) => setData(res?.data?.data));
+      axios
+        .get(`${API_PRODUCT}?search=${searchParams?.get("search") || ""}`)
+        .then((res) => setData(res?.data?.data));
     }
   }, [searchParams]);
 

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Upload } from "antd";
+import { Button, Form, Input, Select, Upload, Tabs, Row, Col } from "antd";
 import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
@@ -8,10 +8,12 @@ import {
   requestSubmitForm,
   useProductFields,
 } from "./helpers";
+import SimpleProductTabs from "./SimpleProductTabs";
 
 const ProductForm = ({ initData, product }) => {
   const [description, setDescription] = useState("");
   const [form] = Form.useForm();
+  const typeValue = Form.useWatch("type", form);
   const [fileList, setFileList] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [productFields] = useProductFields(
@@ -34,6 +36,10 @@ const ProductForm = ({ initData, product }) => {
       type: values?.type || null,
       categories: values?.categories || [],
       tags: values?.tags || [],
+      simple: {
+        regularPrice: values?.simpleRegularPrice,
+        salePrice: values?.simpleSalePrice,
+      },
     };
     requestSubmitForm(data, form, product);
   };
@@ -63,25 +69,6 @@ const ProductForm = ({ initData, product }) => {
       <Form.Item label="Status" name="status">
         <Select>
           {initData?.productStatus?.map((e, i) => (
-            <Select.Option value={e?.value} key={i}>
-              {e?.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-
-      <Form.Item
-        label="Type"
-        name="type"
-        rules={[
-          {
-            required: true,
-            message: "Please enter description",
-          },
-        ]}
-      >
-        <Select>
-          {initData?.productTypes?.map((e, i) => (
             <Select.Option value={e?.value} key={i}>
               {e?.name}
             </Select.Option>
@@ -180,7 +167,28 @@ const ProductForm = ({ initData, product }) => {
         </Select>
       </Form.Item>
 
-      <Form.Item wrapperCol={{ span: 14, offset: 4 }}>
+      <Form.Item
+        label="Type"
+        name="type"
+        rules={[
+          {
+            required: true,
+            message: "Please enter description",
+          },
+        ]}
+      >
+        <Select>
+          {initData?.productTypes?.map((e, i) => (
+            <Select.Option value={e?.value} key={i}>
+              {e?.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      {typeValue == 1 ? <SimpleProductTabs /> : <></>}
+
+      <Form.Item wrapperCol={{ span: 14, offset: 4 }} className="mt-6">
         <Button primary htmlType="submit">
           Submit
         </Button>

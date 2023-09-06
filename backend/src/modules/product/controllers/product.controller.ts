@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '../../auth/auth.guard';
@@ -28,8 +29,10 @@ export class ProductController {
 
   @Public()
   @Get('')
-  async get() {
-    const products = await this.productService.get();
+  async get(@Query() query: { search?: string }) {
+    const products = await this.productService.get({
+      search: query?.search,
+    });
     return new ResponseSuccess('Success', products);
   }
 

@@ -1,12 +1,13 @@
 import { Button, Col, Form, Input, Row } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 
 const SearchForm = () => {
   const [form] = Form.useForm();
-  const location = useLocation();
+  const [formFields, setFormFields] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const onFinish = (values) => {
     const query = queryString.parse(location?.search);
@@ -15,28 +16,30 @@ const SearchForm = () => {
     navigate(location);
   };
 
+  useEffect(() => {
+    const query = queryString.parse(location?.search);
+    setFormFields([
+      {
+        name: "search",
+        value: query?.search || "",
+      },
+    ]);
+  }, [location]);
+
   return (
-    <Form form={form} onFinish={onFinish}>
-      <Form.Item
-        name="search"
-        rules={[
-          {
-            required: true,
-            message: "Please enter search",
-          },
-        ]}
-      >
-        <Row>
-          <Col className="mr-3">
+    <Form form={form} onFinish={onFinish} fields={formFields}>
+      <Row>
+        <Col className="mr-3">
+          <Form.Item name="search">
             <Input placeholder="Search" />
-          </Col>
-          <Col>
-            <Button primary htmlType="submit">
-              Submit
-            </Button>
-          </Col>
-        </Row>
-      </Form.Item>
+          </Form.Item>
+        </Col>
+        <Col>
+          <Button primary htmlType="submit">
+            Submit
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
 };

@@ -1,14 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
 import { productTypes } from 'src/entities/enums/product-type.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
-import {
-  ProductStatus,
-  productStatus,
-} from 'src/entities/enums/is-active.enum';
+import { productStatus } from 'src/entities/enums/is-active.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
@@ -20,8 +17,13 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) {}
 
-  async get() {
+  async get({ search }: { search?: string }) {
+    const where: any = {};
+    if (search) {
+      where.name = Like(`%${search}%`);
+    }
     const products = await this.productRepository.find({
+      where,
       order: {
         createdAt: 'DESC',
       },
