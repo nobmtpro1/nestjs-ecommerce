@@ -9,10 +9,18 @@ import { ProductCategory } from 'src/entities/product-category.entity';
 import { ProductTagService } from './services/product-tag.service';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import { ProductTagController } from './controllers/product-tag.controller';
+import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, ProductCategory, ProductTag])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Product,
+      ProductCategory,
+      ProductTag,
+      ProductSimpleData,
+    ]),
+  ],
   controllers: [
     ProductController,
     ProductCategoryController,

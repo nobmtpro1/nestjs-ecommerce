@@ -1,4 +1,5 @@
 import { IsEmpty, IsNotEmpty, Length, MaxLength } from 'class-validator';
+import { ProductStockStatus } from 'src/entities/enums/product-stock-status';
 import { ProductType } from 'src/entities/enums/product-type.enum';
 
 export class CreateProductDto {
@@ -16,7 +17,7 @@ export class CreateProductDto {
   slug: string;
 
   @MaxLength(255)
-  shortDescription!: string;
+  shortDescription: string;
 
   description!: string;
 
@@ -27,4 +28,13 @@ export class CreateProductDto {
   categories!: string[];
 
   gallery!: string[];
+
+  simpleRegularPrice!: number;
+  simpleSalePrice!: number;
+  simpleSalePriceFrom!: Date;
+  simpleSalePriceTo!: Date;
+  simpleSku!: string;
+  simpleStock!: number;
+  simpleStockStatus!: ProductStockStatus;
+  simpleStockIndividually!: boolean;
 }

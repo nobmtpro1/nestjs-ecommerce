@@ -9,12 +9,16 @@ import { productStatus } from 'src/entities/enums/is-active.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
+import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
+import { productStockStatus } from 'src/entities/enums/product-stock-status';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
+    @InjectRepository(ProductSimpleData)
+    private productSimpleDataRepository: Repository<ProductSimpleData>,
   ) {}
 
   async get({ search }: { search?: string }) {
@@ -38,6 +42,10 @@ export class ProductService {
 
   async getProductStatus() {
     return productStatus;
+  }
+
+  async getProductStockStatus() {
+    return productStockStatus;
   }
 
   async create(body) {
@@ -75,10 +83,16 @@ export class ProductService {
     return created;
   }
 
-  async findById(id) {
+  async findById(id: string) {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: { image: true, gallery: true, categories: true, tags: true },
+      relations: {
+        image: true,
+        gallery: true,
+        categories: true,
+        tags: true,
+        simpleData: true,
+      },
     });
     return product;
   }
@@ -89,7 +103,7 @@ export class ProductService {
     product.shortDescription = body?.shortDescription;
     product.description = body?.description;
     product.type = body?.type;
-    product.slug = await this.generateSlug(body?.slug);
+    product.slug = await this.generateSlug(body?.slug, product);
 
     product.categories = body?.categories?.map((id) => ({
       ...new ProductCategory(),
@@ -106,16 +120,40 @@ export class ProductService {
     }));
 
     product.save();
-    return product;
+
+    await this.productSimpleDataRepository.upsert(
+      [
+        {
+          product: product,
+          regularPrice: body?.simpleRegularPrice || 0,
+          salePrice: body?.simpleSalePrice || 0,
+          salePriceFrom: body?.simpleSalePriceFrom || null,
+          salePriceTo: body?.simpleSalePriceTo || null,
+          sku: body?.simpleSku || null,
+          stock: body?.simpleStock || null,
+          stockStatus: body?.simpleStockStatus || null,
+          soldIndividually: body?.simpleSoldIndividually || false,
+        },
+      ],
+      ['product'],
+    );
+
+    return await this.findById(product.id);
   }
 
-  async generateSlug(inputSlug) {
+  async generateSlug(inputSlug: string, product?: Product) {
     let slug = slugify(inputSlug);
-    const product = await this.productRepository.findOne({
+    const findProduct = await this.productRepository.findOne({
       where: { slug: slug },
     });
-    if (product) {
-      slug = slug + '-' + Guid.create().toString();
+    if (findProduct) {
+      if (product) {
+        if (product.id != findProduct.id) {
+          slug = slug + '-' + Guid.create().toString();
+        }
+      } else {
+        slug = slug + '-' + Guid.create().toString();
+      }
     }
     return slug;
   }

@@ -13,6 +13,7 @@ import { Image } from './image.entity';
 import { ProductStatus } from './enums/is-active.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
+import { ProductSimpleData } from './product-simple-data.entity';
 
 @Entity()
 export class Product extends AuditEntity {
@@ -49,4 +50,10 @@ export class Product extends AuditEntity {
   @ManyToMany(() => ProductTag, (tag) => tag.products)
   @JoinTable()
   tags: ProductTag[];
+
+  @OneToOne(
+    () => ProductSimpleData,
+    (productSimpleData) => productSimpleData.product,
+  )
+  simpleData: ProductSimpleData;
 }

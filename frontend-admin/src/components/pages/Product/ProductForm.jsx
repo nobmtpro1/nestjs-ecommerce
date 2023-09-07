@@ -36,10 +36,14 @@ const ProductForm = ({ initData, product }) => {
       type: values?.type || null,
       categories: values?.categories || [],
       tags: values?.tags || [],
-      simple: {
-        regularPrice: values?.simpleRegularPrice,
-        salePrice: values?.simpleSalePrice,
-      },
+      simpleRegularPrice: values?.simpleRegularPrice,
+      simpleSalePrice: values?.simpleSalePrice,
+      simpleSalePriceFrom: values?.simpleSalePriceFrom,
+      simpleSalePriceTo: values?.simpleSalePriceTo,
+      simpleSku: values?.simpleSku,
+      simpleStock: values?.simpleStock,
+      simpleStockStatus: values?.simpleStockStatus,
+      simpleSoldIndividually: values?.simpleSoldIndividually,
     };
     requestSubmitForm(data, form, product);
   };
@@ -186,7 +190,7 @@ const ProductForm = ({ initData, product }) => {
         </Select>
       </Form.Item>
 
-      {typeValue == 1 ? <SimpleProductTabs /> : <></>}
+      {typeValue == 1 ? <SimpleProductTabs initData={initData} /> : <></>}
 
       <Form.Item wrapperCol={{ span: 14, offset: 4 }} className="mt-6">
         <Button primary htmlType="submit">

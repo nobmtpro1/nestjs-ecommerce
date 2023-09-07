@@ -102,6 +102,38 @@ export const useProductFields = (
           name: "slug",
           value: product?.slug,
         },
+        {
+          name: "simpleRegularPrice",
+          value: product?.simpleData?.regularPrice,
+        },
+        {
+          name: "simpleSalePrice",
+          value: product?.simpleData?.salePrice,
+        },
+        {
+          name: "simpleSalePriceFrom",
+          value: product?.simpleData?.salePriceFrom,
+        },
+        {
+          name: "simpleSalePriceTo",
+          value: product?.simpleData?.salePriceTo,
+        },
+        {
+          name: "simpleSku",
+          value: product?.simpleData?.sku,
+        },
+        {
+          name: "simpleStock",
+          value: product?.simpleData?.stock,
+        },
+        {
+          name: "simpleStockStatus",
+          value: product?.simpleData?.stockStatus,
+        },
+        {
+          name: "simpleSoldIndividually",
+          value: product?.simpleData?.soldIndividually,
+        },
       ];
       setProductFields(pFields);
       setDescription(product?.description);
