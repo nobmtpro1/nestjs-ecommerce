@@ -28,4 +28,12 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
+
+  @Post('refresh-token')
+  async refreshToken(@Body() body: { refresh_token: string }) {
+    const access_token = await this.authService.refreshToken(
+      body?.refresh_token,
+    );
+    return access_token;
+  }
 }

@@ -190,7 +190,11 @@ const ProductForm = ({ initData, product }) => {
         </Select>
       </Form.Item>
 
-      {typeValue == 1 ? <SimpleProductTabs initData={initData} /> : <></>}
+      {typeValue == 1 ? (
+        <SimpleProductTabs initData={initData} form={form} />
+      ) : (
+        <></>
+      )}
 
       <Form.Item wrapperCol={{ span: 14, offset: 4 }} className="mt-6">
         <Button primary htmlType="submit">

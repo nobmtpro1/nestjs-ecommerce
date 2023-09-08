@@ -7,12 +7,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import typeorm from './config/typeorm';
 import { ProductModule } from './modules/product/product.module';
 import { ImageModule } from './modules/image/image.module';
+import auth from './config/auth';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeorm],
+      load: [typeorm, auth],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

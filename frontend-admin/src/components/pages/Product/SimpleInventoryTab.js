@@ -1,9 +1,8 @@
 import { Checkbox, Input, Form, Select } from "antd";
 import React, { useState } from "react";
 
-const SimpleInventoryTab = ({ initData }) => {
-  const [simpleSoldIndividuallyValue, setSimpleSoldIndividuallyValue] =
-    useState(false);
+const SimpleInventoryTab = ({ initData, form }) => {
+  console.log(form);
 
   return (
     <>
@@ -23,9 +22,13 @@ const SimpleInventoryTab = ({ initData }) => {
         </Select>
       </Form.Item>
       <Form.Item label="Sold individually" name="simpleSoldIndividually">
-        <Input value={simpleSoldIndividuallyValue} />
         <Checkbox
-          onChange={(e) => setSimpleSoldIndividuallyValue(e?.target?.checked)}
+          defaultChecked={form?.getFieldValue("simpleSoldIndividually")}
+          onChange={(e) =>
+            form.setFieldsValue({
+              simpleSoldIndividually: e?.target?.checked,
+            })
+          }
         >
           Limit purchases to 1 item per order
         </Checkbox>
