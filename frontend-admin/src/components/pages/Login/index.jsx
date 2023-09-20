@@ -6,6 +6,7 @@ import { ROUTE_DASHBOARD } from "../../../constants/routes";
 import { useSelector } from "react-redux";
 import { API_LOGIN } from "../../../constants/api";
 import { LOCAL_STORAGE_ACCOUNT } from "../../../constants/localstorage";
+import { handleLoginSuccess } from "ultils/helper";
 
 const Login = () => {
   const account = useSelector((state) => state?.account?.account);
@@ -24,8 +25,7 @@ const Login = () => {
           alert(res?.data?.message);
           return;
         }
-        localStorage.setItem(LOCAL_STORAGE_ACCOUNT, JSON.stringify(res?.data));
-        window.location.href = window.location.href;
+        handleLoginSuccess(res?.data);
       })
       .catch((err) => console.log(err));
   };

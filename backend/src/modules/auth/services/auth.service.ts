@@ -38,10 +38,34 @@ export class AuthService {
     };
   }
 
-  async refreshToken(refresh_token: string): Promise<any> {
-    const payload = await this.jwtService.verifyAsync(refresh_token, {
-      secret: this.configService.get('auth.JWT_REFRESH_TOKEN_SECRET'),
-    });
-    return payload;
+  async refreshToken(refreshToken: string, token: string): Promise<any> {
+    try {
+      const payloadToken = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('auth.JWT_ACCESS_TOKEN_SECRET'),
+        ignoreExpiration: true,
+      });
+
+      const payloadRefreshToken = await this.jwtService.verifyAsync(
+        refreshToken,
+        {
+          secret: this.configService.get('auth.JWT_REFRESH_TOKEN_SECRET'),
+        },
+      );
+
+      if (payloadToken?.id == payloadRefreshToken?.id) {
+        const payload = {
+          id: payloadRefreshToken.id,
+          email: payloadRefreshToken.email,
+        };
+        return {
+          ...payload,
+          access_token: await this.jwtService.signAsync(payload),
+          refresh_token: refreshToken,
+        };
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   }
 }

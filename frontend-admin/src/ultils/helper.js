@@ -10,6 +10,11 @@ export const logout = () => {
   window.location.href = ROUTE_LOGIN;
 };
 
+export const handleLoginSuccess = (data) => {
+  localStorage.setItem(LOCAL_STORAGE_ACCOUNT, JSON.stringify(data));
+  window.location.href = window.location.href;
+};
+
 export const generateImageUrl = (src) => {
   return `${API_URL}/${src}`;
 };
