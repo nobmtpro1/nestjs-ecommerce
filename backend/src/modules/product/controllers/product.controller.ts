@@ -62,7 +62,10 @@ export class ProductController {
   @Public()
   @Get(':id')
   async findById(@Param('id') id) {
-    const product = await this.productService.findById(id);
+    let product = await this.productService.findById(id);
+    if (!product) {
+      product = await this.productService.findBySlug(id);
+    }
     return new ResponseSuccess('Success', product);
   }
 

@@ -31,7 +31,7 @@ export class ProductService {
       order: {
         createdAt: 'DESC',
       },
-      relations: { image: true },
+      relations: { image: true, simpleData: true },
     });
     return products;
   }
@@ -80,12 +80,38 @@ export class ProductService {
     const created = await this.productRepository.save(product, {
       reload: true,
     });
+
+    let simpleData = new ProductSimpleData();
+    simpleData.product = product;
+    simpleData.regularPrice = body?.simpleRegularPrice || 0;
+    simpleData.salePrice = body?.simpleSalePrice || 0;
+    simpleData.salePriceFrom = body?.simpleSalePriceFrom || null;
+    simpleData.salePriceTo = body?.simpleSalePriceTo || null;
+    simpleData.sku = body?.simpleSku || null;
+    simpleData.stock = body?.simpleStock || null;
+    simpleData.stockStatus = body?.simpleStockStatus || '';
+    simpleData.soldIndividually = body?.simpleSoldIndividually || false;
+    simpleData.save();
     return created;
   }
 
   async findById(id: string) {
     const product = await this.productRepository.findOne({
       where: { id },
+      relations: {
+        image: true,
+        gallery: true,
+        categories: true,
+        tags: true,
+        simpleData: true,
+      },
+    });
+    return product;
+  }
+
+  async findBySlug(slug: string) {
+    const product = await this.productRepository.findOne({
+      where: { slug },
       relations: {
         image: true,
         gallery: true,
@@ -121,28 +147,28 @@ export class ProductService {
 
     product.save();
 
-    await this.productSimpleDataRepository.upsert(
-      [
-        {
-          product: product,
-          regularPrice: body?.simpleRegularPrice || 0,
-          salePrice: body?.simpleSalePrice || 0,
-          salePriceFrom: body?.simpleSalePriceFrom || null,
-          salePriceTo: body?.simpleSalePriceTo || null,
-          sku: body?.simpleSku || null,
-          stock: body?.simpleStock || null,
-          stockStatus: body?.simpleStockStatus || null,
-          soldIndividually: body?.simpleSoldIndividually || false,
-        },
-      ],
-      ['product'],
-    );
+    let simpleData = new ProductSimpleData();
+    simpleData.product = product;
+    if (product.simpleData) {
+      simpleData = await this.productSimpleDataRepository.findOne({
+        where: { id: product.simpleData.id },
+      });
+    }
+    simpleData.regularPrice = body?.simpleRegularPrice || 0;
+    simpleData.salePrice = body?.simpleSalePrice || 0;
+    simpleData.salePriceFrom = body?.simpleSalePriceFrom || null;
+    simpleData.salePriceTo = body?.simpleSalePriceTo || null;
+    simpleData.sku = body?.simpleSku || null;
+    simpleData.stock = body?.simpleStock || null;
+    simpleData.stockStatus = body?.simpleStockStatus || '';
+    simpleData.soldIndividually = body?.simpleSoldIndividually || false;
+    simpleData.save();
 
     return await this.findById(product.id);
   }
 
   async generateSlug(inputSlug: string, product?: Product) {
-    let slug = slugify(inputSlug);
+    let slug = slugify(inputSlug.toLowerCase());
     const findProduct = await this.productRepository.findOne({
       where: { slug: slug },
     });

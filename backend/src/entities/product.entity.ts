@@ -26,7 +26,7 @@ export class Product extends AuditEntity {
   @Column('longtext')
   description: string;
 
-  @Column('int', { default: ProductType.SIMPLE })
+  @Column('varchar', { default: ProductType.SIMPLE })
   type: ProductType;
 
   @OneToOne(() => Image)

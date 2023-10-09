@@ -9,6 +9,7 @@ import {
   useProductFields,
 } from "./helpers";
 import SimpleProductTabs from "./SimpleProductTabs";
+import { PRODUCT_TYPE_SIMPLE } from "constants/config";
 
 const ProductForm = ({ initData, product }) => {
   const [description, setDescription] = useState("");
@@ -190,7 +191,7 @@ const ProductForm = ({ initData, product }) => {
         </Select>
       </Form.Item>
 
-      {typeValue == 1 ? (
+      {typeValue == PRODUCT_TYPE_SIMPLE ? (
         <SimpleProductTabs initData={initData} form={form} />
       ) : (
         <></>

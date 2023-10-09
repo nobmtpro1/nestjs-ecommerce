@@ -30,6 +30,7 @@ export const uploadImages = async (images) => {
   console.log("uploadImages");
   const formData = new FormData();
   images.forEach((image) => {
+    console.log(image?.originFileObj);
     formData.append("images", image?.originFileObj);
   });
 

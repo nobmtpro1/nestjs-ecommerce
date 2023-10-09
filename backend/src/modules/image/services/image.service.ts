@@ -12,6 +12,7 @@ export class ImageService {
   ) {}
 
   async create(file) {
+    console.log(file);
     if (file) {
       const image = this.imageRepository.create({
         src: generateFilePath(file),

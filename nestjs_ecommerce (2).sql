@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 20, 2023 lúc 04:46 AM
+-- Thời gian đã tạo: Th10 09, 2023 lúc 04:52 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -41,7 +41,10 @@ CREATE TABLE `image` (
 INSERT INTO `image` (`id`, `createdAt`, `updatedAt`, `src`) VALUES
 ('171b11f6-0a87-4bcb-bfec-d350e2d12e04', '2023-09-04 07:28:33.026703', '2023-09-04 07:28:33.026703', 'public/uploads/5e2f6819-5e6b-31fd-1c68-2c722ea10725.jpg'),
 ('2a4d515e-f713-4ee2-ba94-919a80756167', '2023-09-04 07:28:35.245869', '2023-09-04 07:28:35.245869', 'public/uploads/bc606e69-d499-8719-b2a9-65ef9cf28929.jpg'),
+('3380863d-e3be-4d61-846a-a166bb13aca4', '2023-10-09 02:13:48.521300', '2023-10-09 02:13:48.521300', 'public/uploads/af250975-593d-20ba-a11f-f8eca2f4240a.png'),
 ('3ed84332-2b0a-4231-88e9-396d4b970972', '2023-09-04 07:28:30.569549', '2023-09-04 07:28:30.569549', 'public/uploads/833f0fbf-dde6-4e7d-dab6-81f2c400419a.jpg'),
+('64fb310b-7fc2-4a0e-9fc9-5c919b771b0a', '2023-10-09 02:18:23.220728', '2023-10-09 02:18:23.220728', 'public/uploads/ce015121-2e9d-37f5-c999-adef63bfaa00.png'),
+('7c783216-3ad0-49e5-bdd2-2140607b104d', '2023-10-09 02:18:54.523034', '2023-10-09 02:18:54.523034', 'public/uploads/dbde95f4-1ee6-b827-153a-21bebfe5e6a3.jpg'),
 ('7cc057d0-ce49-45d6-9d51-8f4f7e5cb43f', '2023-09-05 01:22:49.757553', '2023-09-05 01:22:49.757553', 'public/uploads/9069a4fd-3e52-fadc-2d19-a98dc3ccb020.jpg'),
 ('8c79545c-4a7a-4e9c-b845-fc7882bf9e03', '2023-09-05 02:21:44.256522', '2023-09-05 02:21:44.256522', 'public/uploads/6aa40678-bff6-a0be-f01f-ff95a18e7373.jpg'),
 ('e563eda5-14a2-44ca-81c4-a192e9234198', '2023-09-05 01:22:56.750115', '2023-09-05 01:22:56.750115', 'public/uploads/1fe2d505-5fb5-d285-c405-568f79726a5b.jpg'),
@@ -72,7 +75,8 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (6, 1694049639311, 'CreateProductSimpleTable1694049639311'),
 (7, 1694049966318, 'CreateProductSimpleTable1694049966318'),
 (8, 1694050147691, 'CreateProductSimpleTable1694050147691'),
-(9, 1694052983018, 'CreateProductSimpleTable1694052983018');
+(9, 1694052983018, 'CreateProductSimpleTable1694052983018'),
+(10, 1696661961388, 'UpdateProduct1696661961388');
 
 -- --------------------------------------------------------
 
@@ -87,19 +91,20 @@ CREATE TABLE `product` (
   `name` varchar(255) NOT NULL,
   `shortDescription` varchar(1000) NOT NULL,
   `description` longtext NOT NULL,
-  `type` int(11) NOT NULL DEFAULT 1,
   `status` int(11) NOT NULL DEFAULT 1,
   `slug` varchar(1000) NOT NULL,
-  `imageId` varchar(36) DEFAULT NULL
+  `imageId` varchar(36) DEFAULT NULL,
+  `type` varchar(255) NOT NULL DEFAULT 'simpleData'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`id`, `createdAt`, `updatedAt`, `name`, `shortDescription`, `description`, `type`, `status`, `slug`, `imageId`) VALUES
-('1a004b3e-1380-4a51-b222-86d89a929aa0', '2023-09-04 07:28:43.251522', '2023-09-07 02:39:46.000000', 'Product 1', 'abc123', '<p>zxc</p><p><img src=\"http://localhost:8000/public/uploads/1fe2d505-5fb5-d285-c405-568f79726a5b.jpg\"></p>', 1, 1, 'Product-1', '3ed84332-2b0a-4231-88e9-396d4b970972'),
-('7fcd6030-122a-4610-b137-13b20ba9b153', '2023-09-05 02:21:47.158304', '2023-09-06 02:42:21.000000', 'Product 2', '', '', 1, 1, 'product-2-bd028705-5a70-c0ea-45ee-5ca42123045e-f3b71b1c-a633-2875-5560-d41522944796', '8c79545c-4a7a-4e9c-b845-fc7882bf9e03');
+INSERT INTO `product` (`id`, `createdAt`, `updatedAt`, `name`, `shortDescription`, `description`, `status`, `slug`, `imageId`, `type`) VALUES
+('1a004b3e-1380-4a51-b222-86d89a929aa0', '2023-09-04 07:28:43.251522', '2023-09-07 02:39:46.000000', 'Product 1', 'abc123', '<p>zxc</p><p><img src=\"http://localhost:8000/public/uploads/1fe2d505-5fb5-d285-c405-568f79726a5b.jpg\"></p>', 1, 'Product-1', '3ed84332-2b0a-4231-88e9-396d4b970972', 'simpleData'),
+('31aabdfa-636f-4eba-8922-7cf887472478', '2023-10-09 02:19:23.353233', '2023-10-09 02:51:33.000000', 'Product 3', 'Routes with parameters should be declared after any static paths. This prevents the parameterized paths from intercepting traffic destined for the static paths.\n', '<blockquote>Routes with parameters should be declared after any static paths. This prevents the parameterized paths from intercepting traffic destined for the static paths.</blockquote><p><br></p><p><br></p>', 1, 'product-3', '7c783216-3ad0-49e5-bdd2-2140607b104d', 'simpleData'),
+('7fcd6030-122a-4610-b137-13b20ba9b153', '2023-09-05 02:21:47.158304', '2023-10-09 01:38:06.000000', 'Product 2', 'Routes with static paths won\'t work when you need to accept dynamic data as part of the request (e.g., GET /cats/1 to get cat with id 1). In order to define routes with parameters, we can add route parameter tokens in the path of', '<p>Routes with static paths won\'t work when you need to accept&nbsp;dynamic data&nbsp;as part of the request (e.g.,&nbsp;GET /cats/1&nbsp;to get cat with id&nbsp;1). In order to define routes with parameters, we can add route parameter&nbsp;tokens&nbsp;in the path of the route to capture the dynamic value at that position in the request URL. The route parameter token in the&nbsp;@Get()&nbsp;decorator example below demonstrates this usage. Route parameters declared in this way can be accessed using the&nbsp;@Param()&nbsp;decorator, which should be added to the method signature.</p><p><br></p>', 1, 'product-2-bd028705-5a70-c0ea-45ee-5ca42123045e-f3b71b1c-a633-2875-5560-d41522944796', '8c79545c-4a7a-4e9c-b845-fc7882bf9e03', 'simpleData');
 
 -- --------------------------------------------------------
 
@@ -118,6 +123,7 @@ CREATE TABLE `product_categories_product_category` (
 
 INSERT INTO `product_categories_product_category` (`productId`, `productCategoryId`) VALUES
 ('1a004b3e-1380-4a51-b222-86d89a929aa0', '0b58a4c6-4af5-11ee-b901-00155dc41d3f'),
+('31aabdfa-636f-4eba-8922-7cf887472478', '0b58a4c6-4af5-11ee-b901-00155dc41d3f'),
 ('7fcd6030-122a-4610-b137-13b20ba9b153', '0b58a4c6-4af5-11ee-b901-00155dc41d3f');
 
 -- --------------------------------------------------------
@@ -189,7 +195,11 @@ CREATE TABLE `product_simple_data` (
 --
 
 INSERT INTO `product_simple_data` (`id`, `createdAt`, `updatedAt`, `regularPrice`, `salePrice`, `salePriceFrom`, `salePriceTo`, `productId`, `sku`, `stock`, `stockStatus`, `soldIndividually`) VALUES
-('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-09-08 01:34:32.926229', 40000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'UGHGHJ', 10, 1, 1);
+('4479ea32-f21c-4cc9-85da-5d54b05d7e44', '2023-10-09 02:19:23.372968', '2023-10-09 02:19:38.000000', 200000, 0, NULL, NULL, '31aabdfa-636f-4eba-8922-7cf887472478', NULL, NULL, 1, 0),
+('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-09-08 01:34:32.926229', 40000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'UGHGHJ', 10, 1, 1),
+('60f2208e-8895-4167-b3fd-1a9632c75bbd', '2023-10-09 01:37:12.647504', '2023-10-09 01:37:12.000000', 100000, 90000, NULL, '2023-11-05', NULL, 'UJJK', 100, 1, 0),
+('720770db-e052-4698-9603-2d5dc80a90cf', '2023-10-09 01:38:22.320204', '2023-10-09 01:38:22.000000', 0, 0, NULL, NULL, NULL, NULL, NULL, 1, 0),
+('7c420170-cf4a-406c-8d32-60a83b9ef92f', '2023-10-09 01:53:30.827940', '2023-10-09 01:59:57.000000', 100000, 90000, NULL, '2023-11-03', '7fcd6030-122a-4610-b137-13b20ba9b153', NULL, NULL, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -228,7 +238,9 @@ CREATE TABLE `product_tags_product_tag` (
 --
 
 INSERT INTO `product_tags_product_tag` (`productId`, `productTagId`) VALUES
-('1a004b3e-1380-4a51-b222-86d89a929aa0', 'be492c70-4afb-11ee-b901-00155dc41d3f');
+('1a004b3e-1380-4a51-b222-86d89a929aa0', 'be492c70-4afb-11ee-b901-00155dc41d3f'),
+('31aabdfa-636f-4eba-8922-7cf887472478', 'be492c70-4afb-11ee-b901-00155dc41d3f'),
+('7fcd6030-122a-4610-b137-13b20ba9b153', 'be490d08-4afb-11ee-b901-00155dc41d3f');
 
 -- --------------------------------------------------------
 
@@ -338,7 +350,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
