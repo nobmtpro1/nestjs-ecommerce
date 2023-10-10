@@ -14,6 +14,8 @@ import { ProductStatus } from './enums/is-active.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
 import { ProductSimpleData } from './product-simple-data.entity';
+import { ProductAttribute } from './product-attribute.entity';
+import { ProductAttributeValue } from './product-attribute-value.entity';
 
 @Entity()
 export class Product extends AuditEntity {
@@ -50,6 +52,17 @@ export class Product extends AuditEntity {
   @ManyToMany(() => ProductTag, (tag) => tag.products)
   @JoinTable()
   tags: ProductTag[];
+
+  @ManyToMany(() => ProductAttribute, (attribute) => attribute.products)
+  @JoinTable()
+  attributes: ProductAttribute[];
+
+  @ManyToMany(
+    () => ProductAttributeValue,
+    (attributeValue) => attributeValue.products,
+  )
+  @JoinTable()
+  attributeValues: ProductAttributeValue[];
 
   @OneToOne(
     () => ProductSimpleData,

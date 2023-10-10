@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { ROUTE_DASHBOARD, ROUTE_PRODUCT } from "../../../constants/routes";
+import {
+  ROUTE_DASHBOARD,
+  ROUTE_PRODUCT,
+  ROUTE_PRODUCT_ATTRIBUTE,
+} from "../../../constants/routes";
 import Sider from "antd/es/layout/Sider";
 import { Col, Menu, Row } from "antd";
 import { PieChartOutlined } from "@ant-design/icons";
@@ -42,6 +46,15 @@ const Sidebar = () => {
           key: ROUTE_PRODUCT,
           icon: (
             <Link to={ROUTE_PRODUCT}>
+              <PieChartOutlined />
+            </Link>
+          ),
+        },
+        {
+          label: "Attribute",
+          key: ROUTE_PRODUCT_ATTRIBUTE,
+          icon: (
+            <Link to={ROUTE_PRODUCT_ATTRIBUTE}>
               <PieChartOutlined />
             </Link>
           ),

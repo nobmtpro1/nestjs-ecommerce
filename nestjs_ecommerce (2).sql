@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 09, 2023 lúc 04:52 AM
+-- Thời gian đã tạo: Th10 10, 2023 lúc 05:02 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -76,7 +76,9 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (7, 1694049966318, 'CreateProductSimpleTable1694049966318'),
 (8, 1694050147691, 'CreateProductSimpleTable1694050147691'),
 (9, 1694052983018, 'CreateProductSimpleTable1694052983018'),
-(10, 1696661961388, 'UpdateProduct1696661961388');
+(10, 1696661961388, 'UpdateProduct1696661961388'),
+(11, 1696903304329, 'ProductAttribute1696903304329'),
+(12, 1696906625884, 'ProductAttribute1696906625884');
 
 -- --------------------------------------------------------
 
@@ -105,6 +107,66 @@ INSERT INTO `product` (`id`, `createdAt`, `updatedAt`, `name`, `shortDescription
 ('1a004b3e-1380-4a51-b222-86d89a929aa0', '2023-09-04 07:28:43.251522', '2023-09-07 02:39:46.000000', 'Product 1', 'abc123', '<p>zxc</p><p><img src=\"http://localhost:8000/public/uploads/1fe2d505-5fb5-d285-c405-568f79726a5b.jpg\"></p>', 1, 'Product-1', '3ed84332-2b0a-4231-88e9-396d4b970972', 'simpleData'),
 ('31aabdfa-636f-4eba-8922-7cf887472478', '2023-10-09 02:19:23.353233', '2023-10-09 02:51:33.000000', 'Product 3', 'Routes with parameters should be declared after any static paths. This prevents the parameterized paths from intercepting traffic destined for the static paths.\n', '<blockquote>Routes with parameters should be declared after any static paths. This prevents the parameterized paths from intercepting traffic destined for the static paths.</blockquote><p><br></p><p><br></p>', 1, 'product-3', '7c783216-3ad0-49e5-bdd2-2140607b104d', 'simpleData'),
 ('7fcd6030-122a-4610-b137-13b20ba9b153', '2023-09-05 02:21:47.158304', '2023-10-09 01:38:06.000000', 'Product 2', 'Routes with static paths won\'t work when you need to accept dynamic data as part of the request (e.g., GET /cats/1 to get cat with id 1). In order to define routes with parameters, we can add route parameter tokens in the path of', '<p>Routes with static paths won\'t work when you need to accept&nbsp;dynamic data&nbsp;as part of the request (e.g.,&nbsp;GET /cats/1&nbsp;to get cat with id&nbsp;1). In order to define routes with parameters, we can add route parameter&nbsp;tokens&nbsp;in the path of the route to capture the dynamic value at that position in the request URL. The route parameter token in the&nbsp;@Get()&nbsp;decorator example below demonstrates this usage. Route parameters declared in this way can be accessed using the&nbsp;@Param()&nbsp;decorator, which should be added to the method signature.</p><p><br></p>', 1, 'product-2-bd028705-5a70-c0ea-45ee-5ca42123045e-f3b71b1c-a633-2875-5560-d41522944796', '8c79545c-4a7a-4e9c-b845-fc7882bf9e03', 'simpleData');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_attribute`
+--
+
+CREATE TABLE `product_attribute` (
+  `id` varchar(36) NOT NULL,
+  `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
+  `updatedAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_attribute`
+--
+
+INSERT INTO `product_attribute` (`id`, `createdAt`, `updatedAt`, `name`) VALUES
+('46bd7303-2f85-4ee0-a156-05a94550e9e0', '2023-10-10 02:47:02.498554', '2023-10-10 02:47:02.498554', 'size'),
+('7348098b-6714-11ee-87e0-00155df32b26', '2023-10-10 02:26:51.000000', '2023-10-09 17:00:00.000000', 'Color'),
+('9b5b3385-4427-4f9c-9886-8c9824a8a530', '2023-10-10 03:02:19.618698', '2023-10-10 03:02:19.618698', 'type');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_attributes_product_attribute`
+--
+
+CREATE TABLE `product_attributes_product_attribute` (
+  `productId` varchar(36) NOT NULL,
+  `productAttributeId` varchar(36) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_attribute_value`
+--
+
+CREATE TABLE `product_attribute_value` (
+  `id` varchar(36) NOT NULL,
+  `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
+  `updatedAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+  `name` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `imageId` varchar(36) DEFAULT NULL,
+  `productAttributeId` varchar(36) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_attribute_values_product_attribute_value`
+--
+
+CREATE TABLE `product_attribute_values_product_attribute_value` (
+  `productId` varchar(36) NOT NULL,
+  `productAttributeValueId` varchar(36) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -289,6 +351,37 @@ ALTER TABLE `product`
   ADD UNIQUE KEY `IDX_8cfaf4a1e80806d58e3dbe6922` (`slug`) USING HASH;
 
 --
+-- Chỉ mục cho bảng `product_attribute`
+--
+ALTER TABLE `product_attribute`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `IDX_05d080e931ec850c1e0219ee11` (`name`);
+
+--
+-- Chỉ mục cho bảng `product_attributes_product_attribute`
+--
+ALTER TABLE `product_attributes_product_attribute`
+  ADD PRIMARY KEY (`productId`,`productAttributeId`),
+  ADD KEY `IDX_7964cd4f4ca09fb6f47d22340b` (`productId`),
+  ADD KEY `IDX_05b26932792a848cf9f0e51b73` (`productAttributeId`);
+
+--
+-- Chỉ mục cho bảng `product_attribute_value`
+--
+ALTER TABLE `product_attribute_value`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `REL_ff7b9c5d9302d5313d43d799d3` (`imageId`),
+  ADD KEY `FK_c711bba5afd50a326a70865bfa3` (`productAttributeId`);
+
+--
+-- Chỉ mục cho bảng `product_attribute_values_product_attribute_value`
+--
+ALTER TABLE `product_attribute_values_product_attribute_value`
+  ADD PRIMARY KEY (`productId`,`productAttributeValueId`),
+  ADD KEY `IDX_573f646ac2842c8b5999d67256` (`productId`),
+  ADD KEY `IDX_db187d3b365a3418f5fb4f9e8f` (`productAttributeValueId`);
+
+--
 -- Chỉ mục cho bảng `product_categories_product_category`
 --
 ALTER TABLE `product_categories_product_category`
@@ -350,7 +443,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -361,6 +454,27 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `FK_b1b332c0f436897f21a960f26c7` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Các ràng buộc cho bảng `product_attributes_product_attribute`
+--
+ALTER TABLE `product_attributes_product_attribute`
+  ADD CONSTRAINT `FK_05b26932792a848cf9f0e51b736` FOREIGN KEY (`productAttributeId`) REFERENCES `product_attribute` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_7964cd4f4ca09fb6f47d22340bb` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `product_attribute_value`
+--
+ALTER TABLE `product_attribute_value`
+  ADD CONSTRAINT `FK_c711bba5afd50a326a70865bfa3` FOREIGN KEY (`productAttributeId`) REFERENCES `product_attribute` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ff7b9c5d9302d5313d43d799d33` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Các ràng buộc cho bảng `product_attribute_values_product_attribute_value`
+--
+ALTER TABLE `product_attribute_values_product_attribute_value`
+  ADD CONSTRAINT `FK_573f646ac2842c8b5999d67256b` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_db187d3b365a3418f5fb4f9e8f8` FOREIGN KEY (`productAttributeValueId`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Các ràng buộc cho bảng `product_categories_product_category`
