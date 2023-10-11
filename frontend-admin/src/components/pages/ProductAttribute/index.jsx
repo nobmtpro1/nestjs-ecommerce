@@ -9,6 +9,7 @@ import LayoutContent from "components/common/LayoutContent";
 import { toast } from "react-toastify";
 import ProductAttributeAdd from "./add";
 import ProductAttributeEdit from "./edit";
+import ProductAttributeEditValues from "./EditValues";
 
 const ProductAttribute = () => {
   const [data, setData] = useState([]);
@@ -45,6 +46,11 @@ const ProductAttribute = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+          <Link
+            to={ROUTE_PRODUCT_ATTRIBUTE + "?action=editValues&id=" + record?.id}
+          >
+            Edit values
+          </Link>
           <Link to={ROUTE_PRODUCT_ATTRIBUTE + "?action=edit&id=" + record?.id}>
             Edit
           </Link>
@@ -76,6 +82,8 @@ const ProductAttribute = () => {
           <ProductAttributeAdd />
         ) : searchParams.get("action") == "edit" ? (
           <ProductAttributeEdit />
+        ) : searchParams.get("action") == "editValues" ? (
+          <ProductAttributeEditValues />
         ) : (
           <>
             <Row className="mb-5">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 10, 2023 lúc 05:02 AM
+-- Thời gian đã tạo: Th10 11, 2023 lúc 04:52 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -156,6 +156,14 @@ CREATE TABLE `product_attribute_value` (
   `imageId` varchar(36) DEFAULT NULL,
   `productAttributeId` varchar(36) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_attribute_value`
+--
+
+INSERT INTO `product_attribute_value` (`id`, `createdAt`, `updatedAt`, `name`, `description`, `imageId`, `productAttributeId`) VALUES
+('ffb713f4-67df-11ee-bfd9-00155d3c9f4c', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 'red', '', NULL, '9b5b3385-4427-4f9c-9886-8c9824a8a530'),
+('ffb7297c-67df-11ee-bfd9-00155d3c9f4c', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 'black', '', NULL, '9b5b3385-4427-4f9c-9886-8c9824a8a530');
 
 -- --------------------------------------------------------
 

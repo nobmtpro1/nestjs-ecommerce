@@ -22,6 +22,9 @@ export class ProductAttributeService {
   async findById(id: string) {
     const productAttribute = await this.productAttributeRepository.findOne({
       where: { id },
+      relations: {
+        productAttributeValues: true,
+      },
     });
     return productAttribute;
   }
