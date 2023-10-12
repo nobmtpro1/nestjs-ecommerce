@@ -2,12 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';
+import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
+import {
+  CreateProductAttributeValueDto,
+  UpdateProductAttributeValueDto,
+} from '../dtos/product-attribute-value.dto';
 
 @Injectable()
 export class ProductAttributeService {
   constructor(
     @InjectRepository(ProductAttribute)
     private productAttributeRepository: Repository<ProductAttribute>,
+    @InjectRepository(ProductAttributeValue)
+    private productAttributeValueRepository: Repository<ProductAttributeValue>,
   ) {}
 
   async all() {
@@ -46,5 +53,44 @@ export class ProductAttributeService {
     productAttribute.name = body?.name;
     productAttribute.save();
     return await this.findById(productAttribute.id);
+  }
+
+  async createAttributeValue(
+    body: CreateProductAttributeValueDto,
+    attribute: ProductAttribute,
+  ) {
+    const productAttributeValue = this.productAttributeValueRepository.create({
+      name: body?.name?.toLowerCase(),
+      productAttribute: attribute,
+    });
+    const created = await this.productAttributeValueRepository.save(
+      productAttributeValue,
+      {
+        reload: true,
+      },
+    );
+    return created;
+  }
+
+  async findAttributeValueById(id: string) {
+    const productAttributeValue =
+      await this.productAttributeValueRepository.findOne({
+        where: { id },
+      });
+    return productAttributeValue;
+  }
+
+  async updateAttributeValue(
+    attributeValue: ProductAttributeValue,
+    body: UpdateProductAttributeValueDto,
+  ) {
+    attributeValue.name = body?.name;
+    attributeValue.save();
+    return await this.findById(attributeValue.id);
+  }
+
+  async deleteAttributeValue(attributeValue: ProductAttributeValue) {
+    await attributeValue.remove();
+    return attributeValue;
   }
 }

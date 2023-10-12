@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -13,7 +15,12 @@ import { Public } from 'src/commons/decorators';
 import { ProductAttributeService } from '../services/product-attribute.service';
 import { CreateProductAttributeDto } from '../dtos/create-product-attribute.dto';
 import { GetProductAttributeValuesDto } from '../dtos/get-product-attribute-values.dto';
-import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  CreateProductAttributeValueDto,
+  DeleteProductAttributeValueDto,
+  UpdateProductAttributeValueDto,
+} from '../dtos/product-attribute-value.dto';
 
 @UseGuards(AuthGuard)
 @Controller('product-attribute')
@@ -68,5 +75,62 @@ export class ProductAttributeController {
       return new ResponseError('Not found', 404);
     }
     return new ResponseSuccess('Success', attribute);
+  }
+
+  @Post('values')
+  async createAttributeValue(@Body() body: CreateProductAttributeValueDto) {
+    try {
+      const attribute = await this.productAttributeService.findById(
+        body?.attributeId,
+      );
+      if (!attribute) {
+        return new ResponseError('Not found', 404);
+      }
+      const productAttributeValue =
+        await this.productAttributeService.createAttributeValue(
+          body,
+          attribute,
+        );
+      return new ResponseSuccess('Success', productAttributeValue);
+    } catch (error) {
+      return new ResponseError(error?.message, 400);
+    }
+  }
+
+  @Put('values')
+  async updateAttributeValue(@Body() body: UpdateProductAttributeValueDto) {
+    try {
+      const attributeValue =
+        await this.productAttributeService.findAttributeValueById(body?.id);
+      if (!attributeValue) {
+        return new ResponseError('Not found', 404);
+      }
+      const updated = await this.productAttributeService.updateAttributeValue(
+        attributeValue,
+        body,
+      );
+      return new ResponseSuccess('Success', updated);
+    } catch (error) {
+      return new ResponseError(error?.message, 400);
+    }
+  }
+
+  @Delete('values')
+  async deleteAttributeValue(@Body() body: DeleteProductAttributeValueDto) {
+    try {
+      const attributeValue =
+        await this.productAttributeService.findAttributeValueById(body?.id);
+      console.log(body);
+      console.log(attributeValue);
+      if (!attributeValue) {
+        return new ResponseError('Not found', 404);
+      }
+      const deleted = await this.productAttributeService.deleteAttributeValue(
+        attributeValue,
+      );
+      return new ResponseSuccess('Success', deleted);
+    } catch (error) {
+      return new ResponseError(error?.message, 400);
+    }
   }
 }
