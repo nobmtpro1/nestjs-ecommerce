@@ -3,7 +3,7 @@ import { AuthGuard } from '../../auth/auth.guard';
 import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
 import { Public } from 'src/commons/decorators';
 import { ProductTagService } from '../services/product-tag.service';
-import { CreateProductTagDto } from '../dtos/create-product-tag.dto';
+import { CreateProductTagDto } from '../dtos/product-tag.dto';
 
 @UseGuards(AuthGuard)
 @Controller('product-tag')

@@ -63,8 +63,12 @@ const ProductAttribute = () => {
   const handleDelete = (id) => {
     if (confirm("Are you sure?")) {
       axios.delete(API_PRODUCT_ATTRIBUTE, { data: { id } }).then((res) => {
-        toast.success("Delete success");
-        setData((prev) => prev?.filter((x) => x?.id != id));
+        if (res?.data?.success) {
+          toast.success("Delete success");
+          setData((prev) => prev?.filter((x) => x?.id != id));
+        } else {
+          toast.error(res?.data?.message);
+        }
       });
     }
   };

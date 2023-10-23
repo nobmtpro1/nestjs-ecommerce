@@ -7,6 +7,7 @@ import {
   CreateProductAttributeValueDto,
   UpdateProductAttributeValueDto,
 } from '../dtos/product-attribute-value.dto';
+import { UpdateProductAttributeDto } from '../dtos/product-attribute.dto';
 
 @Injectable()
 export class ProductAttributeService {
@@ -49,10 +50,18 @@ export class ProductAttributeService {
     return created;
   }
 
-  async update(productAttribute, body) {
-    productAttribute.name = body?.name;
+  async update(
+    productAttribute: ProductAttribute,
+    body: UpdateProductAttributeDto,
+  ) {
+    productAttribute.name = body?.name?.toLowerCase();
     productAttribute.save();
     return await this.findById(productAttribute.id);
+  }
+
+  async delete(attribute: ProductAttribute) {
+    await attribute.remove();
+    return attribute;
   }
 
   async createAttributeValue(

@@ -40,4 +40,16 @@ export class ProductSimpleData extends AuditEntity {
 
   @Column('boolean', { default: false })
   soldIndividually: Boolean;
+
+  @Column('float', { nullable: true, default: null })
+  weight: number;
+
+  @Column('float', { nullable: true, default: null })
+  length: number;
+
+  @Column('float', { nullable: true, default: null })
+  width: number;
+
+  @Column('float', { nullable: true, default: null })
+  height: number;
 }

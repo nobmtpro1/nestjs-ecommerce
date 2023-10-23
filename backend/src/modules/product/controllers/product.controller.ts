@@ -11,12 +11,15 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '../../auth/auth.guard';
 import { ProductService } from '../services/product.service';
-import { CreateProductDto } from '../dtos/create-product.dto';
+import {
+  CreateProductDto,
+  DeleteProductDto,
+  UpdateProductDto,
+} from '../dtos/product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
 import { Public } from 'src/commons/decorators';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
-import { DeleteProductDto } from '../dtos/delete-product.dto';
 
 @UseGuards(AuthGuard)
 @Controller('product')
@@ -70,13 +73,17 @@ export class ProductController {
   }
 
   @Put('')
-  async update(@Body() body: CreateProductDto) {
-    const product = await this.productService.findById(body?.id);
-    if (!product) {
-      return new ResponseError('Not Found');
+  async update(@Body() body: UpdateProductDto) {
+    try {
+      const product = await this.productService.findById(body?.id);
+      if (!product) {
+        return new ResponseError('Not Found');
+      }
+      const updatedProduct = await this.productService.update(product, body);
+      return new ResponseSuccess('Success', updatedProduct);
+    } catch (error) {
+      return new ResponseError(error?.message, 400);
     }
-    const updatedProduct = await this.productService.update(product, body);
-    return new ResponseSuccess('Success', updatedProduct);
   }
 
   @Delete('')

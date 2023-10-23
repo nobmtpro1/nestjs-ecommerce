@@ -13,12 +13,16 @@ import { AuthGuard } from '../../auth/auth.guard';
 import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
 import { Public } from 'src/commons/decorators';
 import { ProductAttributeService } from '../services/product-attribute.service';
-import { CreateProductAttributeDto } from '../dtos/create-product-attribute.dto';
-import { GetProductAttributeValuesDto } from '../dtos/get-product-attribute-values.dto';
+import {
+  CreateProductAttributeDto,
+  DeleteProductAttributeDto,
+  UpdateProductAttributeDto,
+} from '../dtos/product-attribute.dto';
 import { ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import {
   CreateProductAttributeValueDto,
   DeleteProductAttributeValueDto,
+  GetProductAttributeValuesDto,
   UpdateProductAttributeValueDto,
 } from '../dtos/product-attribute-value.dto';
 
@@ -34,23 +38,6 @@ export class ProductAttributeController {
   async all() {
     const attributes = await this.productAttributeService.all();
     return new ResponseSuccess('Success', attributes);
-  }
-
-  @Public()
-  @ApiQuery({
-    name: 'id',
-    type: String,
-  })
-  @Get('values')
-  async allValues(@Query() query: GetProductAttributeValuesDto) {
-    const attribute = await this.productAttributeService.findById(query?.id);
-    if (!attribute) {
-      return new ResponseError('Not found', 404);
-    }
-    console.log(attribute.productAttributeValues);
-    return new ResponseSuccess('Success', {
-      attributeValues: attribute.productAttributeValues,
-    });
   }
 
   @Post('')
@@ -75,6 +62,60 @@ export class ProductAttributeController {
       return new ResponseError('Not found', 404);
     }
     return new ResponseSuccess('Success', attribute);
+  }
+
+  @Put('')
+  async updateAttribute(@Body() body: UpdateProductAttributeDto) {
+    try {
+      const attribute = await this.productAttributeService.findById(body?.id);
+      if (!attribute) {
+        return new ResponseError('Not found', 404);
+      }
+      const updated = await this.productAttributeService.update(
+        attribute,
+        body,
+      );
+      return new ResponseSuccess('Success', updated);
+    } catch (error) {
+      return new ResponseError(error?.message, 400);
+    }
+  }
+
+  @Delete('')
+  async deleteAttribute(@Body() body: DeleteProductAttributeDto) {
+    try {
+      const attribute = await this.productAttributeService.findById(body?.id);
+      if (!attribute) {
+        return new ResponseError('Not found', 404);
+      }
+      const deleted = await this.productAttributeService.delete(attribute);
+      return new ResponseSuccess('Success', deleted);
+    } catch (error) {
+      if (error?.sqlState == 23000) {
+        return new ResponseError(
+          'You must remove all attribute values first',
+          400,
+        );
+      }
+      return new ResponseError(error?.message, 400);
+    }
+  }
+
+  @Public()
+  @ApiQuery({
+    name: 'id',
+    type: String,
+  })
+  @Get('values')
+  async allValues(@Query() query: GetProductAttributeValuesDto) {
+    const attribute = await this.productAttributeService.findById(query?.id);
+    if (!attribute) {
+      return new ResponseError('Not found', 404);
+    }
+    console.log(attribute.productAttributeValues);
+    return new ResponseSuccess('Success', {
+      attributeValues: attribute.productAttributeValues,
+    });
   }
 
   @Post('values')

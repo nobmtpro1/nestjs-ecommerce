@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 12, 2023 lúc 05:17 AM
+-- Thời gian đã tạo: Th10 23, 2023 lúc 04:47 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -78,7 +78,8 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (9, 1694052983018, 'CreateProductSimpleTable1694052983018'),
 (10, 1696661961388, 'UpdateProduct1696661961388'),
 (11, 1696903304329, 'ProductAttribute1696903304329'),
-(12, 1696906625884, 'ProductAttribute1696906625884');
+(12, 1696906625884, 'ProductAttribute1696906625884'),
+(13, 1698026670456, 'UpdateProductSimpleData1698026670456');
 
 -- --------------------------------------------------------
 
@@ -257,19 +258,23 @@ CREATE TABLE `product_simple_data` (
   `sku` varchar(255) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `stockStatus` int(11) NOT NULL DEFAULT 1,
-  `soldIndividually` tinyint(4) NOT NULL DEFAULT 0
+  `soldIndividually` tinyint(4) NOT NULL DEFAULT 0,
+  `weight` float DEFAULT NULL,
+  `length` float DEFAULT NULL,
+  `width` float DEFAULT NULL,
+  `height` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product_simple_data`
 --
 
-INSERT INTO `product_simple_data` (`id`, `createdAt`, `updatedAt`, `regularPrice`, `salePrice`, `salePriceFrom`, `salePriceTo`, `productId`, `sku`, `stock`, `stockStatus`, `soldIndividually`) VALUES
-('4479ea32-f21c-4cc9-85da-5d54b05d7e44', '2023-10-09 02:19:23.372968', '2023-10-09 02:19:38.000000', 200000, 0, NULL, NULL, '31aabdfa-636f-4eba-8922-7cf887472478', NULL, NULL, 1, 0),
-('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-09-08 01:34:32.926229', 40000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'UGHGHJ', 10, 1, 1),
-('60f2208e-8895-4167-b3fd-1a9632c75bbd', '2023-10-09 01:37:12.647504', '2023-10-09 01:37:12.000000', 100000, 90000, NULL, '2023-11-05', NULL, 'UJJK', 100, 1, 0),
-('720770db-e052-4698-9603-2d5dc80a90cf', '2023-10-09 01:38:22.320204', '2023-10-09 01:38:22.000000', 0, 0, NULL, NULL, NULL, NULL, NULL, 1, 0),
-('7c420170-cf4a-406c-8d32-60a83b9ef92f', '2023-10-09 01:53:30.827940', '2023-10-09 01:59:57.000000', 100000, 90000, NULL, '2023-11-03', '7fcd6030-122a-4610-b137-13b20ba9b153', NULL, NULL, 1, 0);
+INSERT INTO `product_simple_data` (`id`, `createdAt`, `updatedAt`, `regularPrice`, `salePrice`, `salePriceFrom`, `salePriceTo`, `productId`, `sku`, `stock`, `stockStatus`, `soldIndividually`, `weight`, `length`, `width`, `height`) VALUES
+('4479ea32-f21c-4cc9-85da-5d54b05d7e44', '2023-10-09 02:19:23.372968', '2023-10-09 02:19:38.000000', 200000, 0, NULL, NULL, '31aabdfa-636f-4eba-8922-7cf887472478', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL),
+('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-10-23 02:46:16.000000', 10000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'JHFJ', 10, 1, 1, NULL, NULL, NULL, NULL),
+('60f2208e-8895-4167-b3fd-1a9632c75bbd', '2023-10-09 01:37:12.647504', '2023-10-09 01:37:12.000000', 100000, 90000, NULL, '2023-11-05', NULL, 'UJJK', 100, 1, 0, NULL, NULL, NULL, NULL),
+('720770db-e052-4698-9603-2d5dc80a90cf', '2023-10-09 01:38:22.320204', '2023-10-09 01:38:22.000000', 0, 0, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL),
+('7c420170-cf4a-406c-8d32-60a83b9ef92f', '2023-10-09 01:53:30.827940', '2023-10-09 01:59:57.000000', 100000, 90000, NULL, '2023-11-03', '7fcd6030-122a-4610-b137-13b20ba9b153', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -451,7 +456,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

@@ -1,18 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, Length } from 'class-validator';
 
-export class CreateProductAttributeValueDto {
+export class CreateProductAttributeDto {
   @IsNotEmpty()
   @Length(1, 50)
   @ApiProperty()
   name: string;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  attributeId: string;
 }
 
-export class UpdateProductAttributeValueDto {
+export class UpdateProductAttributeDto {
   @IsNotEmpty()
   @ApiProperty()
   id: string;
@@ -23,13 +19,8 @@ export class UpdateProductAttributeValueDto {
   name: string;
 }
 
-export class DeleteProductAttributeValueDto {
+export class DeleteProductAttributeDto {
   @IsNotEmpty()
   @ApiProperty()
-  id: string;
-}
-
-export class GetProductAttributeValuesDto {
-  @IsNotEmpty()
   id: string;
 }

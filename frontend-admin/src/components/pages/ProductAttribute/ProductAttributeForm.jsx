@@ -1,11 +1,25 @@
 import { Button, Form, Input, Select, Upload, Tabs, Row, Col } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../../ultils/axios";
 import { API_PRODUCT_ATTRIBUTE } from "constants/api";
 import { toast } from "react-toastify";
 
 const ProductAttributeForm = ({ productAttribute }) => {
   const [form] = Form.useForm();
+  const [fields, setFields] = useState([]);
+
+  useEffect(() => {
+    if (productAttribute) {
+      const fields = [
+        {
+          name: "name",
+          value: productAttribute?.name,
+        },
+      ];
+      setFields(fields);
+    }
+  }, [productAttribute]);
+
   const onFinish = async (values) => {
     const data = {
       id: productAttribute?.id,
@@ -38,7 +52,7 @@ const ProductAttributeForm = ({ productAttribute }) => {
       layout="horizontal"
       style={{ maxWidth: 1000 }}
       onFinish={onFinish}
-      fields={productAttribute || null}
+      fields={productAttribute ? fields : null}
     >
       <Form.Item
         label="Name"

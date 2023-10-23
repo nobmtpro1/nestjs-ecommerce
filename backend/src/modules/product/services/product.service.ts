@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
-import { productTypes } from 'src/entities/enums/product-type.enum';
+import {
+  ProductType,
+  productTypes,
+} from 'src/entities/enums/product-type.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
 import { productStatus } from 'src/entities/enums/is-active.enum';
@@ -129,7 +132,9 @@ export class ProductService {
     product.shortDescription = body?.shortDescription;
     product.description = body?.description;
     product.type = body?.type;
-    product.slug = await this.generateSlug(body?.slug, product);
+    if (product.slug != body?.slug) {
+      product.slug = await this.generateSlug(body?.slug, product);
+    }
 
     product.categories = body?.categories?.map((id) => ({
       ...new ProductCategory(),
@@ -147,22 +152,24 @@ export class ProductService {
 
     product.save();
 
-    let simpleData = new ProductSimpleData();
-    simpleData.product = product;
-    if (product.simpleData) {
-      simpleData = await this.productSimpleDataRepository.findOne({
-        where: { id: product.simpleData.id },
-      });
+    if (body.type == ProductType.SIMPLE) {
+      let simpleData = new ProductSimpleData();
+      simpleData.product = product;
+      if (product.simpleData) {
+        simpleData = await this.productSimpleDataRepository.findOne({
+          where: { id: product.simpleData.id },
+        });
+      }
+      simpleData.regularPrice = body?.simpleRegularPrice || 0;
+      simpleData.salePrice = body?.simpleSalePrice || 0;
+      simpleData.salePriceFrom = body?.simpleSalePriceFrom || null;
+      simpleData.salePriceTo = body?.simpleSalePriceTo || null;
+      simpleData.sku = body?.simpleSku || null;
+      simpleData.stock = body?.simpleStock || null;
+      simpleData.stockStatus = body?.simpleStockStatus || '';
+      simpleData.soldIndividually = body?.simpleSoldIndividually || false;
+      simpleData.save();
     }
-    simpleData.regularPrice = body?.simpleRegularPrice || 0;
-    simpleData.salePrice = body?.simpleSalePrice || 0;
-    simpleData.salePriceFrom = body?.simpleSalePriceFrom || null;
-    simpleData.salePriceTo = body?.simpleSalePriceTo || null;
-    simpleData.sku = body?.simpleSku || null;
-    simpleData.stock = body?.simpleStock || null;
-    simpleData.stockStatus = body?.simpleStockStatus || '';
-    simpleData.soldIndividually = body?.simpleSoldIndividually || false;
-    simpleData.save();
 
     return await this.findById(product.id);
   }
