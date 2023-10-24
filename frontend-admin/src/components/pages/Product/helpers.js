@@ -134,6 +134,22 @@ export const useProductFields = (
           name: "simpleSoldIndividually",
           value: product?.simpleData?.soldIndividually,
         },
+        {
+          name: "simpleWeight",
+          value: product?.simpleData?.weight,
+        },
+        {
+          name: "simpleHeight",
+          value: product?.simpleData?.height,
+        },
+        {
+          name: "simpleWidth",
+          value: product?.simpleData?.width,
+        },
+        {
+          name: "simpleLength",
+          value: product?.simpleData?.length,
+        },
       ];
       setProductFields(pFields);
       setDescription(product?.description);

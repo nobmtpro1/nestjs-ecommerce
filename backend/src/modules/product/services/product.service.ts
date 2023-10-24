@@ -14,6 +14,8 @@ import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
 import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 import { productStockStatus } from 'src/entities/enums/product-stock-status';
+import { UpdateProductDto } from '../dtos/product.dto';
+import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 
 @Injectable()
 export class ProductService {
@@ -126,8 +128,8 @@ export class ProductService {
     return product;
   }
 
-  async update(product, body) {
-    product.status = body?.status || '';
+  async update(product: Product, body: UpdateProductDto) {
+    product.status = body.status;
     product.name = body?.name;
     product.shortDescription = body?.shortDescription;
     product.description = body?.description;
@@ -136,19 +138,27 @@ export class ProductService {
       product.slug = await this.generateSlug(body?.slug, product);
     }
 
-    product.categories = body?.categories?.map((id) => ({
-      ...new ProductCategory(),
-      id,
-    }));
-    product.tags = body?.tags?.map((id) => ({
-      ...new ProductTag(),
-      id,
-    }));
-    product.image = { ...new Image(), id: body?.imageId };
-    product.gallery = body?.gallery?.map((imageId) => ({
-      ...new Image(),
-      id: imageId,
-    }));
+    product.categories = body?.categories?.map((id) => {
+      const obj = new ProductCategory();
+      obj.id = id;
+      return obj;
+    });
+    product.tags = body?.tags?.map((id) => {
+      const obj = new ProductTag();
+      obj.id = id;
+      return obj;
+    });
+    product.image = (() => {
+      const obj = new Image();
+      obj.id = body?.imageId;
+      return obj;
+    })();
+
+    product.gallery = body?.gallery?.map((id) => {
+      const obj = new Image();
+      obj.id = id;
+      return obj;
+    });
 
     product.save();
 
@@ -166,9 +176,20 @@ export class ProductService {
       simpleData.salePriceTo = body?.simpleSalePriceTo || null;
       simpleData.sku = body?.simpleSku || null;
       simpleData.stock = body?.simpleStock || null;
-      simpleData.stockStatus = body?.simpleStockStatus || '';
-      simpleData.soldIndividually = body?.simpleSoldIndividually || false;
+      simpleData.stockStatus = body?.simpleStockStatus;
+      simpleData.soldIndividually = body.simpleSoldIndividually || false;
+      simpleData.weight = body?.simpleWeight || null;
+      simpleData.height = body?.simpleHeight || null;
+      simpleData.width = body?.simpleWidth || null;
+      simpleData.length = body?.simpleLength || null;
       simpleData.save();
+
+      product.attributeValues = body.attributeValueIds.map((id) => {
+        const obj = new ProductAttributeValue();
+        obj.id = id;
+        return obj;
+      });
+      product.save();
     }
 
     return await this.findById(product.id);

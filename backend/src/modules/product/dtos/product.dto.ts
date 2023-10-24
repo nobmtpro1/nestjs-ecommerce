@@ -5,6 +5,7 @@ import {
   MaxLength,
   ValidateIf,
 } from 'class-validator';
+import { ProductStatus } from 'src/entities/enums/is-active.enum';
 import { ProductStockStatus } from 'src/entities/enums/product-stock-status';
 import { ProductType } from 'src/entities/enums/product-type.enum';
 
@@ -41,6 +42,9 @@ export class UpdateProductDto {
 
   @IsNotEmpty()
   type: ProductType;
+
+  @IsNotEmpty()
+  status: ProductStatus;
 
   @IsNotEmpty()
   @Length(1, 255)
@@ -87,7 +91,22 @@ export class UpdateProductDto {
   simpleStockStatus: ProductStockStatus;
 
   @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleStockIndividually: boolean;
+  simpleSoldIndividually: boolean;
+
+  @ValidateIf((o) => o.type == ProductType.SIMPLE)
+  attributeValueIds: string[];
+
+  @ValidateIf((o) => o.type == ProductType.SIMPLE)
+  simpleWeight: number;
+
+  @ValidateIf((o) => o.type == ProductType.SIMPLE)
+  simpleHeight: number;
+
+  @ValidateIf((o) => o.type == ProductType.SIMPLE)
+  simpleLength: number;
+
+  @ValidateIf((o) => o.type == ProductType.SIMPLE)
+  simpleWidth: number;
 }
 
 export class DeleteProductDto {

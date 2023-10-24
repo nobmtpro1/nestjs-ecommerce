@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 23, 2023 lúc 04:47 AM
+-- Thời gian đã tạo: Th10 24, 2023 lúc 05:14 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -271,7 +271,7 @@ CREATE TABLE `product_simple_data` (
 
 INSERT INTO `product_simple_data` (`id`, `createdAt`, `updatedAt`, `regularPrice`, `salePrice`, `salePriceFrom`, `salePriceTo`, `productId`, `sku`, `stock`, `stockStatus`, `soldIndividually`, `weight`, `length`, `width`, `height`) VALUES
 ('4479ea32-f21c-4cc9-85da-5d54b05d7e44', '2023-10-09 02:19:23.372968', '2023-10-09 02:19:38.000000', 200000, 0, NULL, NULL, '31aabdfa-636f-4eba-8922-7cf887472478', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL),
-('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-10-23 02:46:16.000000', 10000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'JHFJ', 10, 1, 1, NULL, NULL, NULL, NULL),
+('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-10-24 01:35:20.000000', 10000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'JHFJ', 10, 1, 1, 1, 4, 3, 2),
 ('60f2208e-8895-4167-b3fd-1a9632c75bbd', '2023-10-09 01:37:12.647504', '2023-10-09 01:37:12.000000', 100000, 90000, NULL, '2023-11-05', NULL, 'UJJK', 100, 1, 0, NULL, NULL, NULL, NULL),
 ('720770db-e052-4698-9603-2d5dc80a90cf', '2023-10-09 01:38:22.320204', '2023-10-09 01:38:22.000000', 0, 0, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL),
 ('7c420170-cf4a-406c-8d32-60a83b9ef92f', '2023-10-09 01:53:30.827940', '2023-10-09 01:59:57.000000', 100000, 90000, NULL, '2023-11-03', '7fcd6030-122a-4610-b137-13b20ba9b153', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL);

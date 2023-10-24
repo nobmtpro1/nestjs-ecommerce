@@ -45,6 +45,10 @@ const ProductForm = ({ initData, product }) => {
       simpleStock: values?.simpleStock,
       simpleStockStatus: values?.simpleStockStatus,
       simpleSoldIndividually: values?.simpleSoldIndividually,
+      simpleHeight: values?.simpleHeight,
+      simpleWeight: values?.simpleWeight,
+      simpleWidth: values?.simpleWidth,
+      simpleLength: values?.simpleLength,
     };
     requestSubmitForm(data, form, product);
   };
