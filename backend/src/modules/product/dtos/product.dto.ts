@@ -97,6 +97,9 @@ export class UpdateProductDto {
   attributeValueIds: string[];
 
   @ValidateIf((o) => o.type == ProductType.SIMPLE)
+  attributeIds: string[];
+
+  @ValidateIf((o) => o.type == ProductType.SIMPLE)
   simpleWeight: number;
 
   @ValidateIf((o) => o.type == ProductType.SIMPLE)

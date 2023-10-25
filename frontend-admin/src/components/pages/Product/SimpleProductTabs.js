@@ -5,7 +5,7 @@ import SimpleInventoryTab from "./SimpleInventoryTab";
 import SimpleShippingTab from "./SimpleShippingTab";
 import SimpleAttributeTab from "./SimpleAttributeTab";
 
-const SimpleProductTabs = ({ initData, form }) => {
+const SimpleProductTabs = ({ initData, form, product }) => {
   return (
     <Tabs
       destroyInactiveTabPane={true}
@@ -33,7 +33,7 @@ const SimpleProductTabs = ({ initData, form }) => {
           forceRender: true,
           key: "4",
           label: "Attribute",
-          children: <SimpleAttributeTab />,
+          children: <SimpleAttributeTab product={product} form={form} />,
         },
       ]}
     />

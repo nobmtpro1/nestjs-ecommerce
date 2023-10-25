@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 24, 2023 lúc 05:14 AM
+-- Thời gian đã tạo: Th10 25, 2023 lúc 05:27 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -79,7 +79,8 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (10, 1696661961388, 'UpdateProduct1696661961388'),
 (11, 1696903304329, 'ProductAttribute1696903304329'),
 (12, 1696906625884, 'ProductAttribute1696906625884'),
-(13, 1698026670456, 'UpdateProductSimpleData1698026670456');
+(13, 1698026670456, 'UpdateProductSimpleData1698026670456'),
+(14, 1698201068374, 'UpdateProduct1698201068374');
 
 -- --------------------------------------------------------
 
@@ -142,6 +143,13 @@ CREATE TABLE `product_attributes_product_attribute` (
   `productAttributeId` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `product_attributes_product_attribute`
+--
+
+INSERT INTO `product_attributes_product_attribute` (`productId`, `productAttributeId`) VALUES
+('1a004b3e-1380-4a51-b222-86d89a929aa0', '9b5b3385-4427-4f9c-9886-8c9824a8a530');
+
 -- --------------------------------------------------------
 
 --
@@ -176,6 +184,14 @@ CREATE TABLE `product_attribute_values_product_attribute_value` (
   `productId` varchar(36) NOT NULL,
   `productAttributeValueId` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_attribute_values_product_attribute_value`
+--
+
+INSERT INTO `product_attribute_values_product_attribute_value` (`productId`, `productAttributeValueId`) VALUES
+('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb713f4-67df-11ee-bfd9-00155d3c9f4c'),
+('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb7297c-67df-11ee-bfd9-00155d3c9f4c');
 
 -- --------------------------------------------------------
 
@@ -456,7 +472,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

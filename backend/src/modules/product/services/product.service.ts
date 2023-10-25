@@ -16,6 +16,7 @@ import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 import { productStockStatus } from 'src/entities/enums/product-stock-status';
 import { UpdateProductDto } from '../dtos/product.dto';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
+import { ProductAttribute } from 'src/entities/product-attribute.entity';
 
 @Injectable()
 export class ProductService {
@@ -109,8 +110,15 @@ export class ProductService {
         categories: true,
         tags: true,
         simpleData: true,
+        attributes: {
+          productAttributeValues: true,
+        },
+        attributeValues: {
+          productAttribute: true,
+        },
       },
     });
+
     return product;
   }
 
@@ -160,8 +168,6 @@ export class ProductService {
       return obj;
     });
 
-    product.save();
-
     if (body.type == ProductType.SIMPLE) {
       let simpleData = new ProductSimpleData();
       simpleData.product = product;
@@ -189,9 +195,14 @@ export class ProductService {
         obj.id = id;
         return obj;
       });
-      product.save();
+      product.attributes = body.attributeIds.map((id) => {
+        const obj = new ProductAttribute();
+        obj.id = id;
+        return obj;
+      });
     }
 
+    product.save();
     return await this.findById(product.id);
   }
 

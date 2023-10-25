@@ -49,6 +49,8 @@ const ProductForm = ({ initData, product }) => {
       simpleWeight: values?.simpleWeight,
       simpleWidth: values?.simpleWidth,
       simpleLength: values?.simpleLength,
+      attributeIds: values?.attributeIds,
+      attributeValueIds: values?.attributeValueIds,
     };
     requestSubmitForm(data, form, product);
   };
@@ -196,7 +198,7 @@ const ProductForm = ({ initData, product }) => {
       </Form.Item>
 
       {typeValue == PRODUCT_TYPE_SIMPLE ? (
-        <SimpleProductTabs initData={initData} form={form} />
+        <SimpleProductTabs initData={initData} form={form} product={product} />
       ) : (
         <></>
       )}

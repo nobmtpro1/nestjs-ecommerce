@@ -1,7 +1,6 @@
 import { Button, Col, Row, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { ROUTE_PRODUCT_ATTRIBUTE } from "../../../constants/routes";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "../../../ultils/axios";
 import {
   API_PRODUCT_ATTRIBUTE,

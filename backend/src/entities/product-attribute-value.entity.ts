@@ -29,6 +29,6 @@ export class ProductAttributeValue extends AuditEntity {
   )
   productAttribute: ProductAttribute;
 
-  @ManyToMany(() => Product, (product) => product.attributes)
+  @ManyToMany(() => Product, (product) => product.attributeValues)
   products: Product[];
 }
