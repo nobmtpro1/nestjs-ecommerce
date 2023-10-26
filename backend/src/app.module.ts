@@ -8,12 +8,15 @@ import typeorm from './config/typeorm';
 import { ProductModule } from './modules/product/product.module';
 import { ImageModule } from './modules/image/image.module';
 import auth from './config/auth';
+import { TestModule } from './modules/test/test.module';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: `${process.env.NODE_ENV}.env`,
       isGlobal: true,
-      load: [typeorm, auth],
+      load: [configuration, typeorm, auth],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -24,6 +27,7 @@ import auth from './config/auth';
     AuthModule,
     ProductModule,
     ImageModule,
+    TestModule,
   ],
   controllers: [],
   providers: [],
