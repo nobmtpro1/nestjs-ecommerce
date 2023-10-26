@@ -10,6 +10,7 @@ import { ImageModule } from './modules/image/image.module';
 import auth from './config/auth';
 import { TestModule } from './modules/test/test.module';
 import configuration from './config/configuration';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -22,6 +23,9 @@ import configuration from './config/configuration';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
+    }),
+    CacheModule.register({
+      isGlobal: true,
     }),
     UserModule,
     AuthModule,

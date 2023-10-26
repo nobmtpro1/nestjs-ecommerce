@@ -14,3 +14,9 @@ export const comparePassword = async (password: string, hashword: string) => {
 export const generateFilePath = (file) => {
   return `${file?.destination}/${file?.filename}`;
 };
+
+export const sleep = async (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
