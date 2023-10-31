@@ -11,8 +11,8 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { sleep } from 'src/commons/helpers';
 import { UserService } from '../../user/services/user.service';
-import { Role } from 'src/enums/role.enum';
-import { Permission } from 'src/enums/permission.enum';
+import { Role } from 'src/enums/user-role.enum';
+import { Permission } from 'src/enums/user-permission.enum';
 import { ConfigService } from '@nestjs/config';
 import { Roles } from 'src/decorators/roles.decorator';
 

@@ -21,11 +21,11 @@ import { Public } from 'src/decorators/public.decorator';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
 import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/enums/role.enum';
+import { Role } from 'src/enums/user-role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { Permissions } from 'src/decorators/permissions.decorator';
-import { Permission } from 'src/enums/permission.enum';
+import { Permission } from 'src/enums/user-permission.enum';
 
 @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')

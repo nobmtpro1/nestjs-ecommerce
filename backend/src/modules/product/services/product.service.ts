@@ -8,7 +8,7 @@ import {
 } from 'src/enums/product-type.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
-import { productStatus } from 'src/enums/is-active.enum';
+import { productStatus } from 'src/enums/product-status.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';

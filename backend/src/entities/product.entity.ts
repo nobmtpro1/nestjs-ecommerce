@@ -10,7 +10,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Image } from './image.entity';
-import { ProductStatus } from '../enums/is-active.enum';
+import { ProductStatus } from '../enums/product-status.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
 import { ProductSimpleData } from './product-simple-data.entity';

@@ -5,7 +5,7 @@ import {
   MaxLength,
   ValidateIf,
 } from 'class-validator';
-import { ProductStatus } from 'src/enums/is-active.enum';
+import { ProductStatus } from 'src/enums/product-status.enum';
 import { ProductStockStatus } from 'src/enums/product-stock-status';
 import { ProductType } from 'src/enums/product-type.enum';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
-import { Permission } from '../../enums/permission.enum';
-import { Role } from 'src/enums/role.enum';
+import { Permission } from '../../enums/user-permission.enum';
+import { Role } from 'src/enums/user-role.enum';
 
 @Injectable()
 export class AuthorizationService {
