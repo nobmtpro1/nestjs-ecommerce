@@ -11,6 +11,8 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { sleep } from 'src/commons/helpers';
 import { UserService } from '../../user/services/user.service';
+import { Role } from 'src/modules/authorization/role.enum';
+import { Permission } from 'src/modules/authorization/permission.enum';
 
 @Controller('test')
 export class TestController {
@@ -38,6 +40,17 @@ export class TestController {
   @UseInterceptors(ClassSerializerInterceptor)
   async serialize() {
     const user = await this.userService.findOne('admin@gmail.com');
+    console.log(user);
+    return new ResponseSuccess('Upload success', user);
+  }
+
+  @Public()
+  @Get('authorization')
+  async authorization() {
+    const user = await this.userService.findOne('admin@gmail.com');
+    user.roles = [Role.ADMIN, Role.USER];
+    user.permissions = [Permission.PRODUCT_MANAGE, Permission.PRODUCT_CREATE];
+    user.save();
     console.log(user);
     return new ResponseSuccess('Upload success', user);
   }

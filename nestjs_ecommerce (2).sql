@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 25, 2023 lúc 05:27 AM
+-- Thời gian đã tạo: Th10 31, 2023 lúc 04:50 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -80,7 +80,11 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (11, 1696903304329, 'ProductAttribute1696903304329'),
 (12, 1696906625884, 'ProductAttribute1696906625884'),
 (13, 1698026670456, 'UpdateProductSimpleData1698026670456'),
-(14, 1698201068374, 'UpdateProduct1698201068374');
+(14, 1698201068374, 'UpdateProduct1698201068374'),
+(15, 1698722839821, 'UpdateUser1698722839821'),
+(16, 1698723214644, 'UpdateUser1698723214644'),
+(17, 1698723539443, 'UpdateUser1698723539443'),
+(18, 1698723926777, 'UpdateUser1698723926777');
 
 -- --------------------------------------------------------
 
@@ -345,15 +349,17 @@ CREATE TABLE `user` (
   `updatedAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `permissions` text NOT NULL,
+  `roles` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `user`
 --
 
-INSERT INTO `user` (`id`, `createdAt`, `updatedAt`, `name`, `email`, `password`) VALUES
-('8167a330-4af3-11ee-b901-00155dc41d3f', '0000-00-00 00:00:00.000000', '2023-09-04 07:22:38.056217', 'admin', 'admin@gmail.com', '$2a$12$fzbCHPVt62Cx.VvUDdJFdOEPPaDOmh0qTEnU0/ofPnhKKgNDTB/1S');
+INSERT INTO `user` (`id`, `createdAt`, `updatedAt`, `name`, `email`, `password`, `permissions`, `roles`) VALUES
+('8167a330-4af3-11ee-b901-00155dc41d3f', '0000-00-00 00:00:00.000000', '2023-10-31 03:48:35.000000', 'admin', 'admin@gmail.com', '$2a$12$fzbCHPVt62Cx.VvUDdJFdOEPPaDOmh0qTEnU0/ofPnhKKgNDTB/1S', 'PRODUCT_MANAGE,PRODUCT_CREATE', 'ADMIN,USER');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -472,7 +478,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
