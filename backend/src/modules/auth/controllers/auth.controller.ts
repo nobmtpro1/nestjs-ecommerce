@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { AuthGuard } from '../auth.guard';
-import { Public } from 'src/commons/decorators';
+import { AuthGuard } from '../../../guards/auth.guard';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {

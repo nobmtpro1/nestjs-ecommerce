@@ -9,19 +9,25 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '../../auth/auth.guard';
+import { AuthGuard } from '../../../guards/auth.guard';
 import { ProductService } from '../services/product.service';
 import {
   CreateProductDto,
   DeleteProductDto,
   UpdateProductDto,
 } from '../dtos/product.dto';
-import { ResponseError, ResponseSuccess } from 'src/commons/dtos/response.dto';
-import { Public } from 'src/commons/decorators';
+import { ResponseError, ResponseSuccess } from 'src/commons/response';
+import { Public } from 'src/decorators/public.decorator';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { PermissionsGuard } from 'src/guards/permissions.guard';
+import { Permissions } from 'src/decorators/permissions.decorator';
+import { Permission } from 'src/enums/permission.enum';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')
 export class ProductController {
   constructor(
@@ -30,7 +36,8 @@ export class ProductController {
     private readonly productTagService: ProductTagService,
   ) {}
 
-  @Public()
+  @Roles(Role.ADMIN)
+  @Permissions(Permission.PRODUCT_CREATE)
   @Get('')
   async get(@Query() query: { search?: string }) {
     const products = await this.productService.get({
@@ -39,6 +46,7 @@ export class ProductController {
     return new ResponseSuccess('Success', products);
   }
 
+  @Public()
   @Get('related-data')
   async getRelatedData() {
     const productCategories = await this.productCategoryService.all();

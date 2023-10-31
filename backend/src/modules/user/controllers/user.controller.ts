@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { AuthGuard } from '../../auth/auth.guard';
-import { Public } from 'src/commons/decorators';
+import { AuthGuard } from '../../../guards/auth.guard';
+import { Public } from 'src/decorators/public.decorator';
 
 @Public()
 @Controller('user')

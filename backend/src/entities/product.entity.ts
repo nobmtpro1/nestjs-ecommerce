@@ -1,4 +1,4 @@
-import { ProductType } from 'src/entities/enums/product-type.enum';
+import { ProductType } from 'src/enums/product-type.enum';
 import { AuditEntity } from 'src/entities/audit.entity';
 import {
   Entity,
@@ -10,7 +10,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Image } from './image.entity';
-import { ProductStatus } from './enums/is-active.enum';
+import { ProductStatus } from '../enums/is-active.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
 import { ProductSimpleData } from './product-simple-data.entity';

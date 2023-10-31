@@ -5,9 +5,9 @@ import {
   MaxLength,
   ValidateIf,
 } from 'class-validator';
-import { ProductStatus } from 'src/entities/enums/is-active.enum';
-import { ProductStockStatus } from 'src/entities/enums/product-stock-status';
-import { ProductType } from 'src/entities/enums/product-type.enum';
+import { ProductStatus } from 'src/enums/is-active.enum';
+import { ProductStockStatus } from 'src/enums/product-stock-status';
+import { ProductType } from 'src/enums/product-type.enum';
 
 export class CreateProductDto {
   id!: string;

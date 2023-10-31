@@ -5,15 +5,15 @@ import { Product } from 'src/entities/product.entity';
 import {
   ProductType,
   productTypes,
-} from 'src/entities/enums/product-type.enum';
+} from 'src/enums/product-type.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
-import { productStatus } from 'src/entities/enums/is-active.enum';
+import { productStatus } from 'src/enums/is-active.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
 import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
-import { productStockStatus } from 'src/entities/enums/product-stock-status';
+import { productStockStatus } from 'src/enums/product-stock-status';
 import { UpdateProductDto } from '../dtos/product.dto';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';

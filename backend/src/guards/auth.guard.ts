@@ -9,6 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from 'src/commons/constants';
+import { UserService } from '../modules/user/services/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -16,15 +17,16 @@ export class AuthGuard implements CanActivate {
     private jwtService: JwtService,
     private reflector: Reflector,
     private configService: ConfigService,
+    private userService: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('AuthGuard');
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
     if (isPublic) {
-      // 💡 See this condition
       return true;
     }
     const request = context.switchToHttp().getRequest();
@@ -39,7 +41,9 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('auth.JWT_ACCESS_TOKEN_SECRET'),
       });
-      request['user'] = payload;
+
+      const user = await this.userService.findById(payload.id);
+      request.user = user;
     } catch {
       throw new UnauthorizedException();
     }
@@ -47,7 +51,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    // console.log(request.headers.authorization);
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }

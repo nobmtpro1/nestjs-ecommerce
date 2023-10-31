@@ -5,20 +5,23 @@ import {
   Inject,
   UseInterceptors,
 } from '@nestjs/common';
-import { ResponseSuccess } from 'src/commons/dtos/response.dto';
-import { Public } from 'src/commons/decorators';
+import { ResponseSuccess } from 'src/commons/response';
+import { Public } from 'src/decorators/public.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { sleep } from 'src/commons/helpers';
 import { UserService } from '../../user/services/user.service';
-import { Role } from 'src/modules/authorization/role.enum';
-import { Permission } from 'src/modules/authorization/permission.enum';
+import { Role } from 'src/enums/role.enum';
+import { Permission } from 'src/enums/permission.enum';
+import { ConfigService } from '@nestjs/config';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('test')
 export class TestController {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(UserService) private userService: UserService,
+    @Inject(ConfigService) private configService: ConfigService,
   ) {}
 
   @Public()
@@ -48,10 +51,24 @@ export class TestController {
   @Get('authorization')
   async authorization() {
     const user = await this.userService.findOne('admin@gmail.com');
-    user.roles = [Role.ADMIN, Role.USER];
+    user.roles = [Role.ADMIN];
     user.permissions = [Permission.PRODUCT_MANAGE, Permission.PRODUCT_CREATE];
     user.save();
     console.log(user);
     return new ResponseSuccess('Upload success', user);
+  }
+
+  @Public()
+  @Get('config')
+  async config() {
+    console.log(this.configService);
+    return new ResponseSuccess('Upload success', this.configService);
+  }
+
+  @Public()
+  @Roles(Role.USER)
+  @Get('role')
+  async role() {
+    return new ResponseSuccess('Upload success', this.configService);
   }
 }
