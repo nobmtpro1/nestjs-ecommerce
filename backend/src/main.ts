@@ -8,9 +8,12 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { WinstonLogger } from './commons/winston-logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: WinstonLogger(),
+  });
   app.enableCors();
   app.useStaticAssets(join(__dirname, '..', 'public'), {
     prefix: '/public/',

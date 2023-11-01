@@ -14,7 +14,7 @@ import { AuthGuard } from '../../../guards/auth.guard';
 import { ResponseSuccess } from 'src/commons/response';
 import { ImageService } from '../services/image.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/config/multer';
+import { multerOptions } from 'src/commons/multer';
 import { Public } from 'src/decorators/public.decorator';
 
 @UseGuards(AuthGuard)
