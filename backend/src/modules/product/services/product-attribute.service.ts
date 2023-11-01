@@ -6,8 +6,8 @@ import { ProductAttributeValue } from 'src/entities/product-attribute-value.enti
 import {
   CreateProductAttributeValueDto,
   UpdateProductAttributeValueDto,
-} from '../dtos/product-attribute-value.dto';
-import { UpdateProductAttributeDto } from '../dtos/product-attribute.dto';
+} from '../../../dtos/product-attribute-value.dto';
+import { UpdateProductAttributeDto } from '../../../dtos/product-attribute.dto';
 
 @Injectable()
 export class ProductAttributeService {

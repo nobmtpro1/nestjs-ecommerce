@@ -1,10 +1,4 @@
-import {
-  IsEmpty,
-  IsNotEmpty,
-  Length,
-  MaxLength,
-  ValidateIf,
-} from 'class-validator';
+import { IsNotEmpty, Length, MaxLength, ValidateIf } from 'class-validator';
 import { ProductStatus } from 'src/enums/product-status.enum';
 import { ProductStockStatus } from 'src/enums/product-stock-status.enum';
 import { ProductType } from 'src/enums/product-type.enum';

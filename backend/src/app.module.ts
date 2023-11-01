@@ -11,6 +11,7 @@ import auth from './config/auth';
 import { TestModule } from './modules/test/test.module';
 import configuration from './config/configuration';
 import { CacheModule } from '@nestjs/cache-manager';
+import { AuthorizationModule } from './modules/authorization/authorization.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     CacheModule.register({
       isGlobal: true,
     }),
+    AuthorizationModule,
     UserModule,
     AuthModule,
     ProductModule,

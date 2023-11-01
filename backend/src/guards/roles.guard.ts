@@ -2,10 +2,14 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from 'src/commons/constants';
 import { Role } from 'src/enums/user-role.enum';
+import { AuthorizationService } from 'src/modules/authorization/authorization.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private authorizationService: AuthorizationService,
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
     console.log('RolesGuard');
@@ -18,10 +22,6 @@ export class RolesGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log(user, 'user');
-    if (!user) {
-      return false;
-    }
-    return requiredRoles.some((role) => user.roles?.includes(role));
+    return this.authorizationService.hasRoles(user, requiredRoles);
   }
 }

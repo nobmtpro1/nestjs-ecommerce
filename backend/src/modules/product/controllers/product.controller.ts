@@ -15,17 +15,13 @@ import {
   CreateProductDto,
   DeleteProductDto,
   UpdateProductDto,
-} from '../dtos/product.dto';
+} from '../../../dtos/product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/response';
 import { Public } from 'src/decorators/public.decorator';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/enums/user-role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
-import { Permissions } from 'src/decorators/permissions.decorator';
-import { Permission } from 'src/enums/user-permission.enum';
 
 @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')
@@ -36,8 +32,7 @@ export class ProductController {
     private readonly productTagService: ProductTagService,
   ) {}
 
-  @Roles(Role.ADMIN)
-  @Permissions(Permission.PRODUCT_CREATE)
+  @Public()
   @Get('')
   async get(@Query() query: { search?: string }) {
     const products = await this.productService.get({

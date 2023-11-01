@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Inject,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ResponseSuccess } from 'src/commons/response';
@@ -15,6 +16,10 @@ import { Role } from 'src/enums/user-role.enum';
 import { Permission } from 'src/enums/user-permission.enum';
 import { ConfigService } from '@nestjs/config';
 import { Roles } from 'src/decorators/roles.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { PermissionsGuard } from 'src/guards/permissions.guard';
+import { Permissions } from 'src/decorators/permissions.decorator';
 
 @Controller('test')
 export class TestController {
@@ -65,8 +70,9 @@ export class TestController {
     return new ResponseSuccess('Upload success', this.configService);
   }
 
-  @Public()
-  @Roles(Role.USER)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.ADMIN)
+  @Permissions(Permission.PRODUCT_CREATE)
   @Get('role')
   async role() {
     return new ResponseSuccess('Upload success', this.configService);

@@ -14,7 +14,7 @@ import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
 import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 import { productStockStatus } from 'src/enums/product-stock-status.enum';
-import { UpdateProductDto } from '../dtos/product.dto';
+import { UpdateProductDto } from '../../../dtos/product.dto';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';
 

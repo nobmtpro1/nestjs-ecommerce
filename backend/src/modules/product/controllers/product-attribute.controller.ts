@@ -17,14 +17,14 @@ import {
   CreateProductAttributeDto,
   DeleteProductAttributeDto,
   UpdateProductAttributeDto,
-} from '../dtos/product-attribute.dto';
+} from '../../../dtos/product-attribute.dto';
 import { ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import {
   CreateProductAttributeValueDto,
   DeleteProductAttributeValueDto,
   GetProductAttributeValuesDto,
   UpdateProductAttributeValueDto,
-} from '../dtos/product-attribute-value.dto';
+} from '../../../dtos/product-attribute-value.dto';
 
 @UseGuards(AuthGuard)
 @Controller('product-attribute')
