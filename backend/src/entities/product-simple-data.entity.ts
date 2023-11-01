@@ -8,7 +8,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Product } from './product.entity';
-import { ProductStockStatus } from '../enums/product-stock-status';
+import { ProductStockStatus } from '../enums/product-stock-status.enum';
 
 @Entity()
 @Unique(['product'])

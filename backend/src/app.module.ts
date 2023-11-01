@@ -11,9 +11,6 @@ import auth from './config/auth';
 import { TestModule } from './modules/test/test.module';
 import configuration from './config/configuration';
 import { CacheModule } from '@nestjs/cache-manager';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './guards/roles.guard';
-import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
