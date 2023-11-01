@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 31, 2023 lúc 04:50 AM
+-- Thời gian đã tạo: Th10 01, 2023 lúc 06:02 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -359,7 +359,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `createdAt`, `updatedAt`, `name`, `email`, `password`, `permissions`, `roles`) VALUES
-('8167a330-4af3-11ee-b901-00155dc41d3f', '0000-00-00 00:00:00.000000', '2023-10-31 03:48:35.000000', 'admin', 'admin@gmail.com', '$2a$12$fzbCHPVt62Cx.VvUDdJFdOEPPaDOmh0qTEnU0/ofPnhKKgNDTB/1S', 'PRODUCT_MANAGE,PRODUCT_CREATE', 'ADMIN,USER');
+('8167a330-4af3-11ee-b901-00155dc41d3f', '0000-00-00 00:00:00.000000', '2023-10-31 09:46:26.000000', 'admin', 'admin@gmail.com', '$2a$12$fzbCHPVt62Cx.VvUDdJFdOEPPaDOmh0qTEnU0/ofPnhKKgNDTB/1S', 'PRODUCT_MANAGE,PRODUCT_CREATE', 'ADMIN');
 
 --
 -- Chỉ mục cho các bảng đã đổ

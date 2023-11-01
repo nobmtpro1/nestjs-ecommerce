@@ -20,6 +20,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { Permissions } from 'src/decorators/permissions.decorator';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Controller('test')
 export class TestController {
@@ -27,6 +28,7 @@ export class TestController {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(UserService) private userService: UserService,
     @Inject(ConfigService) private configService: ConfigService,
+    @Inject(MailService) private mailService: MailService,
   ) {}
 
   @Public()
@@ -76,5 +78,13 @@ export class TestController {
   @Get('role')
   async role() {
     return new ResponseSuccess('Upload success', this.configService);
+  }
+
+  @Public()
+  @Get('mail')
+  async mail() {
+    const user = await this.userService.findOne('admin@gmail.com');
+    await this.mailService.welcome(user);
+    return new ResponseSuccess('Send mail success');
   }
 }
