@@ -76,7 +76,9 @@ export class ProductController {
   }
 
   @Put('')
-  async update(@Body() body: UpdateProductDto) {
+  async update(@Body() body) {
+    console.log(body);
+    return new ResponseError('test', 400);
     try {
       const product = await this.productService.findById(body?.id);
       if (!product) {

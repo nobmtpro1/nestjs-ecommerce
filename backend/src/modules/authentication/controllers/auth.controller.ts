@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -7,10 +8,12 @@ import {
   Post,
   Request,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '../../../guards/auth.guard';
 import { Public } from 'src/decorators/public.decorator';
+import { ResponseSuccess } from 'src/commons/response';
 
 @Controller('auth')
 export class AuthController {
@@ -24,9 +27,10 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+    return new ResponseSuccess('Success', req.user);
   }
 
   @Post('refresh-token')

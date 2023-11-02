@@ -7,8 +7,8 @@ import axios from "../../../ultils/axios";
 import { API_PRODUCT } from "../../../constants/api";
 import { STORAGE_URL } from "../../../constants/config";
 import LayoutContent from "components/common/LayoutContent";
-import ProductAdd from "./add";
-import ProductEdit from "./edit";
+import ProductAdd from "./Add";
+import ProductEdit from "./Edit";
 import { toast } from "react-toastify";
 import SearchForm from "./SearchForm";
 

@@ -12,10 +12,10 @@ export const scheduleSlice = createSlice({
   initialState,
   reducers: {
     setAccount: (state, action) => {
-      state.account = action.payload.account;
+      state.account = { ...state.account, ...action.payload.account };
       localStorage.setItem(
         LOCAL_STORAGE_ACCOUNT,
-        JSON.stringify(action.payload.account)
+        JSON.stringify(state.account)
       );
     },
     logout: (state, action) => {

@@ -10,6 +10,9 @@ export class CreateProductDto {
   type: ProductType;
 
   @IsNotEmpty()
+  status: ProductStatus;
+
+  @IsNotEmpty()
   @Length(1, 255)
   name: string;
 

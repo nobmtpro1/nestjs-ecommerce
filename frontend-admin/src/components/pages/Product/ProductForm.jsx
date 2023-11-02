@@ -10,6 +10,7 @@ import {
 } from "./helpers";
 import SimpleProductTabs from "./SimpleProductTabs";
 import { PRODUCT_TYPE_SIMPLE } from "constants/config";
+import ProductAttributeForm from "./ProductAttributeForm";
 
 const ProductForm = ({ initData, product }) => {
   const [description, setDescription] = useState("");
@@ -197,11 +198,13 @@ const ProductForm = ({ initData, product }) => {
         </Select>
       </Form.Item>
 
-      {typeValue == PRODUCT_TYPE_SIMPLE ? (
+      {/* {typeValue == PRODUCT_TYPE_SIMPLE ? (
         <SimpleProductTabs initData={initData} form={form} product={product} />
       ) : (
         <></>
-      )}
+      )} */}
+
+      <ProductAttributeForm form={form} product={product} />
 
       <Form.Item wrapperCol={{ span: 14, offset: 4 }} className="mt-6">
         <Button primary htmlType="submit">

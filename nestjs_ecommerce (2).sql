@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 01, 2023 lúc 06:02 AM
+-- Thời gian đã tạo: Th10 02, 2023 lúc 03:57 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -84,7 +84,8 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (15, 1698722839821, 'UpdateUser1698722839821'),
 (16, 1698723214644, 'UpdateUser1698723214644'),
 (17, 1698723539443, 'UpdateUser1698723539443'),
-(18, 1698723926777, 'UpdateUser1698723926777');
+(18, 1698723926777, 'UpdateUser1698723926777'),
+(19, 1698892563787, 'Migration1698892563787');
 
 -- --------------------------------------------------------
 
@@ -194,8 +195,7 @@ CREATE TABLE `product_attribute_values_product_attribute_value` (
 --
 
 INSERT INTO `product_attribute_values_product_attribute_value` (`productId`, `productAttributeValueId`) VALUES
-('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb713f4-67df-11ee-bfd9-00155d3c9f4c'),
-('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb7297c-67df-11ee-bfd9-00155d3c9f4c');
+('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb713f4-67df-11ee-bfd9-00155d3c9f4c');
 
 -- --------------------------------------------------------
 
@@ -340,6 +340,39 @@ INSERT INTO `product_tags_product_tag` (`productId`, `productTagId`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `product_variation`
+--
+
+CREATE TABLE `product_variation` (
+  `id` varchar(36) NOT NULL,
+  `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
+  `updatedAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+  `sku` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `downloadable` tinyint(4) NOT NULL DEFAULT 0,
+  `isVirtual` tinyint(4) NOT NULL DEFAULT 0,
+  `isManageStock` tinyint(4) NOT NULL DEFAULT 0,
+  `regularPrice` bigint(20) NOT NULL DEFAULT 0,
+  `salePrice` bigint(20) NOT NULL DEFAULT 0,
+  `salePriceFrom` date DEFAULT NULL,
+  `salePriceTo` date DEFAULT NULL,
+  `soldIndividually` tinyint(4) NOT NULL DEFAULT 0,
+  `stock` int(11) DEFAULT NULL,
+  `stockStatus` int(11) NOT NULL DEFAULT 1,
+  `weight` float DEFAULT NULL,
+  `length` float DEFAULT NULL,
+  `width` float DEFAULT NULL,
+  `height` float DEFAULT NULL,
+  `productId` varchar(36) DEFAULT NULL,
+  `imageId` varchar(36) DEFAULT NULL,
+  `productAttributeValue1Id` varchar(36) DEFAULT NULL,
+  `productAttributeValue2Id` varchar(36) DEFAULT NULL,
+  `productAttributeValue3Id` varchar(36) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `user`
 --
 
@@ -465,6 +498,17 @@ ALTER TABLE `product_tags_product_tag`
   ADD KEY `IDX_193456ebc5cb26486946cea095` (`productTagId`);
 
 --
+-- Chỉ mục cho bảng `product_variation`
+--
+ALTER TABLE `product_variation`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `REL_e406b1dcd62e293cf311347164` (`imageId`),
+  ADD KEY `FK_9eb6ebb27c4efb410d7a89670b5` (`productId`),
+  ADD KEY `FK_ca9621c237c371f80514bc2f77b` (`productAttributeValue1Id`),
+  ADD KEY `FK_b96615197baaa18bb5cf4d15b03` (`productAttributeValue2Id`),
+  ADD KEY `FK_2bf3cfe8a26d6453ab9932ce0f7` (`productAttributeValue3Id`);
+
+--
 -- Chỉ mục cho bảng `user`
 --
 ALTER TABLE `user`
@@ -478,7 +522,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -544,6 +588,16 @@ ALTER TABLE `product_simple_data`
 ALTER TABLE `product_tags_product_tag`
   ADD CONSTRAINT `FK_193456ebc5cb26486946cea0958` FOREIGN KEY (`productTagId`) REFERENCES `product_tag` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_d60d217a0b4eae73027a3d7e9f3` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `product_variation`
+--
+ALTER TABLE `product_variation`
+  ADD CONSTRAINT `FK_2bf3cfe8a26d6453ab9932ce0f7` FOREIGN KEY (`productAttributeValue3Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_9eb6ebb27c4efb410d7a89670b5` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_b96615197baaa18bb5cf4d15b03` FOREIGN KEY (`productAttributeValue2Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ca9621c237c371f80514bc2f77b` FOREIGN KEY (`productAttributeValue1Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_e406b1dcd62e293cf3113471642` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

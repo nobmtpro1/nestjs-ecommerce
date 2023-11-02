@@ -6,10 +6,12 @@ import {
   JoinColumn,
   OneToOne,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { ProductAttribute } from './product-attribute.entity';
 import { Image } from './image.entity';
 import { Product } from './product.entity';
+import { ProductVariation } from './product-variation.entity';
 
 @Entity()
 export class ProductAttributeValue extends AuditEntity {

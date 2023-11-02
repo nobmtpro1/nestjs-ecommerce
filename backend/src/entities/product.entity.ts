@@ -8,6 +8,7 @@ import {
   OneToOne,
   JoinColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { Image } from './image.entity';
 import { ProductStatus } from '../enums/product-status.enum';
@@ -16,6 +17,7 @@ import { ProductTag } from './product-tag.entity';
 import { ProductSimpleData } from './product-simple-data.entity';
 import { ProductAttribute } from './product-attribute.entity';
 import { ProductAttributeValue } from './product-attribute-value.entity';
+import { ProductVariation } from './product-variation.entity';
 
 @Entity()
 export class Product extends AuditEntity {
@@ -69,4 +71,10 @@ export class Product extends AuditEntity {
     (productSimpleData) => productSimpleData.product,
   )
   simpleData: ProductSimpleData;
+
+  @OneToMany(
+    () => ProductVariation,
+    (productVariation) => productVariation.product,
+  )
+  productVariations: ProductVariation[];
 }

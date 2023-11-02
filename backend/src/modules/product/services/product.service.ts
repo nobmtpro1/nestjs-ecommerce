@@ -2,10 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
-import {
-  ProductType,
-  productTypes,
-} from 'src/enums/product-type.enum';
+import { ProductType, productTypes } from 'src/enums/product-type.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
 import { productStatus } from 'src/enums/product-status.enum';
@@ -14,7 +11,7 @@ import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
 import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 import { productStockStatus } from 'src/enums/product-stock-status.enum';
-import { UpdateProductDto } from '../../../dtos/product.dto';
+import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';
 
@@ -54,10 +51,10 @@ export class ProductService {
     return productStockStatus;
   }
 
-  async create(body) {
+  async create(body: CreateProductDto) {
     const slug = await this.generateSlug(body?.slug);
     const product = this.productRepository.create({
-      status: body?.status || '',
+      status: body.status,
       type: body?.type,
       name: body?.name,
       slug: slug,
@@ -68,36 +65,30 @@ export class ProductService {
         id,
       })),
     });
-    product.categories = body?.categories?.map((id) => ({
-      ...new ProductCategory(),
-      id,
-    }));
-    product.tags = body?.tags?.map((id) => ({
-      ...new ProductTag(),
-      id,
-    }));
+
+    product.categories = body?.categories?.map((id) => {
+      const obj = new ProductCategory();
+      obj.id = id;
+      return obj;
+    });
+    product.tags = body?.tags?.map((id) => {
+      const obj = new ProductTag();
+      obj.id = id;
+      return obj;
+    });
+
     const image = new Image();
     image.id = body?.imageId;
     product.image = image;
-    product.gallery = body?.gallery?.map((imageId) => ({
-      ...new Image(),
-      id: imageId,
-    }));
+
+    product.gallery = body?.gallery?.map((id) => {
+      const obj = new Image();
+      obj.id = id;
+      return obj;
+    });
     const created = await this.productRepository.save(product, {
       reload: true,
     });
-
-    let simpleData = new ProductSimpleData();
-    simpleData.product = product;
-    simpleData.regularPrice = body?.simpleRegularPrice || 0;
-    simpleData.salePrice = body?.simpleSalePrice || 0;
-    simpleData.salePriceFrom = body?.simpleSalePriceFrom || null;
-    simpleData.salePriceTo = body?.simpleSalePriceTo || null;
-    simpleData.sku = body?.simpleSku || null;
-    simpleData.stock = body?.simpleStock || null;
-    simpleData.stockStatus = body?.simpleStockStatus || '';
-    simpleData.soldIndividually = body?.simpleSoldIndividually || false;
-    simpleData.save();
     return created;
   }
 
