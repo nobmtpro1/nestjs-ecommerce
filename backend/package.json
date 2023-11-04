@@ -21,8 +21,8 @@
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:run": "npm run build && npm run typeorm migration:run -- -d ./src/configs/typeorm.ts",
     "migration:generate": "npm run build && npm run typeorm -- -d ./src/configs/typeorm.ts migration:generate ./src/migrations/migration",
-    "migration:create": "npm run typeorm -- migration:create",
-    "migration:revert": "npm run typeorm -- -d ./src/configs/typeorm.ts migration:revert"
+    "migration:create": "npm run build && npm run typeorm -- migration:create ./src/migrations/migration",
+    "migration:revert": "npm run build && npm run typeorm -- -d ./src/configs/typeorm.ts migration:revert"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.9.1",

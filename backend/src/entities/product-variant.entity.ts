@@ -15,8 +15,8 @@ import { ProductStatus } from 'src/enums/product-status.enum';
 import { ProductAttributeValue } from './product-attribute-value.entity';
 
 @Entity()
-export class ProductVariation extends AuditEntity {
-  @ManyToOne(() => Product, (product) => product.productVariations)
+export class ProductVariant extends AuditEntity {
+  @ManyToOne(() => Product, (product) => product.productVariants)
   @JoinColumn()
   product: Product;
 

@@ -11,7 +11,7 @@ import {
 import { ProductAttribute } from './product-attribute.entity';
 import { Image } from './image.entity';
 import { Product } from './product.entity';
-import { ProductVariation } from './product-variation.entity';
+import { ProductVariant } from './product-variant.entity';
 
 @Entity()
 export class ProductAttributeValue extends AuditEntity {

@@ -75,10 +75,11 @@ export class ProductController {
     return new ResponseSuccess('Success', product);
   }
 
+  @Public()
   @Put('')
-  async update(@Body() body) {
-    console.log(body);
-    return new ResponseError('test', 400);
+  async update(@Body() body: UpdateProductDto) {
+    // console.log(body);
+    // return new ResponseError('test', 400);
     try {
       const product = await this.productService.findById(body?.id);
       if (!product) {

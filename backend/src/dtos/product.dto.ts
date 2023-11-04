@@ -1,7 +1,15 @@
-import { IsNotEmpty, Length, MaxLength, ValidateIf } from 'class-validator';
+import {
+  IsNotEmpty,
+  Length,
+  MaxLength,
+  ValidateIf,
+  ValidateNested,
+} from 'class-validator';
 import { ProductStatus } from 'src/enums/product-status.enum';
 import { ProductStockStatus } from 'src/enums/product-stock-status.enum';
 import { ProductType } from 'src/enums/product-type.enum';
+import { ProductVarriantDto } from './product-variant.dto';
+import { Type } from 'class-transformer';
 
 export class CreateProductDto {
   id!: string;
@@ -54,59 +62,23 @@ export class UpdateProductDto {
   @MaxLength(255)
   shortDescription: string;
 
-  description!: string;
+  description?: string;
 
-  imageId!: string;
+  imageId?: string;
 
-  tags!: string[];
+  tags?: string[];
 
-  categories!: string[];
+  categories?: string[];
 
-  gallery!: string[];
+  gallery?: string[];
 
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  @IsNotEmpty()
-  simpleRegularPrice: number;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleSalePrice: number;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleSalePriceFrom: Date;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleSalePriceTo: Date;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  @IsNotEmpty()
-  simpleSku: string;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleStock: number;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleStockStatus: ProductStockStatus;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleSoldIndividually: boolean;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
   attributeValueIds: string[];
 
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
   attributeIds: string[];
 
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleWeight: number;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleHeight: number;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleLength: number;
-
-  @ValidateIf((o) => o.type == ProductType.SIMPLE)
-  simpleWidth: number;
+  @ValidateNested({ each: true })
+  @Type(() => ProductVarriantDto)
+  productVariants: ProductVarriantDto[];
 }
 
 export class DeleteProductDto {

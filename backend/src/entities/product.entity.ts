@@ -14,10 +14,9 @@ import { Image } from './image.entity';
 import { ProductStatus } from '../enums/product-status.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
-import { ProductSimpleData } from './product-simple-data.entity';
 import { ProductAttribute } from './product-attribute.entity';
 import { ProductAttributeValue } from './product-attribute-value.entity';
-import { ProductVariation } from './product-variation.entity';
+import { ProductVariant } from './product-variant.entity';
 
 @Entity()
 export class Product extends AuditEntity {
@@ -66,15 +65,6 @@ export class Product extends AuditEntity {
   @JoinTable()
   attributeValues: ProductAttributeValue[];
 
-  @OneToOne(
-    () => ProductSimpleData,
-    (productSimpleData) => productSimpleData.product,
-  )
-  simpleData: ProductSimpleData;
-
-  @OneToMany(
-    () => ProductVariation,
-    (productVariation) => productVariation.product,
-  )
-  productVariations: ProductVariation[];
+  @OneToMany(() => ProductVariant, (productVariant) => productVariant.product)
+  productVariants: ProductVariant[];
 }

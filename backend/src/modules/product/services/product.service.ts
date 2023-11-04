@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Like, Repository } from 'typeorm';
+import { IsNull, Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
 import { ProductType, productTypes } from 'src/enums/product-type.enum';
@@ -9,19 +9,19 @@ import { productStatus } from 'src/enums/product-status.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
-import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 import { productStockStatus } from 'src/enums/product-stock-status.enum';
 import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';
+import { ProductVariant } from 'src/entities/product-variant.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
-    @InjectRepository(ProductSimpleData)
-    private productSimpleDataRepository: Repository<ProductSimpleData>,
+    @InjectRepository(ProductVariant)
+    private productVariantRepository: Repository<ProductVariant>,
   ) {}
 
   async get({ search }: { search?: string }) {
@@ -34,7 +34,7 @@ export class ProductService {
       order: {
         createdAt: 'DESC',
       },
-      relations: { image: true, simpleData: true },
+      relations: { image: true },
     });
     return products;
   }
@@ -100,13 +100,13 @@ export class ProductService {
         gallery: true,
         categories: true,
         tags: true,
-        simpleData: true,
         attributes: {
           productAttributeValues: true,
         },
         attributeValues: {
           productAttribute: true,
         },
+        productVariants: true,
       },
     });
 
@@ -121,7 +121,12 @@ export class ProductService {
         gallery: true,
         categories: true,
         tags: true,
-        simpleData: true,
+        attributes: {
+          productAttributeValues: true,
+        },
+        attributeValues: {
+          productAttribute: true,
+        },
       },
     });
     return product;
@@ -159,41 +164,66 @@ export class ProductService {
       return obj;
     });
 
-    if (body.type == ProductType.SIMPLE) {
-      let simpleData = new ProductSimpleData();
-      simpleData.product = product;
-      if (product.simpleData) {
-        simpleData = await this.productSimpleDataRepository.findOne({
-          where: { id: product.simpleData.id },
-        });
-      }
-      simpleData.regularPrice = body?.simpleRegularPrice || 0;
-      simpleData.salePrice = body?.simpleSalePrice || 0;
-      simpleData.salePriceFrom = body?.simpleSalePriceFrom || null;
-      simpleData.salePriceTo = body?.simpleSalePriceTo || null;
-      simpleData.sku = body?.simpleSku || null;
-      simpleData.stock = body?.simpleStock || null;
-      simpleData.stockStatus = body?.simpleStockStatus;
-      simpleData.soldIndividually = body.simpleSoldIndividually || false;
-      simpleData.weight = body?.simpleWeight || null;
-      simpleData.height = body?.simpleHeight || null;
-      simpleData.width = body?.simpleWidth || null;
-      simpleData.length = body?.simpleLength || null;
-      simpleData.save();
+    product.attributeValues = body.attributeValueIds.map((id) => {
+      const obj = new ProductAttributeValue();
+      obj.id = id;
+      return obj;
+    });
+    product.attributes = body.attributeIds.map((id) => {
+      const obj = new ProductAttribute();
+      obj.id = id;
+      return obj;
+    });
 
-      product.attributeValues = body.attributeValueIds.map((id) => {
+    const productVariants = [];
+    for (const productVariant of body.productVariants) {
+      let obj = new ProductVariant();
+      if (productVariant.id) {
+        obj = await this.productVariantRepository.findOne({
+          where: { id: productVariant.id },
+        });
+        if (!obj) {
+          continue;
+        }
+      }
+      obj.sku = productVariant.sku;
+      obj.status = productVariant.status;
+      obj.downloadable = productVariant.downloadable;
+      obj.isVirtual = productVariant.isVirtual;
+      obj.isManageStock = productVariant.isManageStock;
+      obj.regularPrice = productVariant.regularPrice;
+      obj.salePrice = productVariant.salePrice;
+      obj.salePriceFrom = productVariant.salePriceFrom;
+      obj.salePriceTo = productVariant.salePriceTo;
+      obj.stock = productVariant.stock;
+      obj.stockStatus = productVariant.stockStatus;
+      obj.soldIndividually = productVariant.soldIndividually;
+      obj.weight = productVariant.weight;
+      obj.height = productVariant.height;
+      obj.length = productVariant.length;
+      obj.width = productVariant.width;
+      obj.productAttributeValue1 = (() => {
         const obj = new ProductAttributeValue();
-        obj.id = id;
+        obj.id = productVariant?.productAttributeValue1Id;
         return obj;
-      });
-      product.attributes = body.attributeIds.map((id) => {
-        const obj = new ProductAttribute();
-        obj.id = id;
+      })();
+      obj.productAttributeValue2 = (() => {
+        const obj = new ProductAttributeValue();
+        obj.id = productVariant?.productAttributeValue2Id;
         return obj;
-      });
+      })();
+      await obj.save();
+      productVariants.push(obj);
     }
 
-    product.save();
+    product.productVariants = productVariants;
+
+    await product.save();
+
+    const oldProductVariants = await this.productVariantRepository.find({
+      where: { product: IsNull() },
+    });
+    await this.productVariantRepository.remove(oldProductVariants);
     return await this.findById(product.id);
   }
 

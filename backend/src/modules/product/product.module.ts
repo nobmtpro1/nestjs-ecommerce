@@ -9,11 +9,11 @@ import { ProductCategory } from 'src/entities/product-category.entity';
 import { ProductTagService } from './services/product-tag.service';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import { ProductTagController } from './controllers/product-tag.controller';
-import { ProductSimpleData } from 'src/entities/product-simple-data.entity';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 import { ProductAttributeController } from './controllers/product-attribute.controller';
 import { ProductAttributeService } from './services/product-attribute.service';
+import { ProductVariant } from 'src/entities/product-variant.entity';
 
 @Global()
 @Module({
@@ -22,9 +22,9 @@ import { ProductAttributeService } from './services/product-attribute.service';
       Product,
       ProductCategory,
       ProductTag,
-      ProductSimpleData,
       ProductAttribute,
       ProductAttributeValue,
+      ProductVariant,
     ]),
   ],
   controllers: [
