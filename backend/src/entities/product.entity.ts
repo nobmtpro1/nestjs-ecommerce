@@ -1,4 +1,4 @@
-import { ProductType } from 'src/enums/product-type.enum';
+import { ProductType } from 'src/enums/product.enum';
 import { AuditEntity } from 'src/entities/audit.entity';
 import {
   Entity,
@@ -11,7 +11,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Image } from './image.entity';
-import { ProductStatus } from '../enums/product-status.enum';
+import { ProductStatus } from '../enums/product.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
 import { ProductAttribute } from './product-attribute.entity';
@@ -29,7 +29,7 @@ export class Product extends AuditEntity {
   @Column('longtext')
   description: string;
 
-  @Column('varchar', { default: ProductType.SIMPLE })
+  @Column('varchar', { default: ProductType.VARIABLE })
   type: ProductType;
 
   @OneToOne(() => Image)

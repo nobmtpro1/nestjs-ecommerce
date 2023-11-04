@@ -9,9 +9,9 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Product } from './product.entity';
-import { ProductStockStatus } from '../enums/product-stock-status.enum';
+import { ProductStockStatus } from '../enums/product.enum';
 import { Image } from './image.entity';
-import { ProductStatus } from 'src/enums/product-status.enum';
+import { ProductStatus } from 'src/enums/product.enum';
 import { ProductAttributeValue } from './product-attribute-value.entity';
 
 @Entity()

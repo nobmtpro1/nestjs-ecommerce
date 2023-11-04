@@ -5,11 +5,12 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
-import { ProductStatus } from 'src/enums/product-status.enum';
-import { ProductStockStatus } from 'src/enums/product-stock-status.enum';
-import { ProductType } from 'src/enums/product-type.enum';
+import { ProductStatus } from 'src/enums/product.enum';
+import { ProductStockStatus } from 'src/enums/product.enum';
+import { ProductType } from 'src/enums/product.enum';
 import { ProductVarriantDto } from './product-variant.dto';
 import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
   id!: string;
@@ -43,39 +44,53 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto {
+  @ApiProperty()
   id!: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   type: ProductType;
 
+  @ApiProperty()
   @IsNotEmpty()
   status: ProductStatus;
 
+  @ApiProperty()
   @IsNotEmpty()
   @Length(1, 255)
   name: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @Length(1, 255)
   slug: string;
 
+  @ApiProperty()
   @MaxLength(255)
   shortDescription: string;
 
+  @ApiProperty()
   description?: string;
 
+  @ApiProperty()
   imageId?: string;
 
+  @ApiProperty()
   tags?: string[];
 
+  @ApiProperty()
   categories?: string[];
 
+  @ApiProperty()
   gallery?: string[];
 
+  @ApiProperty()
   attributeValueIds: string[];
 
+  @ApiProperty()
   attributeIds: string[];
 
+  @ApiProperty({ isArray: true, type: ProductVarriantDto })
   @ValidateNested({ each: true })
   @Type(() => ProductVarriantDto)
   productVariants: ProductVarriantDto[];

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 02, 2023 lúc 03:57 AM
+-- Thời gian đã tạo: Th10 04, 2023 lúc 07:50 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -85,7 +85,10 @@ INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
 (16, 1698723214644, 'UpdateUser1698723214644'),
 (17, 1698723539443, 'UpdateUser1698723539443'),
 (18, 1698723926777, 'UpdateUser1698723926777'),
-(19, 1698892563787, 'Migration1698892563787');
+(19, 1698892563787, 'Migration1698892563787'),
+(20, 1699068610461, 'Migration1699068610461'),
+(21, 1699068906695, 'Migration1699068906695'),
+(22, 1699069338393, 'Migration1699069338393');
 
 -- --------------------------------------------------------
 
@@ -111,7 +114,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `createdAt`, `updatedAt`, `name`, `shortDescription`, `description`, `status`, `slug`, `imageId`, `type`) VALUES
-('1a004b3e-1380-4a51-b222-86d89a929aa0', '2023-09-04 07:28:43.251522', '2023-09-07 02:39:46.000000', 'Product 1', 'abc123', '<p>zxc</p><p><img src=\"http://localhost:8000/public/uploads/1fe2d505-5fb5-d285-c405-568f79726a5b.jpg\"></p>', 1, 'Product-1', '3ed84332-2b0a-4231-88e9-396d4b970972', 'simpleData'),
+('1a004b3e-1380-4a51-b222-86d89a929aa0', '2023-09-04 07:28:43.251522', '2023-11-04 06:49:49.000000', 'Product 1', 'abc123', '<p>zxc</p><p><img src=\"http://localhost:8000/public/uploads/1fe2d505-5fb5-d285-c405-568f79726a5b.jpg\"></p>', 1, 'Product-1', '3ed84332-2b0a-4231-88e9-396d4b970972', 'VARIABLE'),
 ('31aabdfa-636f-4eba-8922-7cf887472478', '2023-10-09 02:19:23.353233', '2023-10-09 02:51:33.000000', 'Product 3', 'Routes with parameters should be declared after any static paths. This prevents the parameterized paths from intercepting traffic destined for the static paths.\n', '<blockquote>Routes with parameters should be declared after any static paths. This prevents the parameterized paths from intercepting traffic destined for the static paths.</blockquote><p><br></p><p><br></p>', 1, 'product-3', '7c783216-3ad0-49e5-bdd2-2140607b104d', 'simpleData'),
 ('7fcd6030-122a-4610-b137-13b20ba9b153', '2023-09-05 02:21:47.158304', '2023-10-09 01:38:06.000000', 'Product 2', 'Routes with static paths won\'t work when you need to accept dynamic data as part of the request (e.g., GET /cats/1 to get cat with id 1). In order to define routes with parameters, we can add route parameter tokens in the path of', '<p>Routes with static paths won\'t work when you need to accept&nbsp;dynamic data&nbsp;as part of the request (e.g.,&nbsp;GET /cats/1&nbsp;to get cat with id&nbsp;1). In order to define routes with parameters, we can add route parameter&nbsp;tokens&nbsp;in the path of the route to capture the dynamic value at that position in the request URL. The route parameter token in the&nbsp;@Get()&nbsp;decorator example below demonstrates this usage. Route parameters declared in this way can be accessed using the&nbsp;@Param()&nbsp;decorator, which should be added to the method signature.</p><p><br></p>', 1, 'product-2-bd028705-5a70-c0ea-45ee-5ca42123045e-f3b71b1c-a633-2875-5560-d41522944796', '8c79545c-4a7a-4e9c-b845-fc7882bf9e03', 'simpleData');
 
@@ -195,7 +198,8 @@ CREATE TABLE `product_attribute_values_product_attribute_value` (
 --
 
 INSERT INTO `product_attribute_values_product_attribute_value` (`productId`, `productAttributeValueId`) VALUES
-('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb713f4-67df-11ee-bfd9-00155d3c9f4c');
+('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb713f4-67df-11ee-bfd9-00155d3c9f4c'),
+('1a004b3e-1380-4a51-b222-86d89a929aa0', 'ffb7297c-67df-11ee-bfd9-00155d3c9f4c');
 
 -- --------------------------------------------------------
 
@@ -263,42 +267,6 @@ INSERT INTO `product_gallery_image` (`productId`, `imageId`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_simple_data`
---
-
-CREATE TABLE `product_simple_data` (
-  `id` varchar(36) NOT NULL,
-  `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
-  `updatedAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
-  `regularPrice` bigint(20) NOT NULL DEFAULT 0,
-  `salePrice` bigint(20) NOT NULL DEFAULT 0,
-  `salePriceFrom` date DEFAULT NULL,
-  `salePriceTo` date DEFAULT NULL,
-  `productId` varchar(36) DEFAULT NULL,
-  `sku` varchar(255) DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `stockStatus` int(11) NOT NULL DEFAULT 1,
-  `soldIndividually` tinyint(4) NOT NULL DEFAULT 0,
-  `weight` float DEFAULT NULL,
-  `length` float DEFAULT NULL,
-  `width` float DEFAULT NULL,
-  `height` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `product_simple_data`
---
-
-INSERT INTO `product_simple_data` (`id`, `createdAt`, `updatedAt`, `regularPrice`, `salePrice`, `salePriceFrom`, `salePriceTo`, `productId`, `sku`, `stock`, `stockStatus`, `soldIndividually`, `weight`, `length`, `width`, `height`) VALUES
-('4479ea32-f21c-4cc9-85da-5d54b05d7e44', '2023-10-09 02:19:23.372968', '2023-10-09 02:19:38.000000', 200000, 0, NULL, NULL, '31aabdfa-636f-4eba-8922-7cf887472478', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL),
-('4cfb5859-2110-47ec-8eb1-d9cab853b2c9', '2023-09-07 01:37:19.498842', '2023-10-24 01:35:20.000000', 10000, 5000, '2023-08-31', '2023-09-22', '1a004b3e-1380-4a51-b222-86d89a929aa0', 'JHFJ', 10, 1, 1, 1, 4, 3, 2),
-('60f2208e-8895-4167-b3fd-1a9632c75bbd', '2023-10-09 01:37:12.647504', '2023-10-09 01:37:12.000000', 100000, 90000, NULL, '2023-11-05', NULL, 'UJJK', 100, 1, 0, NULL, NULL, NULL, NULL),
-('720770db-e052-4698-9603-2d5dc80a90cf', '2023-10-09 01:38:22.320204', '2023-10-09 01:38:22.000000', 0, 0, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL),
-('7c420170-cf4a-406c-8d32-60a83b9ef92f', '2023-10-09 01:53:30.827940', '2023-10-09 01:59:57.000000', 100000, 90000, NULL, '2023-11-03', '7fcd6030-122a-4610-b137-13b20ba9b153', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `product_tag`
 --
 
@@ -340,10 +308,10 @@ INSERT INTO `product_tags_product_tag` (`productId`, `productTagId`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_variation`
+-- Cấu trúc bảng cho bảng `product_variant`
 --
 
-CREATE TABLE `product_variation` (
+CREATE TABLE `product_variant` (
   `id` varchar(36) NOT NULL,
   `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   `updatedAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
@@ -475,14 +443,6 @@ ALTER TABLE `product_gallery_image`
   ADD KEY `IDX_c0aa6061f3ea7d75a6f6466d35` (`imageId`);
 
 --
--- Chỉ mục cho bảng `product_simple_data`
---
-ALTER TABLE `product_simple_data`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `IDX_fd9ec8fbc06e684b47369ba364` (`productId`),
-  ADD UNIQUE KEY `REL_fd9ec8fbc06e684b47369ba364` (`productId`);
-
---
 -- Chỉ mục cho bảng `product_tag`
 --
 ALTER TABLE `product_tag`
@@ -498,15 +458,15 @@ ALTER TABLE `product_tags_product_tag`
   ADD KEY `IDX_193456ebc5cb26486946cea095` (`productTagId`);
 
 --
--- Chỉ mục cho bảng `product_variation`
+-- Chỉ mục cho bảng `product_variant`
 --
-ALTER TABLE `product_variation`
+ALTER TABLE `product_variant`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `REL_e406b1dcd62e293cf311347164` (`imageId`),
-  ADD KEY `FK_9eb6ebb27c4efb410d7a89670b5` (`productId`),
-  ADD KEY `FK_ca9621c237c371f80514bc2f77b` (`productAttributeValue1Id`),
-  ADD KEY `FK_b96615197baaa18bb5cf4d15b03` (`productAttributeValue2Id`),
-  ADD KEY `FK_2bf3cfe8a26d6453ab9932ce0f7` (`productAttributeValue3Id`);
+  ADD UNIQUE KEY `REL_b83f23626741630a8629960715` (`imageId`),
+  ADD KEY `FK_6e420052844edf3a5506d863ce6` (`productId`),
+  ADD KEY `FK_3a209bfb9e1491419d8ef9e01bb` (`productAttributeValue1Id`),
+  ADD KEY `FK_5a3dca5d60a9fb5aca8f7bf0cdd` (`productAttributeValue2Id`),
+  ADD KEY `FK_cc14797500bad5e867eb4f5e1e2` (`productAttributeValue3Id`);
 
 --
 -- Chỉ mục cho bảng `user`
@@ -522,7 +482,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -577,12 +537,6 @@ ALTER TABLE `product_gallery_image`
   ADD CONSTRAINT `FK_daea0f368d3f613870971323c38` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `product_simple_data`
---
-ALTER TABLE `product_simple_data`
-  ADD CONSTRAINT `FK_fd9ec8fbc06e684b47369ba3645` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Các ràng buộc cho bảng `product_tags_product_tag`
 --
 ALTER TABLE `product_tags_product_tag`
@@ -590,14 +544,14 @@ ALTER TABLE `product_tags_product_tag`
   ADD CONSTRAINT `FK_d60d217a0b4eae73027a3d7e9f3` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Các ràng buộc cho bảng `product_variation`
+-- Các ràng buộc cho bảng `product_variant`
 --
-ALTER TABLE `product_variation`
-  ADD CONSTRAINT `FK_2bf3cfe8a26d6453ab9932ce0f7` FOREIGN KEY (`productAttributeValue3Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_9eb6ebb27c4efb410d7a89670b5` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_b96615197baaa18bb5cf4d15b03` FOREIGN KEY (`productAttributeValue2Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_ca9621c237c371f80514bc2f77b` FOREIGN KEY (`productAttributeValue1Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_e406b1dcd62e293cf3113471642` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `product_variant`
+  ADD CONSTRAINT `FK_3a209bfb9e1491419d8ef9e01bb` FOREIGN KEY (`productAttributeValue1Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_5a3dca5d60a9fb5aca8f7bf0cdd` FOREIGN KEY (`productAttributeValue2Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_6e420052844edf3a5506d863ce6` FOREIGN KEY (`productId`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_b83f23626741630a86299607156` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_cc14797500bad5e867eb4f5e1e2` FOREIGN KEY (`productAttributeValue3Id`) REFERENCES `product_attribute_value` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

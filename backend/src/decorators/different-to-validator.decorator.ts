@@ -20,7 +20,6 @@ export function DifferentTo(
       },
       validator: {
         validate(value: any, args: ValidationArguments) {
-          console.log(args, validationOptions);
           const object = args.object;
           const constraints = args.constraints[0];
           let result = true;

@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IsNull, Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
-import { ProductType, productTypes } from 'src/enums/product-type.enum';
+import { ProductType, productTypes } from 'src/enums/product.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
-import { productStatus } from 'src/enums/product-status.enum';
+import { productStatus } from 'src/enums/product.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
-import { productStockStatus } from 'src/enums/product-stock-status.enum';
+import { productStockStatus } from 'src/enums/product.enum';
 import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
 import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
 import { ProductAttribute } from 'src/entities/product-attribute.entity';
@@ -176,7 +176,7 @@ export class ProductService {
     });
 
     const productVariants = [];
-    for (const productVariant of body.productVariants) {
+    for (const productVariant of body?.productVariants || []) {
       let obj = new ProductVariant();
       if (productVariant.id) {
         obj = await this.productVariantRepository.findOne({
