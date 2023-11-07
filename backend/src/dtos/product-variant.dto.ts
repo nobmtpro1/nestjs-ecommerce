@@ -4,6 +4,7 @@ import { Guid } from 'guid-typescript';
 import { DifferentTo } from 'src/decorators/different-to-validator.decorator';
 import { ProductStatus } from 'src/enums/product.enum';
 import { ProductStockStatus } from 'src/enums/product.enum';
+import { BeforeInsert, BeforeUpdate } from 'typeorm';
 
 export class ProductVarriantDto {
   @ApiProperty()
@@ -76,16 +77,13 @@ export class ProductVarriantDto {
 
   @ApiProperty()
   @IsOptional()
-  @DifferentTo(['productAttributeValue2Id', 'productAttributeValue3Id'])
-  productAttributeValue1Id?: string;
+  option1: string;
 
   @ApiProperty()
   @IsOptional()
-  @DifferentTo(['productAttributeValue1Id', 'productAttributeValue3Id'])
-  productAttributeValue2Id?: string;
+  option2: string;
 
   @ApiProperty()
   @IsOptional()
-  @DifferentTo(['productAttributeValue2Id', 'productAttributeValue1Id'])
-  productAttributeValue3Id?: string;
+  option3: string;
 }

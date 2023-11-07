@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { API_PRODUCT_ATTRIBUTE } from "constants/api";
 import { v4 } from "uuid";
 import Title from "antd/es/typography/Title";
+import ProductVariantForm from "./ProductVariantForm";
 
 const ProductAttributeForm = ({ form, product }) => {
   const [attributes, setAttributes] = useState([]);
@@ -16,6 +17,9 @@ const ProductAttributeForm = ({ form, product }) => {
   }, []);
 
   const handleAddRow = () => {
+    if (rows?.length >= 3) {
+      return;
+    }
     setRows((prev) => [
       ...prev,
       {
@@ -161,6 +165,8 @@ const ProductAttributeForm = ({ form, product }) => {
       <Button className="mt-2" onClick={handleAddRow}>
         Add
       </Button>
+
+      <ProductVariantForm form={form} product={product} attributes={rows} />
     </>
   );
 };

@@ -1,4 +1,5 @@
 import {
+  ArrayMaxSize,
   IsNotEmpty,
   Length,
   MaxLength,
@@ -11,6 +12,7 @@ import { ProductType } from 'src/enums/product.enum';
 import { ProductVarriantDto } from './product-variant.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { ProductOptionDto } from './product-option.dto';
 
 export class CreateProductDto {
   id!: string;
@@ -84,16 +86,16 @@ export class UpdateProductDto {
   @ApiProperty()
   gallery?: string[];
 
-  @ApiProperty()
-  attributeValueIds: string[];
-
-  @ApiProperty()
-  attributeIds: string[];
-
   @ApiProperty({ isArray: true, type: ProductVarriantDto })
   @ValidateNested({ each: true })
   @Type(() => ProductVarriantDto)
-  productVariants: ProductVarriantDto[];
+  variants: ProductVarriantDto[];
+
+  @ApiProperty({ isArray: true, type: ProductOptionDto })
+  @ValidateNested({ each: true })
+  @Type(() => ProductOptionDto)
+  @ArrayMaxSize(3)
+  options: ProductOptionDto[];
 }
 
 export class DeleteProductDto {

@@ -11,8 +11,11 @@ import {
 import SimpleProductTabs from "./SimpleProductTabs";
 import { PRODUCT_TYPE_SIMPLE } from "constants/config";
 import ProductAttributeForm from "./ProductAttributeForm";
+import { useSearchParams } from "react-router-dom";
+import ProductVariantForm from "./ProductVariantForm";
 
 const ProductForm = ({ initData, product }) => {
+  const [searchParams] = useSearchParams();
   const [description, setDescription] = useState("");
   const [form] = Form.useForm();
   const typeValue = Form.useWatch("type", form);
@@ -204,7 +207,11 @@ const ProductForm = ({ initData, product }) => {
         <></>
       )} */}
 
-      <ProductAttributeForm form={form} product={product} />
+      {searchParams.get("action") == "edit" && (
+        <>
+          <ProductAttributeForm form={form} product={product} />
+        </>
+      )}
 
       <Form.Item wrapperCol={{ span: 14, offset: 4 }} className="mt-6">
         <Button primary htmlType="submit">

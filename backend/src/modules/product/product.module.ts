@@ -9,42 +9,36 @@ import { ProductCategory } from 'src/entities/product-category.entity';
 import { ProductTagService } from './services/product-tag.service';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import { ProductTagController } from './controllers/product-tag.controller';
-import { ProductAttribute } from 'src/entities/product-attribute.entity';
-import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
-import { ProductAttributeController } from './controllers/product-attribute.controller';
-import { ProductAttributeService } from './services/product-attribute.service';
 import { ProductVariant } from 'src/entities/product-variant.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { UserModule } from '../user/user.module';
+import { AuthorizationModule } from '../authorization/authorization.module';
+import { ProductOption } from 'src/entities/product-option.entity';
 
-@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Product,
       ProductCategory,
       ProductTag,
-      ProductAttribute,
-      ProductAttributeValue,
       ProductVariant,
+      ProductOption,
     ]),
+    JwtModule,
+    UserModule,
+    AuthorizationModule,
   ],
   controllers: [
     ProductController,
     ProductCategoryController,
     ProductTagController,
-    ProductAttributeController,
   ],
-  providers: [
-    ProductService,
-    ProductCategoryService,
-    ProductTagService,
-    ProductAttributeService,
-  ],
+  providers: [ProductService, ProductCategoryService, ProductTagService],
   exports: [
     TypeOrmModule,
     ProductService,
     ProductCategoryService,
     ProductTagService,
-    ProductAttributeService,
   ],
 })
 export class ProductModule {}

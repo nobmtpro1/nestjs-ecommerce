@@ -11,9 +11,8 @@ import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
 import { productStockStatus } from 'src/enums/product.enum';
 import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
-import { ProductAttributeValue } from 'src/entities/product-attribute-value.entity';
-import { ProductAttribute } from 'src/entities/product-attribute.entity';
 import { ProductVariant } from 'src/entities/product-variant.entity';
+import { ProductOption } from 'src/entities/product-option.entity';
 
 @Injectable()
 export class ProductService {
@@ -22,6 +21,8 @@ export class ProductService {
     private productRepository: Repository<Product>,
     @InjectRepository(ProductVariant)
     private productVariantRepository: Repository<ProductVariant>,
+    @InjectRepository(ProductOption)
+    private productOptionRepository: Repository<ProductOption>,
   ) {}
 
   async get({ search }: { search?: string }) {
@@ -100,13 +101,8 @@ export class ProductService {
         gallery: true,
         categories: true,
         tags: true,
-        attributes: {
-          productAttributeValues: true,
-        },
-        attributeValues: {
-          productAttribute: true,
-        },
-        productVariants: true,
+        variants: true,
+        options: true,
       },
     });
 
@@ -121,12 +117,8 @@ export class ProductService {
         gallery: true,
         categories: true,
         tags: true,
-        attributes: {
-          productAttributeValues: true,
-        },
-        attributeValues: {
-          productAttribute: true,
-        },
+        variants: true,
+        options: true,
       },
     });
     return product;
@@ -164,19 +156,27 @@ export class ProductService {
       return obj;
     });
 
-    product.attributeValues = body.attributeValueIds.map((id) => {
-      const obj = new ProductAttributeValue();
-      obj.id = id;
-      return obj;
-    });
-    product.attributes = body.attributeIds.map((id) => {
-      const obj = new ProductAttribute();
-      obj.id = id;
-      return obj;
-    });
+    const options = [];
+    for (const option of body?.options || []) {
+      let obj = new ProductOption();
+      if (option.id) {
+        obj = await this.productOptionRepository.findOne({
+          where: { id: option.id },
+        });
+        if (!obj) {
+          continue;
+        }
+      }
+      obj.name = option.name;
+      obj.position = option.position;
+      obj.values = option.values;
+      await this.productOptionRepository.save(obj);
+      options.push(obj);
+    }
+    product.options = options;
 
     const productVariants = [];
-    for (const productVariant of body?.productVariants || []) {
+    for (const productVariant of body?.variants || []) {
       let obj = new ProductVariant();
       if (productVariant.id) {
         obj = await this.productVariantRepository.findOne({
@@ -202,28 +202,26 @@ export class ProductService {
       obj.height = productVariant.height;
       obj.length = productVariant.length;
       obj.width = productVariant.width;
-      obj.productAttributeValue1 = (() => {
-        const obj = new ProductAttributeValue();
-        obj.id = productVariant?.productAttributeValue1Id;
-        return obj;
-      })();
-      obj.productAttributeValue2 = (() => {
-        const obj = new ProductAttributeValue();
-        obj.id = productVariant?.productAttributeValue2Id;
-        return obj;
-      })();
+      obj.option1 = productVariant.option1;
+      obj.option2 = productVariant.option2;
+      obj.option3 = productVariant.option3;
       await obj.save();
       productVariants.push(obj);
     }
-
-    product.productVariants = productVariants;
+    product.variants = productVariants;
 
     await product.save();
+
+    const oldOptions = await this.productOptionRepository.find({
+      where: { product: IsNull() },
+    });
+    await this.productOptionRepository.remove(oldOptions);
 
     const oldProductVariants = await this.productVariantRepository.find({
       where: { product: IsNull() },
     });
     await this.productVariantRepository.remove(oldProductVariants);
+
     return await this.findById(product.id);
   }
 
