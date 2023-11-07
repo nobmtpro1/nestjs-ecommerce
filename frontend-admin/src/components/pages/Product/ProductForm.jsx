@@ -8,11 +8,9 @@ import {
   requestSubmitForm,
   useProductFields,
 } from "./helpers";
-import SimpleProductTabs from "./SimpleProductTabs";
-import { PRODUCT_TYPE_SIMPLE } from "constants/config";
-import ProductAttributeForm from "./ProductAttributeForm";
 import { useSearchParams } from "react-router-dom";
 import ProductVariantForm from "./ProductVariantForm";
+import ProductOptionForm from "./ProductOptionForm";
 
 const ProductForm = ({ initData, product }) => {
   const [searchParams] = useSearchParams();
@@ -41,20 +39,7 @@ const ProductForm = ({ initData, product }) => {
       type: values?.type || null,
       categories: values?.categories || [],
       tags: values?.tags || [],
-      simpleRegularPrice: values?.simpleRegularPrice,
-      simpleSalePrice: values?.simpleSalePrice,
-      simpleSalePriceFrom: values?.simpleSalePriceFrom,
-      simpleSalePriceTo: values?.simpleSalePriceTo,
-      simpleSku: values?.simpleSku,
-      simpleStock: values?.simpleStock,
-      simpleStockStatus: values?.simpleStockStatus,
-      simpleSoldIndividually: values?.simpleSoldIndividually,
-      simpleHeight: values?.simpleHeight,
-      simpleWeight: values?.simpleWeight,
-      simpleWidth: values?.simpleWidth,
-      simpleLength: values?.simpleLength,
-      attributeIds: values?.attributeIds,
-      attributeValueIds: values?.attributeValueIds,
+      options: values?.options || [],
     };
     requestSubmitForm(data, form, product);
   };
@@ -209,7 +194,7 @@ const ProductForm = ({ initData, product }) => {
 
       {searchParams.get("action") == "edit" && (
         <>
-          <ProductAttributeForm form={form} product={product} />
+          <ProductOptionForm form={form} product={product} />
         </>
       )}
 

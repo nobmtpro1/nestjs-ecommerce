@@ -50,15 +50,6 @@ const Sidebar = () => {
             </Link>
           ),
         },
-        {
-          label: "Attribute",
-          key: ROUTE_PRODUCT_ATTRIBUTE,
-          icon: (
-            <Link to={ROUTE_PRODUCT_ATTRIBUTE}>
-              <PieChartOutlined />
-            </Link>
-          ),
-        },
       ],
     },
   ];

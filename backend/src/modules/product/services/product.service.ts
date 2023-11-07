@@ -94,17 +94,28 @@ export class ProductService {
   }
 
   async findById(id: string) {
-    const product = await this.productRepository.findOne({
-      where: { id },
-      relations: {
-        image: true,
-        gallery: true,
-        categories: true,
-        tags: true,
-        variants: true,
-        options: true,
-      },
-    });
+    // const product = await this.productRepository.findOne({
+    //   where: { id },
+    //   relations: {
+    //     image: true,
+    //     gallery: true,
+    //     categories: true,
+    //     tags: true,
+    //     variants: true,
+    //     options: true,
+    //   },
+    // });
+
+    const product = this.productRepository
+      .createQueryBuilder('product')
+      .where('product.id = :id', { id })
+      .leftJoinAndSelect('product.image', 'image')
+      .leftJoinAndSelect('product.gallery', 'gallery')
+      .leftJoinAndSelect('product.categories', 'categories')
+      .leftJoinAndSelect('product.tags', 'tags')
+      .leftJoinAndSelect('product.variants', 'variants')
+      .leftJoinAndSelect('product.options', 'options')
+      .getOne();
 
     return product;
   }

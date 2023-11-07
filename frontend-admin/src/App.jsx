@@ -11,7 +11,6 @@ import Login from "./components/pages/Login";
 import Layout from "./components/common/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProductAttribute from "components/pages/ProductAttribute";
 
 const App = () => {
   return (
@@ -21,10 +20,6 @@ const App = () => {
         <Route path={ROUTE_LOGIN} element={<Login />} />
         <Route element={<Layout />}>
           <Route path={ROUTE_PRODUCT} element={<Product />} />
-          <Route
-            path={ROUTE_PRODUCT_ATTRIBUTE}
-            element={<ProductAttribute />}
-          />
           <Route path="*" element={<Dashboard />} />
         </Route>
       </Routes>
