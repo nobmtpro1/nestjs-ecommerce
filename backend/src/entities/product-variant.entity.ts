@@ -74,6 +74,9 @@ export class ProductVariant extends AuditEntity {
   height: number;
 
   @Column('varchar', { nullable: true })
+  imageId: string;
+
+  @Column('varchar', { nullable: true })
   option1: string;
 
   @Column('varchar', { nullable: true })

@@ -2,6 +2,7 @@ import { Button, Col, Form, Input, Row, Select } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useEffect, useState } from "react";
 import { v4 } from "uuid";
+import ProductVariantForm from "./ProductVariantForm";
 
 const ProductOptionForm = ({ form, product }) => {
   const [rows, setRows] = useState([]);
@@ -110,6 +111,8 @@ const ProductOptionForm = ({ form, product }) => {
       <Button className="mt-2" onClick={handleAddRow}>
         Add
       </Button>
+
+      <ProductVariantForm form={form} product={product} options={rows} />
     </>
   );
 };
