@@ -1,0 +1,81 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: nestjs_ecommerce
+      MYSQL_USER: nestjs_ecommerce
+      MYSQL_PASSWORD: nestjs_ecommerce
+      MYSQL_ROOT_PASSWORD: nestjs_ecommerce
+    volumes:
+      - ./.docker/data/mysql/:/var/lib/mysql/
+    networks:
+      - myNetwork
+
+  phpmyadmin:
+    image: 'phpmyadmin'
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PASSWORD: nestjs_ecommerce
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - myNetwork
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./.docker/data/redis/:/root/redis
+    environment:
+      - REDIS_PASSWORD=nestjs_ecommerce
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+    networks:
+      - myNetwork
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    environment:
+      - discovery.type=single-node
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ports:
+      - '9200:9200'
+    networks:
+      - myNetwork
+
+  minio:
+    image: minio/minio:latest
+    restart: always
+    command:
+      - server
+      - --console-address
+      - :9001
+      - /data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - myNetwork
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minio}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-miniostorage}
+      MINIO_REGION_NAME: ${MINIO_REGION_NAME:-us-east-1}
+    volumes:
+      - ./.docker/data/minio:/data
+
+networks:
+  myNetwork:
+    driver: bridge

@@ -21,6 +21,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { Permissions } from 'src/decorators/permissions.decorator';
 import { MailService } from 'src/modules/mail/mail.service';
+import { MinioService } from 'src/modules/minio/minio.service';
 
 @Controller('test')
 export class TestController {
@@ -29,6 +30,7 @@ export class TestController {
     @Inject(UserService) private userService: UserService,
     @Inject(ConfigService) private configService: ConfigService,
     @Inject(MailService) private mailService: MailService,
+    @Inject(MinioService) private minioService: MinioService,
   ) {}
 
   @Public()
@@ -86,5 +88,13 @@ export class TestController {
     const user = await this.userService.findOne('admin@gmail.com');
     await this.mailService.welcome(user);
     return new ResponseSuccess('Send mail success');
+  }
+
+  @Public()
+  @Get('minio')
+  async minio() {
+    const minio = await this.minioService.create();
+    console.log(minio);
+    return new ResponseSuccess('minio');
   }
 }

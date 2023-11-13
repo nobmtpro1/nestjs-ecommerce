@@ -14,12 +14,14 @@ import { AuthorizationModule } from './modules/authorization/authorization.modul
 import { MailerModule } from '@nestjs-modules/mailer';
 import mail from './configs/mail';
 import { MailModule } from './modules/mail/mail.module';
+import minio from './configs/minio';
+import { MinioModule } from './modules/minio/minio.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeorm, auth, mail],
+      load: [typeorm, auth, mail, minio],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -36,6 +38,7 @@ import { MailModule } from './modules/mail/mail.module';
     }),
     AuthorizationModule,
     MailModule,
+    MinioModule,
     UserModule,
     AuthModule,
     ProductModule,
