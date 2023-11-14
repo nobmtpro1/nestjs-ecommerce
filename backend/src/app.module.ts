@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/authentication/auth.module';
 import { typeorm } from './configs/typeorm';
@@ -15,8 +14,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import mail from './configs/mail';
 import { MailModule } from './modules/mail/mail.module';
 import minio from './configs/minio';
-import { MinioModule } from './modules/minio/minio.module';
 import { AppController } from './app.controller';
+import { MinioClientModule } from './modules/minio-client/minio-client.module';
 
 @Module({
   imports: [
@@ -39,7 +38,7 @@ import { AppController } from './app.controller';
     }),
     AuthorizationModule,
     MailModule,
-    MinioModule,
+    MinioClientModule,
     UserModule,
     AuthModule,
     ProductModule,
@@ -49,6 +48,4 @@ import { AppController } from './app.controller';
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}

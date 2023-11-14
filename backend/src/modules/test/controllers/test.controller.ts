@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   Inject,
+  Post,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,7 +23,10 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { Permissions } from 'src/decorators/permissions.decorator';
 import { MailService } from 'src/modules/mail/mail.service';
-import { MinioService } from 'src/modules/minio/minio.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { BufferedFile } from 'src/modules/minio-client/file.model';
+import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 
 @Controller('test')
 export class TestController {
@@ -30,7 +35,7 @@ export class TestController {
     @Inject(UserService) private userService: UserService,
     @Inject(ConfigService) private configService: ConfigService,
     @Inject(MailService) private mailService: MailService,
-    @Inject(MinioService) private minioService: MinioService,
+    @Inject(MinioClientService) private minioClientService: MinioClientService,
   ) {}
 
   @Public()
@@ -91,10 +96,27 @@ export class TestController {
   }
 
   @Public()
-  @Get('minio')
-  async minio() {
-    const minio = await this.minioService.create();
-    console.log(minio);
-    return new ResponseSuccess('minio');
+  @Post('minio')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadSingle(@UploadedFile() image: BufferedFile) {
+    console.log(image);
+    let uploaded_image = await this.minioClientService.upload(image);
+
+    return {
+      image_url: uploaded_image.url,
+      message: 'Successfully uploaded to MinIO S3',
+    };
   }
 }

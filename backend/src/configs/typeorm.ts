@@ -11,13 +11,8 @@ const config = {
   username: `${process.env.DATABASE_USERNAME}`,
   password: `${process.env.DATABASE_PASSWORD}`,
   database: `${process.env.DATABASE_NAME}`,
-  entities: [
-    process.env.NODE_ENV
-      ? 'dist/**/*.entity{.ts,.js}'
-      : 'src/**/*.entity{.ts,.js}',
-  ],
+  entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
-  seeds: ['src/seeds/*{.ts,.js}'],
   cli: {
     migrationsDir: 'src/migrations',
   },

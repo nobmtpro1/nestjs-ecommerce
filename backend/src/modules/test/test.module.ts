@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
 import { MailModule } from '../mail/mail.module';
-import { MinioModule } from '../minio/minio.module';
+import { MinioClientModule } from '../minio-client/minio-client.module';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { MinioModule } from '../minio/minio.module';
     UserModule,
     AuthorizationModule,
     MailModule,
-    MinioModule,
+    MinioClientModule,
   ],
   controllers: [TestController],
   providers: [],
