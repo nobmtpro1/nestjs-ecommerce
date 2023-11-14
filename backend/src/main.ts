@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
 // import { WinstonLogger } from './commons/winston-logger';
 
 async function bootstrap() {
