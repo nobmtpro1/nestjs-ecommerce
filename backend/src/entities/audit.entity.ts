@@ -14,6 +14,7 @@ export abstract class AuditEntity extends BaseEntity {
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
+    name: 'created_at',
   })
   public createdAt: Date;
 
@@ -21,6 +22,7 @@ export abstract class AuditEntity extends BaseEntity {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
+    name: 'updated_at',
   })
   public updatedAt: Date;
 }

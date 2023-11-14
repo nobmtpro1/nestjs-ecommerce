@@ -1,18 +1,18 @@
 import { Exclude, Expose } from 'class-transformer';
-import { AuditEntity } from 'src/entities/audit.entity';
-import { Permission } from 'src/enums/user-permission.enum';
-import { Role } from 'src/enums/user-role.enum';
-import { Entity, Column } from 'typeorm';
+import { AuditEntity } from './audit.entity';
+import { Permission } from '../enums/user-permission.enum';
+import { Role } from '../enums/user-role.enum';
+import { Entity, Column, Unique } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'user' })
 export class User extends AuditEntity {
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { name: 'name', length: 255 })
   name: string;
 
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { name: 'email', length: 255, unique: true })
   email: string;
 
-  @Column()
+  @Column({ name: 'password' })
   @Exclude()
   password: string;
 
@@ -21,9 +21,9 @@ export class User extends AuditEntity {
     return `${this.name} ${this.email}`;
   }
 
-  @Column('simple-array', { nullable: false })
+  @Column('simple-array', { name: 'roles', nullable: false })
   roles: Role[];
 
-  @Column('simple-array', { nullable: false })
+  @Column('simple-array', { name: 'permissions', nullable: false })
   permissions: Permission[];
 }

@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/authentication/auth.module';
-import typeorm from './configs/typeorm';
+import { typeorm } from './configs/typeorm';
 import { ProductModule } from './modules/product/product.module';
 import { ImageModule } from './modules/image/image.module';
 import auth from './configs/auth';

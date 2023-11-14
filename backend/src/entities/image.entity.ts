@@ -1,8 +1,8 @@
-import { AuditEntity } from 'src/entities/audit.entity';
+import { AuditEntity } from './audit.entity';
 import { Entity, Column } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'image' })
 export class Image extends AuditEntity {
-  @Column('longtext')
+  @Column('longtext', { name: 'src' })
   src: string;
 }

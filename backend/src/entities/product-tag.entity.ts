@@ -1,10 +1,10 @@
-import { AuditEntity } from 'src/entities/audit.entity';
+import { AuditEntity } from './audit.entity';
 import { Entity, Column, ManyToMany } from 'typeorm';
 import { Product } from './product.entity';
 
-@Entity()
+@Entity({ name: 'product_tag' })
 export class ProductTag extends AuditEntity {
-  @Column('varchar', { length: 255, unique: true })
+  @Column('varchar', { name: 'name', length: 255, unique: true })
   name: string;
 
   @ManyToMany(() => Product, (product) => product.tags)

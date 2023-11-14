@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Image } from 'src/entities/image.entity';
-import { generateFilePath } from 'src/commons/helpers';
+import { generateFilePath } from '../../../commons/helpers';
 
 @Injectable()
 export class ImageService {

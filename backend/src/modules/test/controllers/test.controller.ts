@@ -10,7 +10,7 @@ import { ResponseSuccess } from 'src/commons/response';
 import { Public } from 'src/decorators/public.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { sleep } from 'src/commons/helpers';
+import { sleep } from '../../../commons/helpers';
 import { UserService } from '../../user/services/user.service';
 import { Role } from 'src/enums/user-role.enum';
 import { Permission } from 'src/enums/user-permission.enum';

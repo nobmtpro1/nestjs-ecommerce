@@ -1,5 +1,5 @@
-import { ProductType } from 'src/enums/product.enum';
-import { AuditEntity } from 'src/entities/audit.entity';
+import { ProductType } from '../enums/product.enum';
+import { AuditEntity } from './audit.entity';
 import {
   Entity,
   Column,
@@ -17,40 +17,40 @@ import { ProductTag } from './product-tag.entity';
 import { ProductVariant } from './product-variant.entity';
 import { ProductOption } from './product-option.entity';
 
-@Entity()
+@Entity({ name: 'product' })
 export class Product extends AuditEntity {
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { name: 'name', length: 255 })
   name: string;
 
-  @Column('varchar', { length: 1000 })
+  @Column('varchar', { name: 'short_description', length: 1000 })
   shortDescription: string;
 
-  @Column('longtext')
+  @Column('longtext', { name: 'description' })
   description: string;
 
-  @Column('varchar', { default: ProductType.VARIABLE })
+  @Column('varchar', { name: 'type', default: ProductType.VARIABLE })
   type: ProductType;
 
   @OneToOne(() => Image)
-  @JoinColumn()
+  @JoinColumn({ name: 'image_id' })
   image: Image;
 
   @ManyToMany(() => Image)
-  @JoinTable()
+  @JoinTable({ name: 'product_m2m_image' })
   gallery: Image[];
 
-  @Column('int', { default: ProductStatus.ACTIVE })
+  @Column('int', { name: 'status', default: ProductStatus.ACTIVE })
   status: ProductStatus;
 
-  @Column('varchar', { length: 1000, unique: true })
+  @Column('varchar', { name: 'slug', length: 1000, unique: true })
   slug: string;
 
   @ManyToMany(() => ProductCategory, (category) => category.products)
-  @JoinTable()
+  @JoinTable({ name: 'product_m2m_product_category' })
   categories: ProductCategory[];
 
   @ManyToMany(() => ProductTag, (tag) => tag.products)
-  @JoinTable()
+  @JoinTable({ name: 'product_m2m_product_tag' })
   tags: ProductTag[];
 
   @OneToMany(() => ProductVariant, (variant) => variant.product)

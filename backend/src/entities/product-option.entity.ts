@@ -1,4 +1,4 @@
-import { AuditEntity } from 'src/entities/audit.entity';
+import { AuditEntity } from './audit.entity';
 import {
   Entity,
   Column,
@@ -9,19 +9,19 @@ import {
 } from 'typeorm';
 import { Product } from './product.entity';
 
-@Entity()
+@Entity({ name: 'product_option' })
 export class ProductOption extends AuditEntity {
   @ManyToOne(() => Product, (product) => product.options)
-  @JoinColumn()
+  @JoinColumn({ name: 'product_id' })
   product: Product;
 
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { name: 'name', length: 255 })
   name: string;
 
-  @Column('int')
+  @Column('int', { name: 'position' })
   position: number;
 
-  @Column('simple-array', { nullable: false })
+  @Column('simple-array', { name: 'values', nullable: false })
   values: string[];
 
   @BeforeUpdate()

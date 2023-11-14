@@ -1,4 +1,4 @@
-import { AuditEntity } from 'src/entities/audit.entity';
+import { AuditEntity } from './audit.entity';
 import {
   Entity,
   Column,
@@ -12,19 +12,19 @@ import {
 import { Image } from './image.entity';
 import { Product } from './product.entity';
 
-@Entity()
+@Entity({ name: 'product_category' })
 export class ProductCategory extends AuditEntity {
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { name: 'name', length: 255 })
   name: string;
 
-  @Column('varchar', { length: 1000, unique: true })
+  @Column('varchar', { name: 'slug', length: 1000, unique: true })
   slug: string;
 
-  @Column('longtext')
+  @Column('longtext', { name: 'description' })
   description: string;
 
   @OneToOne(() => Image)
-  @JoinColumn()
+  @JoinColumn({ name: 'image_id' })
   image: Image;
 
   @ManyToOne((type) => ProductCategory, (category) => category.children)

@@ -11,8 +11,13 @@ const config = {
   username: `${process.env.DATABASE_USERNAME}`,
   password: `${process.env.DATABASE_PASSWORD}`,
   database: `${process.env.DATABASE_NAME}`,
-  entities: ['dist/**/*.entity{.ts,.js}'],
+  entities: [
+    process.env.NODE_ENV
+      ? 'dist/**/*.entity{.ts,.js}'
+      : 'src/**/*.entity{.ts,.js}',
+  ],
   migrations: ['dist/migrations/*{.ts,.js}'],
+  seeds: ['src/seeds/*{.ts,.js}'],
   cli: {
     migrationsDir: 'src/migrations',
   },
@@ -20,5 +25,6 @@ const config = {
   synchronize: false,
 };
 
-export default registerAs('typeorm', () => config);
+export default config;
+export const typeorm = registerAs('typeorm', () => config);
 export const connectionSource = new DataSource(config as DataSourceOptions);
