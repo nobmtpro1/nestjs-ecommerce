@@ -22,6 +22,7 @@ import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')
@@ -59,6 +60,7 @@ export class ProductController {
     });
   }
 
+  @ApiBearerAuth()
   @Post('')
   async postCreate(@Body() body: CreateProductDto) {
     const product = await this.productService.create(body);

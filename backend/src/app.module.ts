@@ -16,6 +16,7 @@ import mail from './configs/mail';
 import { MailModule } from './modules/mail/mail.module';
 import minio from './configs/minio';
 import { MinioModule } from './modules/minio/minio.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -45,7 +46,7 @@ import { MinioModule } from './modules/minio/minio.module';
     ImageModule,
     TestModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {

@@ -8,26 +8,35 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 // import { WinstonLogger } from './commons/winston-logger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // logger: WinstonLogger(),
   });
+  app.use(helmet());
   app.enableCors();
+  app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'public'), {
     prefix: '/public/',
   });
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', { exclude: [''] });
 
   const config = new DocumentBuilder()
     .setTitle('API Document')
     .setDescription('The cats API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
   app.enableVersioning({
     type: VersioningType.URI,
