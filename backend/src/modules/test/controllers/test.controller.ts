@@ -27,6 +27,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { BufferedFile } from 'src/interfaces/file.interface';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
 @Controller('test')
 export class TestController {
@@ -118,5 +119,13 @@ export class TestController {
       image_url: uploaded_image.url,
       message: 'Successfully uploaded to MinIO S3',
     };
+  }
+
+  @Public()
+  @UseInterceptors(LoggingInterceptor)
+  @Get('interceptor')
+  async interceptor() {
+    // await sleep(1000);
+    return new ResponseSuccess('interceptor');
   }
 }
