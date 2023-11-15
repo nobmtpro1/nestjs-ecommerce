@@ -1,13 +1,6 @@
-import {
-  Injectable,
-  Logger,
-  HttpException,
-  HttpStatus,
-  Inject,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { MinioService } from 'nestjs-minio-client';
-import { Stream } from 'stream';
-import { BufferedFile } from './file.model';
+import { BufferedFile } from '../../interfaces/file.interface';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
 
@@ -51,22 +44,23 @@ export class MinioClientService {
     let filename = hashedFileName + ext;
     const fileName: string = `${filename}`;
     const fileBuffer = file.buffer;
-    this.client.putObject(
-      baseBucket,
-      fileName,
-      fileBuffer,
-      // metaData,
-      function (err, res) {
-        if (err)
-          throw new HttpException(
-            'Error uploading file',
-            HttpStatus.BAD_REQUEST,
-          );
-      },
-    );
+
+    try {
+      await this.client.putObject(
+        baseBucket,
+        fileName,
+        fileBuffer,
+        file.size,
+        metaData,
+      );
+    } catch (error) {
+      throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST);
+    }
 
     return {
-      url: `${this.config.MINIO_ENDPOINT}:${this.config.MINIO_PORT}/${this.config.MINIO_BUCKET}/${filename}`,
+      url: `${this.config.MINIO_USE_SSL ? 'https://' : 'http://'}${
+        this.config.MINIO_ENDPOINT
+      }:${this.config.MINIO_PORT}/${this.config.MINIO_BUCKET}/${filename}`,
     };
   }
 

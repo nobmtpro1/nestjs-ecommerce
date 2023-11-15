@@ -16,6 +16,7 @@ import { ImageService } from '../services/image.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/commons/multer';
 import { Public } from 'src/decorators/public.decorator';
+import { BufferedFile } from 'src/interfaces/file.interface';
 
 @UseGuards(AuthGuard)
 @Controller('image')
@@ -24,13 +25,14 @@ export class ImageController {
 
   @Public()
   @Post('upload')
-  @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'images', maxCount: 100 }], multerOptions),
-  )
+  // @UseInterceptors(
+  //   FileFieldsInterceptor([{ name: 'images', maxCount: 100 }], multerOptions),
+  // )
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'images', maxCount: 100 }]))
   async uploadImage(
     @UploadedFiles()
     files: {
-      images?: Express.Multer.File[];
+      images?: BufferedFile;
     },
   ) {
     console.log(files);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL, STORAGE_URL } from "../constants/config";
+import { API_URL } from "../constants/config";
 import { LOCAL_STORAGE_ACCOUNT } from "../constants/localstorage";
 import { ROUTE_LOGIN } from "../constants/routes";
 import { API_UPLOAD_IMAGE } from "constants/api";
@@ -49,7 +49,7 @@ export const uploadImages = async (images) => {
       uid: image?.id,
       name: image?.src,
       status: "done",
-      url: STORAGE_URL + "/" + image?.src,
+      url: image?.src,
     }));
   });
 };

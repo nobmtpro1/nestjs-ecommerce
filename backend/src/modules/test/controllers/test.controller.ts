@@ -24,7 +24,7 @@ import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { Permissions } from 'src/decorators/permissions.decorator';
 import { MailService } from 'src/modules/mail/mail.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { BufferedFile } from 'src/modules/minio-client/file.model';
+import { BufferedFile } from 'src/interfaces/file.interface';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 

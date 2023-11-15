@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -16,6 +16,7 @@ import { MailModule } from './modules/mail/mail.module';
 import minio from './configs/minio';
 import { AppController } from './app.controller';
 import { MinioClientModule } from './modules/minio-client/minio-client.module';
+import { SeedCommand } from './commands/seed';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { MinioClientModule } from './modules/minio-client/minio-client.module';
       useFactory: async (configService: ConfigService) =>
         configService.get('mail'),
     }),
+    // modules
     AuthorizationModule,
     MailModule,
     MinioClientModule,
@@ -46,6 +48,6 @@ import { MinioClientModule } from './modules/minio-client/minio-client.module';
     TestModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [Logger, SeedCommand],
 })
 export class AppModule {}

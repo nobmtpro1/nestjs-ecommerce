@@ -5,7 +5,6 @@ import { ROUTE_PRODUCT } from "../../../constants/routes";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "../../../ultils/axios";
 import { API_PRODUCT } from "../../../constants/api";
-import { STORAGE_URL } from "../../../constants/config";
 import LayoutContent from "components/common/LayoutContent";
 import ProductAdd from "./Add";
 import ProductEdit from "./Edit";
@@ -31,7 +30,7 @@ const Product = () => {
       key: "image",
       render: (text) => (
         <a>
-          <img className="w-12" src={STORAGE_URL + "/" + text?.src} />
+          <img className="w-12" src={text?.src} />
         </a>
       ),
     },

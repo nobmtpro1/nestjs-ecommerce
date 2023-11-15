@@ -3,7 +3,6 @@ import { API_PRODUCT, API_PRODUCT_RELATED_DATA } from "constants/api";
 import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { STORAGE_URL } from "constants/config";
 import { uploadImages } from "ultils/helper";
 
 export const requestSubmitForm = async (data, form, product) => {
@@ -158,7 +157,7 @@ export const useProductFields = (
           uid: product?.image?.id,
           name: product?.image?.src,
           status: "done",
-          url: STORAGE_URL + "/" + product?.image?.src,
+          url: product?.image?.src,
         },
       ]);
       setGallery(
@@ -166,7 +165,7 @@ export const useProductFields = (
           uid: image?.id,
           name: image?.src,
           status: "done",
-          url: STORAGE_URL + "/" + image?.src,
+          url: image?.src,
         }))
       );
     }
