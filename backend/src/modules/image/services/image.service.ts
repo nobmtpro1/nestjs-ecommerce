@@ -1,15 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Image } from 'src/entities/image.entity';
+import { Injectable } from '@nestjs/common';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
+import { ImageRepository } from 'src/repositories/image.repository';
 
 @Injectable()
 export class ImageService {
   constructor(
-    @InjectRepository(Image)
-    private imageRepository: Repository<Image>,
-    @Inject(MinioClientService)
+    private imageRepository: ImageRepository,
     private minioClientService: MinioClientService,
   ) {}
 

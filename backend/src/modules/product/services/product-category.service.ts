@@ -2,13 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductCategory } from 'src/entities/product-category.entity';
+import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 
 @Injectable()
 export class ProductCategoryService {
-  constructor(
-    @InjectRepository(ProductCategory)
-    private productCategoryRepository: Repository<ProductCategory>,
-  ) {}
+  constructor(private productCategoryRepository: ProductCategoryRepository) {}
 
   async all() {
     const products = await this.productCategoryRepository.find({

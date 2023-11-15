@@ -13,16 +13,18 @@ import { productStockStatus } from 'src/enums/product.enum';
 import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
 import { ProductVariant } from 'src/entities/product-variant.entity';
 import { ProductOption } from 'src/entities/product-option.entity';
+import { ProductRepository } from 'src/repositories/product.repository';
+import { ProductOptionRepository } from 'src/repositories/product-option.repository';
+import { ProductVariantRepository } from 'src/repositories/product-variant.repository';
+import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectRepository(Product)
-    private productRepository: Repository<Product>,
-    @InjectRepository(ProductVariant)
-    private productVariantRepository: Repository<ProductVariant>,
-    @InjectRepository(ProductOption)
-    private productOptionRepository: Repository<ProductOption>,
+    private productRepository: ProductRepository,
+    private productCategoryRepository: ProductCategoryRepository,
+    private productVariantRepository: ProductVariantRepository,
+    private productOptionRepository: ProductOptionRepository,
   ) {}
 
   async get({ search }: { search?: string }) {
