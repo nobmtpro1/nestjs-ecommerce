@@ -2,8 +2,11 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Header,
   Inject,
   Post,
+  Res,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -33,15 +36,19 @@ import { Queue } from 'bull';
 import { instanceToPlain } from 'class-transformer';
 import axios from 'axios';
 import xlsx from 'node-xlsx';
+import { UserRepository } from 'src/repositories/user.repository';
 
 @Controller('test')
 export class TestController {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    @Inject(UserService) private userService: UserService,
-    @Inject(ConfigService) private configService: ConfigService,
-    @Inject(MinioClientService) private minioClientService: MinioClientService,
-    @InjectQueue('email') private readonly emailQueue: Queue,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
+    private userService: UserService,
+    private configService: ConfigService,
+    private minioClientService: MinioClientService,
+    private userRepository: UserRepository,
+    @InjectQueue('email')
+    private readonly emailQueue: Queue,
   ) {}
 
   @Public()
@@ -169,7 +176,7 @@ export class TestController {
   }
 
   @Public()
-  @Post('xlsx')
+  @Post('import')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -183,10 +190,31 @@ export class TestController {
     },
   })
   @UseInterceptors(FileInterceptor('file'))
-  async xlsx(@UploadedFile() file: BufferedFile) {
-    console.log(file);
+  async import(@UploadedFile() file: BufferedFile) {
     const workSheetsFromBuffer = xlsx.parse(file.buffer);
-    console.log(workSheetsFromBuffer[0].data);
-    return new ResponseSuccess('xlsx');
+    const data = workSheetsFromBuffer?.[0].data;
+    console.log(data);
+    return new ResponseSuccess('import', data);
+  }
+
+  @Public()
+  @Get('export')
+  // @Header('Content-Type', 'application/octet-stream')
+  // @Header('Content-Disposition', 'attachment; filename="package.xlsx"')
+  async export(@Res({ passthrough: true }) res: any): Promise<StreamableFile> {
+    const users = await this.userRepository.find();
+    const data = [['ID', 'Name', 'Email']];
+    users.forEach((user) => {
+      data.push([user.id, user.name, user.email]);
+    });
+    const buffer = xlsx.build([
+      { name: 'mySheetName', data: data, options: {} },
+    ]);
+    const filename = 'package.xlsx';
+    res.set({
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': `attachment; filename="${filename}"`,
+    });
+    return new StreamableFile(buffer);
   }
 }
