@@ -20,6 +20,7 @@ import redis from './configs/redis';
 import { QueueModule } from './modules/queue/queue.module';
 import { WinstonModule } from 'nest-winston';
 import winston from './configs/winston';
+import { TaskSchedulingModule } from './modules/task-scheduling/task-scheduling.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import winston from './configs/winston';
     WinstonModule.forRoot(winston),
     // modules
     QueueModule,
+    TaskSchedulingModule,
     AuthorizationModule,
     MailModule,
     MinioClientModule,
