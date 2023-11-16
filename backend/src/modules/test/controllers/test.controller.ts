@@ -30,8 +30,9 @@ import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { classToPlain, instanceToPlain } from 'class-transformer';
-const fs = require('fs');
+import { instanceToPlain } from 'class-transformer';
+import axios from 'axios';
+import xlsx from 'node-xlsx';
 
 @Controller('test')
 export class TestController {
@@ -39,7 +40,6 @@ export class TestController {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(UserService) private userService: UserService,
     @Inject(ConfigService) private configService: ConfigService,
-    @Inject(MailService) private mailService: MailService,
     @Inject(MinioClientService) private minioClientService: MinioClientService,
     @InjectQueue('email') private readonly emailQueue: Queue,
   ) {}
@@ -81,7 +81,6 @@ export class TestController {
   @Public()
   @Get('config')
   async config() {
-    throw Error('error in code');
     console.log(this.configService);
     return new ResponseSuccess('Upload success', this.configService);
   }
@@ -158,5 +157,36 @@ export class TestController {
   async interceptor() {
     // await sleep(1000);
     return new ResponseSuccess('interceptor');
+  }
+
+  @Public()
+  @Get('axios')
+  async axios() {
+    const products = await axios.get(
+      'https://610e5b4548beae001747bad5.mockapi.io/products',
+    );
+    return new ResponseSuccess('axios', products.data);
+  }
+
+  @Public()
+  @Post('xlsx')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('file'))
+  async xlsx(@UploadedFile() file: BufferedFile) {
+    console.log(file);
+    const workSheetsFromBuffer = xlsx.parse(file.buffer);
+    console.log(workSheetsFromBuffer[0].data);
+    return new ResponseSuccess('xlsx');
   }
 }
