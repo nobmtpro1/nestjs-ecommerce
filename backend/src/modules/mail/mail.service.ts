@@ -7,14 +7,16 @@ export class MailService {
   constructor(@Inject(MailerService) private mailerService: MailerService) {}
 
   async welcome(user: User) {
-    await this.mailerService.sendMail({
+    const data = {
       to: user.email,
       subject: 'Welcome to Nestjs Ecommerce!',
       template: 'welcome',
       context: {
         // ✏️ filling curly brackets with content
       },
-    });
+    };
+
+    await this.mailerService.sendMail(data);
 
     return true;
   }

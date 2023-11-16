@@ -10,19 +10,20 @@ import auth from './configs/auth';
 import { TestModule } from './modules/test/test.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthorizationModule } from './modules/authorization/authorization.module';
-import { MailerModule } from '@nestjs-modules/mailer';
 import mail from './configs/mail';
 import { MailModule } from './modules/mail/mail.module';
 import minio from './configs/minio';
 import { AppController } from './app.controller';
 import { MinioClientModule } from './modules/minio-client/minio-client.module';
 import { SeedCommand } from './commands/seed';
+import redis from './configs/redis';
+import { QueueModule } from './modules/queue/queue.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeorm, auth, mail, minio],
+      load: [typeorm, auth, mail, minio, redis],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -32,12 +33,8 @@ import { SeedCommand } from './commands/seed';
     CacheModule.register({
       isGlobal: true,
     }),
-    MailerModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) =>
-        configService.get('mail'),
-    }),
     // modules
+    QueueModule,
     AuthorizationModule,
     MailModule,
     MinioClientModule,

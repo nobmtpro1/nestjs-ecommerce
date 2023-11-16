@@ -28,6 +28,9 @@ import { BufferedFile } from 'src/interfaces/file.interface';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { classToPlain, instanceToPlain } from 'class-transformer';
 
 @Controller('test')
 export class TestController {
@@ -37,6 +40,7 @@ export class TestController {
     @Inject(ConfigService) private configService: ConfigService,
     @Inject(MailService) private mailService: MailService,
     @Inject(MinioClientService) private minioClientService: MinioClientService,
+    @InjectQueue('email') private readonly emailQueue: Queue,
   ) {}
 
   @Public()
@@ -92,7 +96,11 @@ export class TestController {
   @Get('mail')
   async mail() {
     const user = await this.userService.findOne('admin@gmail.com');
-    await this.mailService.welcome(user);
+
+    const job = await this.emailQueue.add('welcome', {
+      user: instanceToPlain(user),
+    });
+    console.log(job);
     return new ResponseSuccess('Send mail success');
   }
 
