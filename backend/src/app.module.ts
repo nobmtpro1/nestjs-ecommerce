@@ -18,6 +18,9 @@ import { MinioClientModule } from './modules/minio-client/minio-client.module';
 import { SeedCommand } from './commands/seed';
 import redis from './configs/redis';
 import { QueueModule } from './modules/queue/queue.module';
+import { WinstonModule } from 'nest-winston';
+import winston from './configs/winston';
+import { User } from './entities/user.entity';
 
 @Module({
   imports: [
@@ -30,9 +33,11 @@ import { QueueModule } from './modules/queue/queue.module';
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    // TypeOrmModule.forFeature([User]),
     CacheModule.register({
       isGlobal: true,
     }),
+    WinstonModule.forRoot(winston),
     // modules
     QueueModule,
     AuthorizationModule,

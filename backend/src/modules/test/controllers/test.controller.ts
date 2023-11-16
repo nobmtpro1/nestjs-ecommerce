@@ -80,6 +80,7 @@ export class TestController {
   @Public()
   @Get('config')
   async config() {
+    throw Error('error in code');
     console.log(this.configService);
     return new ResponseSuccess('Upload success', this.configService);
   }

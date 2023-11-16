@@ -10,12 +10,11 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
-// import { WinstonLogger } from './commons/winston-logger';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    // logger: WinstonLogger(),
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   app.use(helmet());
   app.enableCors();
   app.use(cookieParser());
