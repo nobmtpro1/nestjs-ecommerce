@@ -1,4 +1,6 @@
 import * as bcrypt from 'bcrypt';
+import * as fs from 'fs';
+import { BufferedFile } from 'src/interfaces/file.interface';
 
 export const hashPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
@@ -19,4 +21,22 @@ export const sleep = async (ms) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+};
+
+export const uploadFile = (path: string, bufferedFile: BufferedFile) => {
+  const fullpath = `${path}/${new Date().getTime()}-${
+    bufferedFile.originalname
+  }`;
+  try {
+    fs.writeFileSync(fullpath, bufferedFile.buffer);
+    return {
+      success: true,
+      path: fullpath,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: e.message,
+    };
+  }
 };

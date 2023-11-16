@@ -12,7 +12,7 @@ import { ResponseSuccess } from 'src/commons/response';
 import { Public } from 'src/decorators/public.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { sleep } from '../../../commons/helpers';
+import { sleep, uploadFile } from '../../../commons/helpers';
 import { UserService } from '../../user/services/user.service';
 import { Role } from 'src/enums/user-role.enum';
 import { Permission } from 'src/enums/user-permission.enum';
@@ -31,6 +31,7 @@ import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { classToPlain, instanceToPlain } from 'class-transformer';
+const fs = require('fs');
 
 @Controller('test')
 export class TestController {
@@ -128,6 +129,27 @@ export class TestController {
       image_url: uploaded_image.url,
       message: 'Successfully uploaded to MinIO S3',
     };
+  }
+
+  @Public()
+  @Post('upload')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('image'))
+  async upload(@UploadedFile() image: BufferedFile) {
+    console.log(image);
+    const result = uploadFile('public/uploads', image);
+    return new ResponseSuccess('upload', result);
   }
 
   @Public()

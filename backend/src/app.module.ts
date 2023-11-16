@@ -20,7 +20,6 @@ import redis from './configs/redis';
 import { QueueModule } from './modules/queue/queue.module';
 import { WinstonModule } from 'nest-winston';
 import winston from './configs/winston';
-import { User } from './entities/user.entity';
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { User } from './entities/user.entity';
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
-    // TypeOrmModule.forFeature([User]),
     CacheModule.register({
       isGlobal: true,
     }),
