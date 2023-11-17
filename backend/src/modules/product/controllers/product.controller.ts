@@ -46,13 +46,11 @@ export class ProductController {
   @Get('related-data')
   async getRelatedData() {
     const productCategories = await this.productCategoryService.all();
-    const productTypes = await this.productService.getProductTypes();
     const productStatus = await this.productService.getProductStatus();
     const productStockStatus =
       await this.productService.getProductStockStatus();
     const productTags = await this.productTagService.all();
     return new ResponseSuccess('Success', {
-      productTypes,
       productCategories,
       productStatus,
       productTags,

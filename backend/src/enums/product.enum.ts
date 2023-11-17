@@ -1,14 +1,3 @@
-export enum ProductType {
-  VARIABLE = 'VARIABLE',
-  GROUPED = 'GROUPED',
-  EXTERNAL = 'EXTERNAL',
-}
-
-export const productTypes = [
-  { value: ProductType.VARIABLE, name: 'Variable' },
-  { value: ProductType.GROUPED, name: 'Grouped' },
-  { value: ProductType.EXTERNAL, name: 'External' },
-];
 
 export enum ProductStockStatus {
   OUT_OF_STOCK = 0,

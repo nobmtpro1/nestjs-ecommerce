@@ -16,7 +16,6 @@ const ProductForm = ({ initData, product }) => {
   const [searchParams] = useSearchParams();
   const [description, setDescription] = useState("");
   const [form] = Form.useForm();
-  const typeValue = Form.useWatch("type", form);
   const [fileList, setFileList] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [productFields] = useProductFields(
@@ -32,11 +31,9 @@ const ProductForm = ({ initData, product }) => {
       imageId: fileList?.[0]?.uid || null,
       description: description || "",
       gallery: gallery?.map((image) => image?.uid) || [],
-      shortDescription: values?.shortDescription || "",
       name: values?.name || null,
       slug: values?.slug || null,
       status: values?.status || null,
-      type: values?.type || null,
       categories: values?.categories || [],
       tags: values?.tags || [],
       options: values?.options || [],
@@ -61,144 +58,138 @@ const ProductForm = ({ initData, product }) => {
       form={form}
       labelCol={{ span: 4 }}
       wrapperCol={{ span: 14 }}
-      layout="horizontal"
       style={{ maxWidth: 1000 }}
       onFinish={onFinish}
       fields={productFields}
+      layout="vertical"
     >
-      <Form.Item label="Status" name="status">
-        <Select>
-          {initData?.productStatus?.map((e, i) => (
-            <Select.Option value={e?.value} key={i}>
-              {e?.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+      <Row gutter={50}>
+        <Col span={16}>
+          <Form.Item
+            wrapperCol={{ sm: 24 }}
+            labelCol={24}
+            label="Name"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Please enter name",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Description" wrapperCol={{ sm: 24 }} labelCol={24}>
+            <TextEditor
+              defaultValue={product?.description}
+              handleChange={handleChangeDescription}
+            />
+          </Form.Item>
+          <Form.Item label="Image" wrapperCol={{ sm: 24 }} labelCol={24}>
+            <Upload
+              listType="picture-card"
+              maxCount={1}
+              accept="image/*"
+              fileList={fileList}
+              onChange={handleChangeImage}
+            >
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            </Upload>
+          </Form.Item>
 
-      <Form.Item label="Categories" name="categories">
-        <Select mode="multiple" allowClear>
-          {initData?.productCategories?.map((e, i) => (
-            <Select.Option value={e?.id} key={i}>
-              {e?.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+          <Form.Item
+            name="gallery"
+            label="Gallery"
+            wrapperCol={{ sm: 24 }}
+            labelCol={24}
+          >
+            <Upload
+              listType="picture-card"
+              maxCount={10}
+              accept="image/*"
+              fileList={gallery}
+              onChange={handleChangeGallery}
+            >
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            </Upload>
+          </Form.Item>
 
-      <Form.Item
-        label="Name"
-        name="name"
-        rules={[
-          {
-            required: true,
-            message: "Please enter name",
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+          {searchParams.get("action") == "edit" && (
+            <>
+              <ProductOptionForm form={form} product={product} />
+            </>
+          )}
+        </Col>
+        <Col span={8}>
+          <Form.Item
+            label="Status"
+            name="status"
+            wrapperCol={{ sm: 24 }}
+            labelCol={24}
+          >
+            <Select>
+              {initData?.productStatus?.map((e, i) => (
+                <Select.Option value={e?.value} key={i}>
+                  {e?.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-      <Form.Item
-        label="Slug"
-        name="slug"
-        rules={[
-          {
-            required: true,
-            message: "Please enter slug",
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+          <Form.Item
+            wrapperCol={{ sm: 24 }}
+            labelCol={24}
+            label="Slug"
+            name="slug"
+            rules={[
+              {
+                required: true,
+                message: "Please enter slug",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-      <Form.Item label="Image">
-        <Upload
-          listType="picture-card"
-          maxCount={1}
-          accept="image/*"
-          fileList={fileList}
-          onChange={handleChangeImage}
-        >
-          <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </div>
-        </Upload>
-      </Form.Item>
+          <Form.Item
+            label="Categories"
+            name="categories"
+            wrapperCol={{ sm: 24 }}
+            labelCol={24}
+          >
+            <Select mode="multiple" allowClear>
+              {initData?.productCategories?.map((e, i) => (
+                <Select.Option value={e?.id} key={i}>
+                  {e?.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-      <Form.Item name="gallery" label="Gallery">
-        <Upload
-          listType="picture-card"
-          maxCount={10}
-          accept="image/*"
-          fileList={gallery}
-          onChange={handleChangeGallery}
-        >
-          <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </div>
-        </Upload>
-      </Form.Item>
+          <Form.Item
+            label="Tags"
+            name="tags"
+            wrapperCol={{ sm: 24 }}
+            labelCol={24}
+          >
+            <Select mode="multiple" allowClear>
+              {initData?.productTags?.map((e, i) => (
+                <Select.Option value={e?.id} key={i}>
+                  {e?.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
 
-      <Form.Item
-        label="Short description"
-        name="shortDescription"
-        defaultValue=""
-      >
-        <TextArea rows={4} value={""} />
-      </Form.Item>
-
-      <Form.Item label="Description">
-        <TextEditor
-          defaultValue={product?.description}
-          handleChange={handleChangeDescription}
-        />
-      </Form.Item>
-
-      <Form.Item label="Tags" name="tags">
-        <Select mode="multiple" allowClear>
-          {initData?.productTags?.map((e, i) => (
-            <Select.Option value={e?.id} key={i}>
-              {e?.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-
-      <Form.Item
-        label="Type"
-        name="type"
-        rules={[
-          {
-            required: true,
-            message: "Please enter description",
-          },
-        ]}
-      >
-        <Select>
-          {initData?.productTypes?.map((e, i) => (
-            <Select.Option value={e?.value} key={i}>
-              {e?.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-
-      {/* {typeValue == PRODUCT_TYPE_SIMPLE ? (
-        <SimpleProductTabs initData={initData} form={form} product={product} />
-      ) : (
-        <></>
-      )} */}
-
-      {searchParams.get("action") == "edit" && (
-        <>
-          <ProductOptionForm form={form} product={product} />
-        </>
-      )}
-
-      <Form.Item wrapperCol={{ span: 14, offset: 4 }} className="mt-6">
+      <Form.Item wrapperCol={24} className="mt-6">
         <Button primary htmlType="submit">
           Submit
         </Button>

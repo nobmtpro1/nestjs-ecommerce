@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IsNull, Like } from 'typeorm';
 import { Product } from 'src/entities/product.entity';
-import { productTypes } from 'src/enums/product.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
 import { productStatus } from 'src/enums/product.enum';
@@ -39,10 +38,6 @@ export class ProductService {
     return products;
   }
 
-  async getProductTypes() {
-    return productTypes;
-  }
-
   async getProductStatus() {
     return productStatus;
   }
@@ -55,10 +50,8 @@ export class ProductService {
     const slug = await this.generateSlug(body?.slug);
     const product = this.productRepository.create({
       status: body.status,
-      type: body?.type,
       name: body?.name,
       slug: slug,
-      shortDescription: body?.shortDescription,
       description: body?.description,
       categories: body?.categories?.map((id) => ({
         ...new ProductCategory(),
@@ -137,9 +130,7 @@ export class ProductService {
   async update(product: Product, body: UpdateProductDto) {
     product.status = body.status;
     product.name = body?.name;
-    product.shortDescription = body?.shortDescription;
     product.description = body?.description;
-    product.type = body?.type;
     if (product.slug != body?.slug) {
       product.slug = await this.generateSlug(body?.slug, product);
     }

@@ -1,4 +1,3 @@
-import { ProductType } from '../enums/product.enum';
 import { AuditEntity } from './audit.entity';
 import {
   Entity,
@@ -22,14 +21,8 @@ export class Product extends AuditEntity {
   @Column('varchar', { name: 'name', length: 255 })
   name: string;
 
-  @Column('varchar', { name: 'short_description', length: 1000 })
-  shortDescription: string;
-
   @Column('longtext', { name: 'description' })
   description: string;
-
-  @Column('varchar', { name: 'type', default: ProductType.VARIABLE })
-  type: ProductType;
 
   @OneToOne(() => Image)
   @JoinColumn({ name: 'image_id' })

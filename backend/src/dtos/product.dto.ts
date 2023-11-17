@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 import { ProductStatus } from 'src/enums/product.enum';
 import { ProductStockStatus } from 'src/enums/product.enum';
-import { ProductType } from 'src/enums/product.enum';
 import { ProductVarriantDto } from './product-variant.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -16,9 +15,6 @@ import { ProductOptionDto } from './product-option.dto';
 
 export class CreateProductDto {
   id!: string;
-
-  @IsNotEmpty()
-  type: ProductType;
 
   @IsNotEmpty()
   status: ProductStatus;
@@ -30,9 +26,6 @@ export class CreateProductDto {
   @IsNotEmpty()
   @Length(1, 255)
   slug: string;
-
-  @MaxLength(255)
-  shortDescription: string;
 
   description!: string;
 
@@ -51,10 +44,6 @@ export class UpdateProductDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  type: ProductType;
-
-  @ApiProperty()
-  @IsNotEmpty()
   status: ProductStatus;
 
   @ApiProperty()
@@ -66,10 +55,6 @@ export class UpdateProductDto {
   @IsNotEmpty()
   @Length(1, 255)
   slug: string;
-
-  @ApiProperty()
-  @MaxLength(255)
-  shortDescription: string;
 
   @ApiProperty()
   description?: string;

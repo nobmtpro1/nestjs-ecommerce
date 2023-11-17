@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { uploadImages } from "ultils/helper";
+import { PRODUCT_STATUS_ACTIVE, PRODUCT_STATUS_DRAFT } from "constants/config";
 
 export const requestSubmitForm = async (data, form, product) => {
   return await axios({
@@ -78,16 +79,8 @@ export const useProductFields = (
           value: product?.status,
         },
         {
-          name: "type",
-          value: product?.type,
-        },
-        {
           name: "name",
           value: product?.name,
-        },
-        {
-          name: "shortDescription",
-          value: product?.shortDescription,
         },
         {
           name: "categories",
@@ -168,6 +161,14 @@ export const useProductFields = (
           url: image?.src,
         }))
       );
+    } else {
+      const pFields = [
+        {
+          name: "status",
+          value: PRODUCT_STATUS_ACTIVE,
+        },
+      ];
+      setProductFields(pFields);
     }
   }, [product]);
 

@@ -16,7 +16,7 @@ export const handleLoginSuccess = (data) => {
 };
 
 export const generateImageUrl = (src) => {
-  return `${API_URL}/${src}`;
+  return `${src}`;
 };
 
 export const normFile = (e) => {
