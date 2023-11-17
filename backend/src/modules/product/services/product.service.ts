@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IsNull, Like, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { IsNull, Like } from 'typeorm';
 import { Product } from 'src/entities/product.entity';
-import { ProductType, productTypes } from 'src/enums/product.enum';
+import { productTypes } from 'src/enums/product.enum';
 import { Image } from 'src/entities/image.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
 import { productStatus } from 'src/enums/product.enum';
@@ -16,13 +15,11 @@ import { ProductOption } from 'src/entities/product-option.entity';
 import { ProductRepository } from 'src/repositories/product.repository';
 import { ProductOptionRepository } from 'src/repositories/product-option.repository';
 import { ProductVariantRepository } from 'src/repositories/product-variant.repository';
-import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 
 @Injectable()
 export class ProductService {
   constructor(
     private productRepository: ProductRepository,
-    private productCategoryRepository: ProductCategoryRepository,
     private productVariantRepository: ProductVariantRepository,
     private productOptionRepository: ProductOptionRepository,
   ) {}
