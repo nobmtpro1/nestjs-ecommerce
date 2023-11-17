@@ -18,11 +18,11 @@ import { ProductOption } from './product-option.entity';
 
 @Entity({ name: 'product' })
 export class Product extends AuditEntity {
-  @Column('varchar', { name: 'name', length: 255 })
-  name: string;
+  @Column('varchar', { name: 'title', length: 255 })
+  title: string;
 
-  @Column('longtext', { name: 'description' })
-  description: string;
+  @Column('longtext', { name: 'body_html' })
+  body_html: string;
 
   @OneToOne(() => Image)
   @JoinColumn({ name: 'image_id' })
@@ -30,13 +30,13 @@ export class Product extends AuditEntity {
 
   @ManyToMany(() => Image)
   @JoinTable({ name: 'product_m2m_image' })
-  gallery: Image[];
+  images: Image[];
 
-  @Column('int', { name: 'status', default: ProductStatus.ACTIVE })
+  @Column('varchar', { name: 'status', default: ProductStatus.ACTIVE })
   status: ProductStatus;
 
-  @Column('varchar', { name: 'slug', length: 1000, unique: true })
-  slug: string;
+  @Column('varchar', { name: 'handle', length: 1000, unique: true })
+  handle: string;
 
   @ManyToMany(() => ProductCategory, (category) => category.products)
   @JoinTable({ name: 'product_m2m_product_category' })

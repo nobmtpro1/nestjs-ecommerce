@@ -7,7 +7,6 @@ import { productStatus } from 'src/enums/product.enum';
 import { ProductTag } from 'src/entities/product-tag.entity';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
-import { productStockStatus } from 'src/enums/product.enum';
 import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
 import { ProductVariant } from 'src/entities/product-variant.entity';
 import { ProductOption } from 'src/entities/product-option.entity';
@@ -42,17 +41,13 @@ export class ProductService {
     return productStatus;
   }
 
-  async getProductStockStatus() {
-    return productStockStatus;
-  }
-
   async create(body: CreateProductDto) {
-    const slug = await this.generateSlug(body?.slug);
+    const handle = await this.generateSlug(body?.handle);
     const product = this.productRepository.create({
       status: body.status,
-      name: body?.name,
-      slug: slug,
-      description: body?.description,
+      title: body?.title,
+      handle: handle,
+      body_html: body?.body_html,
       categories: body?.categories?.map((id) => ({
         ...new ProductCategory(),
         id,
@@ -74,7 +69,7 @@ export class ProductService {
     image.id = body?.imageId;
     product.image = image;
 
-    product.gallery = body?.gallery?.map((id) => {
+    product.images = body?.images?.map((id) => {
       const obj = new Image();
       obj.id = id;
       return obj;
@@ -112,12 +107,12 @@ export class ProductService {
     return product;
   }
 
-  async findBySlug(slug: string) {
+  async findBySlug(handle: string) {
     const product = await this.productRepository.findOne({
-      where: { slug },
+      where: { handle },
       relations: {
         image: true,
-        gallery: true,
+        images: true,
         categories: true,
         tags: true,
         variants: true,
@@ -129,10 +124,10 @@ export class ProductService {
 
   async update(product: Product, body: UpdateProductDto) {
     product.status = body.status;
-    product.name = body?.name;
-    product.description = body?.description;
-    if (product.slug != body?.slug) {
-      product.slug = await this.generateSlug(body?.slug, product);
+    product.title = body?.title;
+    product.body_html = body?.body_html;
+    if (product.handle != body?.handle) {
+      product.handle = await this.generateSlug(body?.handle, product);
     }
 
     product.categories = body?.categories?.map((id) => {
@@ -151,7 +146,7 @@ export class ProductService {
       return obj;
     })();
 
-    product.gallery = body?.gallery?.map((id) => {
+    product.images = body?.images?.map((id) => {
       const obj = new Image();
       obj.id = id;
       return obj;
@@ -189,20 +184,11 @@ export class ProductService {
       }
       obj.sku = productVariant.sku;
       obj.status = productVariant.status;
-      obj.downloadable = productVariant.downloadable;
-      obj.isVirtual = productVariant.isVirtual;
       obj.isManageStock = productVariant.isManageStock;
-      obj.regularPrice = productVariant.regularPrice;
-      obj.salePrice = productVariant.salePrice;
-      obj.salePriceFrom = productVariant.salePriceFrom;
-      obj.salePriceTo = productVariant.salePriceTo;
-      obj.stock = productVariant.stock;
-      obj.stockStatus = productVariant.stockStatus;
-      obj.soldIndividually = productVariant.soldIndividually;
+      obj.price = productVariant.price;
+      obj.compareAtPrice = productVariant.compareAtPrice;
+      obj.inventoryQuantity = productVariant.inventoryQuantity;
       obj.weight = productVariant.weight;
-      obj.height = productVariant.height;
-      obj.length = productVariant.length;
-      obj.width = productVariant.width;
       obj.option1 = productVariant.option1;
       obj.option2 = productVariant.option2;
       obj.option3 = productVariant.option3;
@@ -227,20 +213,20 @@ export class ProductService {
   }
 
   async generateSlug(inputSlug: string, product?: Product) {
-    let slug = slugify(inputSlug.toLowerCase());
+    let handle = slugify(inputSlug.toLowerCase());
     const findProduct = await this.productRepository.findOne({
-      where: { slug: slug },
+      where: { handle: handle },
     });
     if (findProduct) {
       if (product) {
         if (product.id != findProduct.id) {
-          slug = slug + '-' + Guid.create().toString();
+          handle = handle + '-' + Guid.create().toString();
         }
       } else {
-        slug = slug + '-' + Guid.create().toString();
+        handle = handle + '-' + Guid.create().toString();
       }
     }
-    return slug;
+    return handle;
   }
 
   async delete(product) {

@@ -7,7 +7,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { ProductStatus } from 'src/enums/product.enum';
-import { ProductStockStatus } from 'src/enums/product.enum';
 import { ProductVarriantDto } from './product-variant.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -21,13 +20,13 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @Length(1, 255)
-  name: string;
+  title: string;
 
   @IsNotEmpty()
   @Length(1, 255)
-  slug: string;
+  handle: string;
 
-  description!: string;
+  body_html!: string;
 
   imageId!: string;
 
@@ -35,7 +34,7 @@ export class CreateProductDto {
 
   categories!: string[];
 
-  gallery!: string[];
+  images!: string[];
 }
 
 export class UpdateProductDto {
@@ -49,15 +48,15 @@ export class UpdateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   @Length(1, 255)
-  name: string;
+  title: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @Length(1, 255)
-  slug: string;
+  handle: string;
 
   @ApiProperty()
-  description?: string;
+  body_html?: string;
 
   @ApiProperty()
   imageId?: string;
@@ -69,7 +68,7 @@ export class UpdateProductDto {
   categories?: string[];
 
   @ApiProperty()
-  gallery?: string[];
+  images?: string[];
 
   @ApiProperty({ isArray: true, type: ProductVarriantDto })
   @ValidateNested({ each: true })

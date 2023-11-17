@@ -11,7 +11,6 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import { Product } from './product.entity';
-import { ProductStockStatus } from '../enums/product.enum';
 import { Image } from './image.entity';
 import { ProductStatus } from '../enums/product.enum';
 
@@ -21,60 +20,17 @@ export class ProductVariant extends AuditEntity {
   @JoinColumn({ name: 'product_id' })
   product: Product;
 
-  @OneToOne(() => Image)
-  @JoinColumn({ name: 'image_id' })
-  image: Image;
+  @Column('varchar', { name: 'title', nullable: true })
+  title: string;
+
+  @Column('bigint', { name: 'price', default: 0 })
+  price: number;
 
   @Column('varchar', { name: 'sku', nullable: true })
   sku: string;
 
-  @Column('int', { name: 'status', default: ProductStatus.ACTIVE })
-  status: ProductStatus;
-
-  @Column('boolean', { name: 'downloadable', default: false })
-  downloadable: Boolean;
-
-  @Column('boolean', { name: 'is_virtual', default: false })
-  isVirtual: Boolean;
-
-  @Column('boolean', { name: 'is_manage_stock', default: false })
-  isManageStock?: Boolean;
-
-  @Column('bigint', { name: 'regular_price', default: 0 })
-  regularPrice: number;
-
-  @Column('bigint', { name: 'sale_price', default: 0 })
-  salePrice: number;
-
-  @Column('date', { name: 'sale_price_from', nullable: true })
-  salePriceFrom: Date;
-
-  @Column('date', { name: 'sale_price_to', nullable: true })
-  salePriceTo: Date;
-
-  @Column('boolean', { name: 'sold_individually', default: false })
-  soldIndividually: Boolean;
-
-  @Column('int', { name: 'stock', nullable: true })
-  stock: number;
-
-  @Column('int', { name: 'stock_status', default: ProductStockStatus.IN_STOCK })
-  stockStatus: ProductStockStatus;
-
-  @Column('float', { name: 'weight', nullable: true, default: null })
-  weight: number;
-
-  @Column('float', { name: 'length', nullable: true, default: null })
-  length: number;
-
-  @Column('float', { name: 'width', nullable: true, default: null })
-  width: number;
-
-  @Column('float', { name: 'height', nullable: true, default: null })
-  height: number;
-
-  @Column('varchar', { name: 'imageId', nullable: true })
-  imageId: string;
+  @Column('bigint', { name: 'compare_at_price', default: 0 })
+  compareAtPrice: number;
 
   @Column('varchar', { name: 'option1', nullable: true })
   option1: string;
@@ -84,6 +40,31 @@ export class ProductVariant extends AuditEntity {
 
   @Column('varchar', { name: 'option3', nullable: true })
   option3: string;
+
+  @OneToOne(() => Image)
+  @JoinColumn({ name: 'image_id' })
+  image: Image;
+
+  @Column('float', { name: 'weight', nullable: true, default: null })
+  weight: number;
+
+  @Column('int', { name: 'inventory_quantity', nullable: true })
+  inventoryQuantity: number;
+
+  @Column('boolean', { name: 'require_shipping', default: false })
+  requireShipping: Boolean;
+
+  @Column('boolean', { name: 'is_manage_stock', default: false })
+  isManageStock?: Boolean;
+
+  @Column('boolean', {
+    name: 'is_continue_selling_when_out_of_stock',
+    default: false,
+  })
+  isContinueSellingWhenOutOfStock?: Boolean;
+
+  @Column('varchar', { name: 'status', default: ProductStatus.ACTIVE })
+  status: ProductStatus;
 
   @BeforeUpdate()
   @BeforeInsert()

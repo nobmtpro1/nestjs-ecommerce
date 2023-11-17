@@ -3,8 +3,6 @@ import { IsNotEmpty, IsOptional, Length, ValidateIf } from 'class-validator';
 import { Guid } from 'guid-typescript';
 import { DifferentTo } from 'src/decorators/different-to-validator.decorator';
 import { ProductStatus } from 'src/enums/product.enum';
-import { ProductStockStatus } from 'src/enums/product.enum';
-import { BeforeInsert, BeforeUpdate } from 'typeorm';
 
 export class ProductVarriantDto {
   @ApiProperty()
@@ -16,16 +14,20 @@ export class ProductVarriantDto {
   sku: string;
 
   @ApiProperty()
+  @IsOptional()
+  title: string;
+
+  @ApiProperty()
   @IsNotEmpty()
   status: ProductStatus;
 
   @ApiProperty()
-  @IsNotEmpty()
-  downloadable: boolean;
+  @IsOptional()
+  imageId?: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  isVirtual: boolean;
+  requireShipping: Boolean;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -33,31 +35,19 @@ export class ProductVarriantDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  regularPrice: number;
-
-  @ApiProperty()
-  @IsOptional()
-  salePrice: number;
-
-  @ApiProperty()
-  @IsOptional()
-  salePriceFrom: Date;
-
-  @ApiProperty()
-  @IsOptional()
-  salePriceTo: Date;
-
-  @ApiProperty()
-  @IsOptional()
-  stock?: number;
+  isContinueSellingWhenOutOfStock: boolean;
 
   @ApiProperty()
   @IsNotEmpty()
-  stockStatus: ProductStockStatus;
+  price: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  soldIndividually: boolean;
+  @IsOptional()
+  compareAtPrice: number;
+
+  @ApiProperty()
+  @IsOptional()
+  inventoryQuantity?: number;
 
   @ApiProperty()
   @IsOptional()
@@ -65,25 +55,16 @@ export class ProductVarriantDto {
 
   @ApiProperty()
   @IsOptional()
-  height: number;
-
-  @ApiProperty()
-  @IsOptional()
-  length: number;
-
-  @ApiProperty()
-  @IsOptional()
-  width: number;
-
-  @ApiProperty()
-  @IsOptional()
+  @DifferentTo(['option2', 'option3'])
   option1: string;
 
   @ApiProperty()
   @IsOptional()
+  @DifferentTo(['option1', 'option3'])
   option2: string;
 
   @ApiProperty()
   @IsOptional()
+  @DifferentTo(['option1', 'option2'])
   option3: string;
 }

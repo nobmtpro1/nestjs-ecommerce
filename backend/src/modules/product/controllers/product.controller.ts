@@ -47,14 +47,11 @@ export class ProductController {
   async getRelatedData() {
     const productCategories = await this.productCategoryService.all();
     const productStatus = await this.productService.getProductStatus();
-    const productStockStatus =
-      await this.productService.getProductStockStatus();
     const productTags = await this.productTagService.all();
     return new ResponseSuccess('Success', {
       productCategories,
       productStatus,
       productTags,
-      productStockStatus,
     });
   }
 
