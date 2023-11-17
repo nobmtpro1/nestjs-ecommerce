@@ -48,10 +48,6 @@ export class ProductService {
       title: body?.title,
       handle: handle,
       body_html: body?.body_html,
-      categories: body?.categories?.map((id) => ({
-        ...new ProductCategory(),
-        id,
-      })),
     });
 
     product.categories = body?.categories?.map((id) => {
@@ -59,6 +55,7 @@ export class ProductService {
       obj.id = id;
       return obj;
     });
+
     product.tags = body?.tags?.map((id) => {
       const obj = new ProductTag();
       obj.id = id;
@@ -74,6 +71,7 @@ export class ProductService {
       obj.id = id;
       return obj;
     });
+
     const created = await this.productRepository.save(product, {
       reload: true,
     });
@@ -97,7 +95,7 @@ export class ProductService {
       .createQueryBuilder('product')
       .where('product.id = :id', { id })
       .leftJoinAndSelect('product.image', 'image')
-      .leftJoinAndSelect('product.gallery', 'gallery')
+      .leftJoinAndSelect('product.images', 'images')
       .leftJoinAndSelect('product.categories', 'categories')
       .leftJoinAndSelect('product.tags', 'tags')
       .leftJoinAndSelect('product.variants', 'variants')
@@ -182,6 +180,7 @@ export class ProductService {
           continue;
         }
       }
+      obj.title = productVariant.title;
       obj.sku = productVariant.sku;
       obj.status = productVariant.status;
       obj.isManageStock = productVariant.isManageStock;
@@ -189,9 +188,19 @@ export class ProductService {
       obj.compareAtPrice = productVariant.compareAtPrice;
       obj.inventoryQuantity = productVariant.inventoryQuantity;
       obj.weight = productVariant.weight;
+      obj.requireShipping = productVariant.requireShipping;
+      obj.isContinueSellingWhenOutOfStock =
+        productVariant.isContinueSellingWhenOutOfStock;
       obj.option1 = productVariant.option1;
       obj.option2 = productVariant.option2;
       obj.option3 = productVariant.option3;
+      if (productVariant?.imageId) {
+        obj.image = (() => {
+          const img = new Image();
+          img.id = productVariant?.imageId;
+          return img;
+        })();
+      }
       await obj.save();
       productVariants.push(obj);
     }
