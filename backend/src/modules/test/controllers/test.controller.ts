@@ -4,7 +4,9 @@ import {
   Get,
   Header,
   Inject,
+  ParseIntPipe,
   Post,
+  Query,
   Res,
   StreamableFile,
   UploadedFile,
@@ -71,7 +73,7 @@ export class TestController {
   async serialize() {
     const user = await this.userService.findOne('admin@gmail.com');
     console.log(user);
-    return new ResponseSuccess('Upload success', user);
+    return new ResponseSuccess('Upload success', { a: 123, user });
   }
 
   @Public()
@@ -216,5 +218,16 @@ export class TestController {
       'Content-Disposition': `attachment; filename="${filename}"`,
     });
     return new StreamableFile(buffer);
+  }
+
+  @Public()
+  @Get('paginate')
+  async paginate(
+    @Query('page', ParseIntPipe) page: number,
+    @Query('limit', ParseIntPipe) limit: number,
+  ) {
+    console.log(page);
+    const users = await this.userRepository.paginate({ limit, page });
+    return new ResponseSuccess('Upload success', users);
   }
 }
