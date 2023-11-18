@@ -1,6 +1,9 @@
 import {
   ArrayMaxSize,
+  IsIn,
+  IsInt,
   IsNotEmpty,
+  IsOptional,
   Length,
   MaxLength,
   ValidateIf,
@@ -8,10 +11,11 @@ import {
 } from 'class-validator';
 import { ProductStatus } from 'src/modules/product/enums/product.enum';
 import { ProductVariantDto } from './product-variant.dto';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductOptionDto } from './product-option.dto';
 import { ImageDto } from '../../image/dtos/image.dto';
+import { EQueryOrder } from 'src/commons/enums/query.enums';
 
 export class CreateProductDto {
   @ApiProperty()
@@ -104,4 +108,31 @@ export class UpdateProductDto {
 export class DeleteProductDto {
   @IsNotEmpty()
   id: number;
+}
+
+export class SearchProductDto {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  search?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsInt()
+  @Transform((obj) => parseInt(obj.value))
+  limit?: number = 3;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsInt()
+  @Transform((obj) => parseInt(obj.value))
+  page?: number = 1;
+
+  @ApiProperty({ required: false })
+  @IsIn(['title', 'createdAt', 'inventory_quantity'])
+  orderBy?: string = 'createdAt';
+
+  @ApiProperty({ required: false })
+  @IsIn(['asc', 'desc'])
+  @IsOptional()
+  order?: EQueryOrder = EQueryOrder.DESC;
 }

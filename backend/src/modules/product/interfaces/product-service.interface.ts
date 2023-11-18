@@ -1,9 +1,14 @@
 import { Product } from 'src/entities/product.entity';
-import { CreateProductDto, UpdateProductDto } from '../dtos/product.dto';
+import {
+  CreateProductDto,
+  SearchProductDto,
+  UpdateProductDto,
+} from '../dtos/product.dto';
 import { ProductStatusView } from 'src/modules/product/enums/product.enum';
+import { Pagination } from 'src/commons/interfaces/pagination.interface';
 
 export interface IProductService {
-  get({ search }: { search?: string }): Promise<Product[]>;
+  get(query: SearchProductDto): Promise<Pagination<Product>>;
 
   getProductStatus(): ProductStatusView[];
 

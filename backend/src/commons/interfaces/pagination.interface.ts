@@ -1,3 +1,5 @@
+import { EQueryOrder } from '../enums/query.enums';
+
 export interface PaginationInfoInterface {
   skip: number;
   limit: number;
@@ -8,6 +10,11 @@ export interface SearchFilterInterface {
   keywords?: string;
   limit?: number;
   page?: number;
+}
+
+export interface SearchOrderInterface {
+  orderBy: string;
+  order: EQueryOrder;
 }
 
 export interface PaginationResultInterface<PaginationEntity> {

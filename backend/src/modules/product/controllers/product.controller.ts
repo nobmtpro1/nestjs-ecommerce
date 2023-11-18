@@ -19,6 +19,7 @@ import { ProductService } from '../services/product.service';
 import {
   CreateProductDto,
   DeleteProductDto,
+  SearchProductDto,
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/response';
@@ -42,10 +43,12 @@ export class ProductController {
   @Public()
   @Get('')
   @UseInterceptors(ClassSerializerInterceptor)
-  async get(@Query() query: { search?: string }) {
-    const products = await this.productService.get({
-      search: query?.search,
-    });
+  async get(
+    @Query()
+    query: SearchProductDto,
+  ) {
+    console.log(query);
+    const products = await this.productService.get(query);
     return new ResponseSuccess('Success', products);
   }
 

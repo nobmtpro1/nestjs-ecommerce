@@ -1,6 +1,7 @@
 import {
   Pagination,
   PaginationInfoInterface,
+  SearchOrderInterface,
 } from 'src/commons/interfaces/pagination.interface';
 import { SearchFilterInterface } from '../interfaces/pagination.interface';
 import { DeepPartial, FindManyOptions, ILike, Repository } from 'typeorm';
@@ -28,6 +29,7 @@ export class BaseRepository<T> extends Repository<T> {
 
   async paginate(
     searchFilter: SearchFilterInterface,
+    order?: SearchOrderInterface,
     relations: string[] = [],
     searchCriteria: string[] = [],
   ): Promise<Pagination<T>> {
@@ -46,9 +48,17 @@ export class BaseRepository<T> extends Repository<T> {
     findOptions.take = paginationInfo.limit;
     findOptions.skip = paginationInfo.skip;
     findOptions.where = whereCondition;
-    findOptions.order = {
-      createdAt: 'DESC',
-    };
+
+    if (order) {
+      findOptions.order = {
+        [order.orderBy]: order.order,
+      };
+    } else {
+      findOptions.order = {
+        createdAt: 'DESC',
+      };
+    }
+
     const { page, skip, limit } = paginationInfo;
     const [results, total] = await this.findAndCount(findOptions);
     console.log(page + 1);

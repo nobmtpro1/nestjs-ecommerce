@@ -2,10 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { Like } from 'typeorm';
 import { Product } from 'src/entities/product.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
-import { ProductStatusView, productStatus } from 'src/modules/product/enums/product.enum';
+import {
+  ProductStatusView,
+  productStatus,
+} from 'src/modules/product/enums/product.enum';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
-import { CreateProductDto, UpdateProductDto } from '../dtos/product.dto';
+import {
+  CreateProductDto,
+  SearchProductDto,
+  UpdateProductDto,
+} from '../dtos/product.dto';
 import { ProductRepository } from 'src/modules/product/repositories/product.repository';
 import { ProductTagService } from './product-tag.service';
 import { ImageService } from 'src/modules/image/services/image.service';
@@ -23,18 +30,30 @@ export class ProductService implements IProductService {
     private imageService: ImageService,
   ) {}
 
-  async get({ search }: { search?: string }) {
+  async get(query: SearchProductDto) {
+    const { search, page, limit, orderBy, order } = query;
     const where: any = {};
     if (search) {
-      where.name = Like(`%${search}%`);
+      where.title = Like(`%${search}%`);
     }
-    const products = await this.productRepository.find({
-      where,
-      order: {
-        createdAt: 'DESC',
+    // const products = await this.productRepository.find({
+    //   where,
+    //   order: {
+    //     [orderBy]: order,
+    //   },
+    //   relations: { image: true },
+    // });
+    const products = await this.productRepository.paginate(
+      {
+        keywords: search,
+        limit,
+        page,
       },
-      relations: { image: true },
-    });
+      {
+        orderBy,
+        order,
+      },
+    );
     return products;
   }
 

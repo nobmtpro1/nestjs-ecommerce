@@ -23,9 +23,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'), {
     prefix: '/public/',
   });
-  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api', { exclude: [''] });
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const config = new DocumentBuilder()
     .setTitle('API Document')
