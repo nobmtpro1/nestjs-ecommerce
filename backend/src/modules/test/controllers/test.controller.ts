@@ -27,9 +27,8 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { Permissions } from 'src/decorators/permissions.decorator';
-import { MailService } from 'src/modules/mail/mail.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { BufferedFile } from 'src/interfaces/file.interface';
+import * as Multer from 'multer';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
@@ -129,7 +128,7 @@ export class TestController {
     },
   })
   @UseInterceptors(FileInterceptor('image'))
-  async uploadSingle(@UploadedFile() image: BufferedFile) {
+  async uploadSingle(@UploadedFile() image: Express.Multer.File) {
     console.log(image);
     let uploaded_image = await this.minioClientService.upload(image);
 
@@ -154,7 +153,7 @@ export class TestController {
     },
   })
   @UseInterceptors(FileInterceptor('image'))
-  async upload(@UploadedFile() image: BufferedFile) {
+  async upload(@UploadedFile() image: Express.Multer.File) {
     console.log(image);
     const result = uploadFile('public/uploads', image);
     return new ResponseSuccess('upload', result);
@@ -192,7 +191,7 @@ export class TestController {
     },
   })
   @UseInterceptors(FileInterceptor('file'))
-  async import(@UploadedFile() file: BufferedFile) {
+  async import(@UploadedFile() file: Express.Multer.File) {
     const workSheetsFromBuffer = xlsx.parse(file.buffer);
     const data = workSheetsFromBuffer?.[0].data;
     console.log(data);
@@ -207,7 +206,7 @@ export class TestController {
     const users = await this.userRepository.find();
     const data = [['ID', 'Name', 'Email']];
     users.forEach((user) => {
-      data.push([user.id, user.name, user.email]);
+      data.push([user.id.toString(), user.name, user.email]);
     });
     const buffer = xlsx.build([
       { name: 'mySheetName', data: data, options: {} },

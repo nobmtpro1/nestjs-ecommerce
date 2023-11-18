@@ -8,6 +8,7 @@ import {
   JoinColumn,
   Unique,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { Image } from './image.entity';
 import { ProductStatus } from '../enums/product.enum';
@@ -24,7 +25,7 @@ export class Product extends AuditEntity {
   @Column('longtext', { name: 'body_html' })
   body_html: string;
 
-  @OneToOne(() => Image)
+  @ManyToOne(() => Image)
   @JoinColumn({ name: 'image_id' })
   image: Image;
 

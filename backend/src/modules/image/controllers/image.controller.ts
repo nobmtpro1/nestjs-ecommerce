@@ -14,9 +14,7 @@ import { AuthGuard } from '../../../guards/auth.guard';
 import { ResponseSuccess } from 'src/commons/response';
 import { ImageService } from '../services/image.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/commons/multer';
 import { Public } from 'src/decorators/public.decorator';
-import { BufferedFile } from 'src/interfaces/file.interface';
 
 @UseGuards(AuthGuard)
 @Controller('image')
@@ -32,7 +30,7 @@ export class ImageController {
   async uploadImage(
     @UploadedFiles()
     files: {
-      images?: BufferedFile;
+      images?: Express.Multer.File[];
     },
   ) {
     console.log(files);

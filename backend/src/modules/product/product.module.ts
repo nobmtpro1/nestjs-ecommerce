@@ -14,9 +14,16 @@ import { ProductCategoryRepository } from 'src/repositories/product-category.rep
 import { ProductTagRepository } from 'src/repositories/product-tag.repository';
 import { ProductOptionRepository } from 'src/repositories/product-option.repository';
 import { ProductVariantRepository } from 'src/repositories/product-variant.repository';
+import { ImageModule } from '../image/image.module';
 
 @Module({
-  imports: [TypeOrmModule, JwtModule, UserModule, AuthorizationModule],
+  imports: [
+    TypeOrmModule,
+    JwtModule,
+    UserModule,
+    AuthorizationModule,
+    ImageModule,
+  ],
   controllers: [
     ProductController,
     ProductCategoryController,

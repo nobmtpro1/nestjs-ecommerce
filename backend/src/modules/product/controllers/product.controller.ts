@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -64,11 +65,8 @@ export class ProductController {
 
   @Public()
   @Get(':id')
-  async findById(@Param('id') id) {
+  async findById(@Param('id', ParseIntPipe) id: number) {
     let product = await this.productService.findById(id);
-    if (!product) {
-      product = await this.productService.findBySlug(id);
-    }
     return new ResponseSuccess('Success', product);
   }
 

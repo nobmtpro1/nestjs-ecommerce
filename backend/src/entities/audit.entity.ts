@@ -4,12 +4,16 @@ import {
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
+  Generated,
 } from 'typeorm';
 
 export abstract class AuditEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({ type: 'bigint' })
+  id: number;
+
   @Column()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @Generated('uuid')
+  uuid: string;
 
   @CreateDateColumn({
     type: 'timestamp',

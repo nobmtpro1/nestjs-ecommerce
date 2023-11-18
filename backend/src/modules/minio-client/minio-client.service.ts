@@ -1,6 +1,5 @@
 import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { MinioService } from 'nestjs-minio-client';
-import { BufferedFile } from '../../interfaces/file.interface';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
 
@@ -22,7 +21,7 @@ export class MinioClientService {
   }
 
   public async upload(
-    file: BufferedFile,
+    file: Express.Multer.File,
     baseBucket: string = this.config.MINIO_BUCKET,
   ) {
     if (!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))) {

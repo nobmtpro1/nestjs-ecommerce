@@ -7,7 +7,7 @@ import { ProductStatus } from 'src/enums/product.enum';
 export class ProductVarriantDto {
   @ApiProperty()
   @IsOptional()
-  id?: string;
+  id?: number;
 
   @ApiProperty()
   @IsOptional()
@@ -27,15 +27,7 @@ export class ProductVarriantDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  requireShipping: Boolean;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  isManageStock: boolean;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  isContinueSellingWhenOutOfStock: boolean;
+  requires_shipping: Boolean;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -43,11 +35,11 @@ export class ProductVarriantDto {
 
   @ApiProperty()
   @IsOptional()
-  compareAtPrice: number;
+  compare_at_price: number;
 
   @ApiProperty()
   @IsOptional()
-  inventoryQuantity?: number;
+  inventory_quantity?: number;
 
   @ApiProperty()
   @IsOptional()

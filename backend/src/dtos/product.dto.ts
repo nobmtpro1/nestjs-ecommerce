@@ -11,35 +11,41 @@ import { ProductVarriantDto } from './product-variant.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductOptionDto } from './product-option.dto';
+import { ImageDto } from './image.dto';
 
 export class CreateProductDto {
-  id!: string;
-
+  @ApiProperty()
   @IsNotEmpty()
   status: ProductStatus;
 
+  @ApiProperty()
   @IsNotEmpty()
   @Length(1, 255)
   title: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @Length(1, 255)
   handle: string;
 
-  body_html!: string;
+  @ApiProperty()
+  body_html?: string;
 
-  imageId!: string;
+  image?: ImageDto;
 
-  tags!: string[];
+  tags?: string;
 
-  categories!: string[];
+  categories?: number[];
 
-  images!: string[];
+  @ApiProperty({ isArray: true, type: ImageDto })
+  @ValidateNested({ each: true })
+  @Type(() => ImageDto)
+  images?: ImageDto[];
 }
 
 export class UpdateProductDto {
   @ApiProperty()
-  id!: string;
+  id?: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -59,16 +65,18 @@ export class UpdateProductDto {
   body_html?: string;
 
   @ApiProperty()
-  imageId?: string;
+  image?: ImageDto;
 
   @ApiProperty()
-  tags?: string[];
+  tags?: string;
 
   @ApiProperty()
-  categories?: string[];
+  categories?: number[];
 
-  @ApiProperty()
-  images?: string[];
+  @ApiProperty({ isArray: true, type: ImageDto })
+  @ValidateNested({ each: true })
+  @Type(() => ImageDto)
+  images?: ImageDto[];
 
   @ApiProperty({ isArray: true, type: ProductVarriantDto })
   @ValidateNested({ each: true })
@@ -84,5 +92,5 @@ export class UpdateProductDto {
 
 export class DeleteProductDto {
   @IsNotEmpty()
-  id: string;
+  id: number;
 }

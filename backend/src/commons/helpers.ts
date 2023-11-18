@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
-import { BufferedFile } from 'src/interfaces/file.interface';
+import * as Multer from 'multer';
 
 export const hashPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
@@ -23,7 +23,7 @@ export const sleep = async (ms) => {
   });
 };
 
-export const uploadFile = (path: string, bufferedFile: BufferedFile) => {
+export const uploadFile = (path: string, bufferedFile: Express.Multer.File) => {
   const fullpath = `${path}/${new Date().getTime()}-${
     bufferedFile.originalname
   }`;

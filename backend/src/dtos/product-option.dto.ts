@@ -11,7 +11,7 @@ import {
 export class ProductOptionDto {
   @ApiProperty()
   @IsOptional()
-  id?: string;
+  id?: number;
 
   @ApiProperty()
   @IsNotEmpty()

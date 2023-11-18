@@ -30,7 +30,7 @@ export class ProductVariant extends AuditEntity {
   sku: string;
 
   @Column('bigint', { name: 'compare_at_price', default: 0 })
-  compareAtPrice: number;
+  compare_at_price: number;
 
   @Column('varchar', { name: 'option1', nullable: true })
   option1: string;
@@ -49,19 +49,10 @@ export class ProductVariant extends AuditEntity {
   weight: number;
 
   @Column('int', { name: 'inventory_quantity', nullable: true })
-  inventoryQuantity: number;
+  inventory_quantity: number;
 
-  @Column('boolean', { name: 'require_shipping', default: false })
-  requireShipping: Boolean;
-
-  @Column('boolean', { name: 'is_manage_stock', default: false })
-  isManageStock?: Boolean;
-
-  @Column('boolean', {
-    name: 'is_continue_selling_when_out_of_stock',
-    default: false,
-  })
-  isContinueSellingWhenOutOfStock?: Boolean;
+  @Column('boolean', { name: 'requires_shipping', default: false })
+  requires_shipping: Boolean;
 
   @Column('varchar', { name: 'status', default: ProductStatus.ACTIVE })
   status: ProductStatus;
