@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ProductOptionRepository } from 'src/repositories/product-option.repository';
-import { ProductOptionDto } from 'src/dtos/product-option.dto';
-import { ProductVariantRepository } from 'src/repositories/product-variant.repository';
-import { ProductVariantDto } from 'src/dtos/product-variant.dto';
+import { ProductOptionRepository } from 'src/modules/product/repositories/product-option.repository';
+import { ProductOptionDto } from 'src/modules/product/dtos/product-option.dto';
+import { ProductVariantRepository } from 'src/modules/product/repositories/product-variant.repository';
+import { ProductVariantDto } from 'src/modules/product/dtos/product-variant.dto';
 import { Image } from 'src/entities/image.entity';
 
 @Injectable()

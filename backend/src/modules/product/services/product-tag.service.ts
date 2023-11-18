@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductTag } from 'src/entities/product-tag.entity';
-import { ProductTagRepository } from 'src/repositories/product-tag.repository';
+import { ProductTagRepository } from 'src/modules/product/repositories/product-tag.repository';
 
 @Injectable()
 export class ProductTagService {

@@ -11,10 +11,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { AuthGuard } from '../../../guards/auth.guard';
-import { Public } from 'src/decorators/public.decorator';
+import { AuthGuard } from '../../../commons/guards/auth.guard';
+import { Public } from 'src/commons/decorators/public.decorator';
 import { ResponseSuccess } from 'src/commons/response';
-import { AuthLoginDto } from 'src/dtos/auth.dto';
+import { AuthLoginDto } from 'src/modules/authentication/dtos/auth.dto';
 
 @Controller('auth')
 export class AuthController {

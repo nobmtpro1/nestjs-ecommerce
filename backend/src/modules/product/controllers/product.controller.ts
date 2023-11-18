@@ -1,8 +1,10 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
+  Inject,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -10,33 +12,36 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '../../../guards/auth.guard';
+import { AuthGuard } from '../../../commons/guards/auth.guard';
 import { ProductService } from '../services/product.service';
 import {
   CreateProductDto,
   DeleteProductDto,
   UpdateProductDto,
-} from '../../../dtos/product.dto';
+} from '../dtos/product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/response';
-import { Public } from 'src/decorators/public.decorator';
+import { Public } from 'src/commons/decorators/public.decorator';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { PermissionsGuard } from 'src/guards/permissions.guard';
+import { RolesGuard } from 'src/commons/guards/roles.guard';
+import { PermissionsGuard } from 'src/commons/guards/permissions.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { IProductService } from '../interfaces/product-service.interface';
 
 // @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')
 export class ProductController {
   constructor(
-    private readonly productService: ProductService,
+    @Inject(IProductService) private readonly productService: IProductService,
     private readonly productCategoryService: ProductCategoryService,
     private readonly productTagService: ProductTagService,
   ) {}
 
   @Public()
   @Get('')
+  @UseInterceptors(ClassSerializerInterceptor)
   async get(@Query() query: { search?: string }) {
     const products = await this.productService.get({
       search: query?.search,
@@ -67,6 +72,7 @@ export class ProductController {
 
   @Public()
   @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
   async findById(@Param('id', ParseIntPipe) id: number) {
     let product = await this.productService.findById(id);
     return new ResponseSuccess('Success', product);

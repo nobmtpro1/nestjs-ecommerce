@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { Like } from 'typeorm';
 import { Product } from 'src/entities/product.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
-import { productStatus } from 'src/enums/product.enum';
+import { ProductStatusView, productStatus } from 'src/modules/product/enums/product.enum';
 import slugify from 'slugify';
 import { Guid } from 'guid-typescript';
-import { CreateProductDto, UpdateProductDto } from '../../../dtos/product.dto';
-import { ProductRepository } from 'src/repositories/product.repository';
+import { CreateProductDto, UpdateProductDto } from '../dtos/product.dto';
+import { ProductRepository } from 'src/modules/product/repositories/product.repository';
 import { ProductTagService } from './product-tag.service';
 import { ImageService } from 'src/modules/image/services/image.service';
 import { ProductOptionService } from './product-option.service';
 import { ProductVariantService } from './product-variant.service';
+import { IProductService } from '../interfaces/product-service.interface';
 
 @Injectable()
-export class ProductService {
+export class ProductService implements IProductService {
   constructor(
     private productRepository: ProductRepository,
     private productTagService: ProductTagService,
@@ -37,7 +38,7 @@ export class ProductService {
     return products;
   }
 
-  async getProductStatus() {
+  getProductStatus(): ProductStatusView[] {
     return productStatus;
   }
 
@@ -151,7 +152,7 @@ export class ProductService {
     product.variants = await this.productVariantService.updateOrCreateMany(
       body.variants,
     );
-    
+
     await product.save();
 
     return await this.findById(product.id);
@@ -174,7 +175,7 @@ export class ProductService {
     return handle;
   }
 
-  async delete(product) {
+  async delete(product: Product) {
     await this.productRepository.remove(product);
     return product;
   }

@@ -10,11 +10,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '../../../guards/auth.guard';
+import { AuthGuard } from '../../../commons/guards/auth.guard';
 import { ResponseSuccess } from 'src/commons/response';
 import { ImageService } from '../services/image.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Public } from 'src/decorators/public.decorator';
+import { Public } from 'src/commons/decorators/public.decorator';
 
 @UseGuards(AuthGuard)
 @Controller('image')

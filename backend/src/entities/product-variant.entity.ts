@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { Product } from './product.entity';
 import { Image } from './image.entity';
-import { ProductStatus } from '../enums/product.enum';
+import { ProductStatus } from '../modules/product/enums/product.enum';
 
 @Entity({ name: 'product_variant' })
 export class ProductVariant extends AuditEntity {

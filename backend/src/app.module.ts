@@ -15,12 +15,12 @@ import { MailModule } from './modules/mail/mail.module';
 import minio from './configs/minio';
 import { AppController } from './app.controller';
 import { MinioClientModule } from './modules/minio-client/minio-client.module';
-import { SeedCommand } from './commands/seed';
 import redis from './configs/redis';
 import { QueueModule } from './modules/queue/queue.module';
 import { WinstonModule } from 'nest-winston';
 import winston from './configs/winston';
 import { TaskSchedulingModule } from './modules/task-scheduling/task-scheduling.module';
+import { CommandModule } from './modules/command/command.module';
 
 @Module({
   imports: [
@@ -40,6 +40,7 @@ import { TaskSchedulingModule } from './modules/task-scheduling/task-scheduling.
     // modules
     QueueModule,
     TaskSchedulingModule,
+    CommandModule,
     AuthorizationModule,
     MailModule,
     MinioClientModule,
@@ -50,6 +51,6 @@ import { TaskSchedulingModule } from './modules/task-scheduling/task-scheduling.
     TestModule,
   ],
   controllers: [AppController],
-  providers: [Logger, SeedCommand],
+  providers: [Logger],
 })
 export class AppModule {}

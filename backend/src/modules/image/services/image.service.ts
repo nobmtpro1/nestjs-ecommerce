@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
-import { ImageRepository } from 'src/repositories/image.repository';
+import { ImageRepository } from 'src/modules/image/repositories/image.repository';
 import * as Multer from 'multer';
-import { ImageDto } from 'src/dtos/image.dto';
+import { ImageDto } from 'src/modules/image/dtos/image.dto';
 import { Image } from 'src/entities/image.entity';
 
 @Injectable()

@@ -11,11 +11,12 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Image } from './image.entity';
-import { ProductStatus } from '../enums/product.enum';
+import { ProductStatus } from '../modules/product/enums/product.enum';
 import { ProductCategory } from './product-category.entity';
 import { ProductTag } from './product-tag.entity';
 import { ProductVariant } from './product-variant.entity';
 import { ProductOption } from './product-option.entity';
+import { Transform } from 'class-transformer';
 
 @Entity({ name: 'product' })
 export class Product extends AuditEntity {
@@ -45,6 +46,7 @@ export class Product extends AuditEntity {
 
   @ManyToMany(() => ProductTag, (tag) => tag.products)
   @JoinTable({ name: 'product_m2m_product_tag' })
+  @Transform(({ value }) => value.map((tag: ProductTag) => tag.name).toString())
   tags: ProductTag[];
 
   @OneToMany(() => ProductVariant, (variant) => variant.product)

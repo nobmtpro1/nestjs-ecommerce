@@ -15,7 +15,7 @@ export default () => ({
       from: 'nestjs_ecommerce@gmail.com',
     },
     template: {
-      dir: join(__dirname, '..', 'templates'),
+      dir: join(__dirname, '../modules/mail', 'templates'),
       adapter: new HandlebarsAdapter(),
       options: {
         strict: true,

@@ -5,7 +5,7 @@ import { ImageService } from './services/image.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { MinioClientModule } from '../minio-client/minio-client.module';
-import { ImageRepository } from 'src/repositories/image.repository';
+import { ImageRepository } from 'src/modules/image/repositories/image.repository';
 
 @Module({
   imports: [TypeOrmModule, JwtModule, UserModule, MinioClientModule],

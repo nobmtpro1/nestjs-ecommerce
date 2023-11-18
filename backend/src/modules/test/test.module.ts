@@ -6,7 +6,6 @@ import { AuthorizationModule } from '../authorization/authorization.module';
 import { MailModule } from '../mail/mail.module';
 import { MinioClientModule } from '../minio-client/minio-client.module';
 import { QueueModule } from '../queue/queue.module';
-import { UserRepository } from 'src/repositories/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -20,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule,
   ],
   controllers: [TestController],
-  providers: [UserRepository],
+  providers: [],
   exports: [],
 })
 export class TestModule {}

@@ -14,30 +14,30 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ResponseSuccess } from 'src/commons/response';
-import { Public } from 'src/decorators/public.decorator';
+import { Public } from 'src/commons/decorators/public.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { sleep, uploadFile } from '../../../commons/helpers';
 import { UserService } from '../../user/services/user.service';
-import { Role } from 'src/enums/user-role.enum';
-import { Permission } from 'src/enums/user-permission.enum';
+import { Role } from 'src/modules/user/enums/user-role.enum';
+import { Permission } from 'src/modules/user/enums/user-permission.enum';
 import { ConfigService } from '@nestjs/config';
-import { Roles } from 'src/decorators/roles.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { PermissionsGuard } from 'src/guards/permissions.guard';
-import { Permissions } from 'src/decorators/permissions.decorator';
+import { Roles } from 'src/commons/decorators/roles.decorator';
+import { AuthGuard } from 'src/commons/guards/auth.guard';
+import { RolesGuard } from 'src/commons/guards/roles.guard';
+import { PermissionsGuard } from 'src/commons/guards/permissions.guard';
+import { Permissions } from 'src/commons/decorators/permissions.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as Multer from 'multer';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { LoggingInterceptor } from 'src/commons/interceptors/logging.interceptor';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { instanceToPlain } from 'class-transformer';
 import axios from 'axios';
 import xlsx from 'node-xlsx';
-import { UserRepository } from 'src/repositories/user.repository';
+import { UserRepository } from 'src/modules/user/repositories/user.repository';
 
 @Controller('test')
 export class TestController {
