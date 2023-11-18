@@ -7,7 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { ProductStatus } from 'src/enums/product.enum';
-import { ProductVarriantDto } from './product-variant.dto';
+import { ProductVariantDto } from './product-variant.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductOptionDto } from './product-option.dto';
@@ -41,6 +41,17 @@ export class CreateProductDto {
   @ValidateNested({ each: true })
   @Type(() => ImageDto)
   images?: ImageDto[];
+
+  @ApiProperty({ isArray: true, type: ProductVariantDto })
+  @ValidateNested({ each: true })
+  @Type(() => ProductVariantDto)
+  variants: ProductVariantDto[];
+
+  @ApiProperty({ isArray: true, type: ProductOptionDto })
+  @ValidateNested({ each: true })
+  @Type(() => ProductOptionDto)
+  @ArrayMaxSize(3)
+  options: ProductOptionDto[];
 }
 
 export class UpdateProductDto {
@@ -78,10 +89,10 @@ export class UpdateProductDto {
   @Type(() => ImageDto)
   images?: ImageDto[];
 
-  @ApiProperty({ isArray: true, type: ProductVarriantDto })
+  @ApiProperty({ isArray: true, type: ProductVariantDto })
   @ValidateNested({ each: true })
-  @Type(() => ProductVarriantDto)
-  variants: ProductVarriantDto[];
+  @Type(() => ProductVariantDto)
+  variants: ProductVariantDto[];
 
   @ApiProperty({ isArray: true, type: ProductOptionDto })
   @ValidateNested({ each: true })

@@ -29,8 +29,8 @@ export class ProductVariant extends AuditEntity {
   @Column('varchar', { name: 'sku', nullable: true })
   sku: string;
 
-  @Column('bigint', { name: 'compare_at_price', default: 0 })
-  compare_at_price: number;
+  @Column('bigint', { name: 'compare_at_price', default: 0, nullable: true })
+  compare_at_price?: number;
 
   @Column('varchar', { name: 'option1', nullable: true })
   option1: string;

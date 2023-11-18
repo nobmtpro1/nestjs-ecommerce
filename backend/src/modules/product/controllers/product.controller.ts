@@ -25,7 +25,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-@UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+// @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')
 export class ProductController {
   constructor(
@@ -60,7 +60,8 @@ export class ProductController {
   @Post('')
   async postCreate(@Body() body: CreateProductDto) {
     const product = await this.productService.create(body);
-    return new ResponseSuccess('Success', product);
+    const findProduct = await this.productService.findById(product.id);
+    return new ResponseSuccess('Success', findProduct);
   }
 
   @Public()

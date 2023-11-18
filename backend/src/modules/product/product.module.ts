@@ -15,6 +15,8 @@ import { ProductTagRepository } from 'src/repositories/product-tag.repository';
 import { ProductOptionRepository } from 'src/repositories/product-option.repository';
 import { ProductVariantRepository } from 'src/repositories/product-variant.repository';
 import { ImageModule } from '../image/image.module';
+import { ProductOptionService } from './services/product-option.service';
+import { ProductVariantService } from './services/product-variant.service';
 
 @Module({
   imports: [
@@ -33,12 +35,20 @@ import { ImageModule } from '../image/image.module';
     ProductService,
     ProductCategoryService,
     ProductTagService,
+    ProductOptionService,
+    ProductVariantService,
     ProductRepository,
     ProductCategoryRepository,
     ProductTagRepository,
     ProductOptionRepository,
     ProductVariantRepository,
   ],
-  exports: [ProductService, ProductCategoryService, ProductTagService],
+  exports: [
+    ProductService,
+    ProductCategoryService,
+    ProductTagService,
+    ProductOptionService,
+    ProductVariantService,
+  ],
 })
 export class ProductModule {}

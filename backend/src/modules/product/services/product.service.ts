@@ -16,6 +16,8 @@ import { ProductVariantRepository } from 'src/repositories/product-variant.repos
 import { ProductTagRepository } from 'src/repositories/product-tag.repository';
 import { ProductTagService } from './product-tag.service';
 import { ImageService } from 'src/modules/image/services/image.service';
+import { ProductOptionService } from './product-option.service';
+import { ProductVariantService } from './product-variant.service';
 
 @Injectable()
 export class ProductService {
@@ -25,6 +27,8 @@ export class ProductService {
     private productOptionRepository: ProductOptionRepository,
     private productTagRepository: ProductTagRepository,
     private productTagService: ProductTagService,
+    private productOptionService: ProductOptionService,
+    private productVariantService: ProductVariantService,
     private imageService: ImageService,
   ) {}
 
@@ -71,6 +75,11 @@ export class ProductService {
     );
 
     product.image = await this.imageService.createIfNotExistFromUrl(body.image);
+
+    product.options = await this.productOptionService.createMany(body.options);
+    product.variants = await this.productVariantService.createMany(
+      body.variants,
+    );
 
     const created = await this.productRepository.save(product, {
       reload: true,

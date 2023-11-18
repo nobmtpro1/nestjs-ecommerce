@@ -4,7 +4,7 @@ import { Guid } from 'guid-typescript';
 import { DifferentTo } from 'src/decorators/different-to-validator.decorator';
 import { ProductStatus } from 'src/enums/product.enum';
 
-export class ProductVarriantDto {
+export class ProductVariantDto {
   @ApiProperty()
   @IsOptional()
   id?: number;
@@ -17,13 +17,13 @@ export class ProductVarriantDto {
   @IsOptional()
   title: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  status: ProductStatus;
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // status: ProductStatus;
 
   @ApiProperty()
   @IsOptional()
-  imageId?: string;
+  image_id?: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -35,7 +35,7 @@ export class ProductVarriantDto {
 
   @ApiProperty()
   @IsOptional()
-  compare_at_price: number;
+  compare_at_price?: number;
 
   @ApiProperty()
   @IsOptional()
