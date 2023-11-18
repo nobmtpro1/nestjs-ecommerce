@@ -1,6 +1,6 @@
 import { Command, CommandRunner } from 'nest-commander';
 import { hashPassword } from 'src/commons/helpers';
-import { Role } from 'src/modules/user/enums/user-role.enum';
+import { Role } from 'src/modules/authorization/enums/role.enum';
 import { DataSource } from 'typeorm';
 import { Inject } from '@nestjs/common';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';

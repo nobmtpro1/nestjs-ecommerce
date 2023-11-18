@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { AuditEntity } from './audit.entity';
-import { Permission } from '../modules/user/enums/user-permission.enum';
-import { Role } from '../modules/user/enums/user-role.enum';
+import { Permission } from '../modules/authorization/enums/permission.enum';
+import { Role } from '../modules/authorization/enums/role.enum';
 import { Entity, Column, Unique } from 'typeorm';
 
 @Entity({ name: 'user' })

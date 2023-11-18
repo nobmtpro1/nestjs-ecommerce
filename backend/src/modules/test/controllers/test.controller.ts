@@ -14,19 +14,19 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ResponseSuccess } from 'src/commons/response';
-import { Public } from 'src/commons/decorators/public.decorator';
+import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { sleep, uploadFile } from '../../../commons/helpers';
 import { UserService } from '../../user/services/user.service';
-import { Role } from 'src/modules/user/enums/user-role.enum';
-import { Permission } from 'src/modules/user/enums/user-permission.enum';
+import { Role } from 'src/modules/authorization/enums/role.enum';
+import { Permission } from 'src/modules/authorization/enums/permission.enum';
 import { ConfigService } from '@nestjs/config';
-import { Roles } from 'src/commons/decorators/roles.decorator';
-import { AuthGuard } from 'src/commons/guards/auth.guard';
-import { RolesGuard } from 'src/commons/guards/roles.guard';
-import { PermissionsGuard } from 'src/commons/guards/permissions.guard';
-import { Permissions } from 'src/commons/decorators/permissions.decorator';
+import { Roles } from 'src/modules/authorization/decorators/roles.decorator';
+import { AuthGuard } from 'src/modules/authentication/guards/auth.guard';
+import { RolesGuard } from 'src/modules/authorization/guards/roles.guard';
+import { PermissionsGuard } from 'src/modules/authorization/guards/permissions.guard';
+import { Permissions } from 'src/modules/authorization/decorators/permissions.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as Multer from 'multer';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';

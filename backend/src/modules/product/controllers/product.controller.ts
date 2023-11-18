@@ -14,7 +14,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '../../../commons/guards/auth.guard';
+import { AuthGuard } from '../../authentication/guards/auth.guard';
 import { ProductService } from '../services/product.service';
 import {
   CreateProductDto,
@@ -22,11 +22,11 @@ import {
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { ResponseError, ResponseSuccess } from 'src/commons/response';
-import { Public } from 'src/commons/decorators/public.decorator';
+import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';
-import { RolesGuard } from 'src/commons/guards/roles.guard';
-import { PermissionsGuard } from 'src/commons/guards/permissions.guard';
+import { RolesGuard } from 'src/modules/authorization/guards/roles.guard';
+import { PermissionsGuard } from 'src/modules/authorization/guards/permissions.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { IProductService } from '../interfaces/product-service.interface';
 

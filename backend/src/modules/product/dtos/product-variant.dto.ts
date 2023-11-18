@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, Length, ValidateIf } from 'class-validator';
 import { Guid } from 'guid-typescript';
-import { DifferentTo } from 'src/commons/decorators/different-to-validator.decorator';
-import { ProductStatus } from 'src/modules/product/enums/product.enum';
+import { DifferentTo } from 'src/commons/dto-decorators/different-to-validator.decorator';
 
 export class ProductVariantDto {
   @ApiProperty()

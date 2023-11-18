@@ -1,5 +1,5 @@
-import { Permission } from 'src/modules/user/enums/user-permission.enum';
-import { Role } from 'src/modules/user/enums/user-role.enum';
+import { Permission } from 'src/modules/authorization/enums/permission.enum';
+import { Role } from 'src/modules/authorization/enums/role.enum';
 
 const AUTHORIZATION = [
   {

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../../commons/guards/auth.guard';
+import { AuthGuard } from '../../authentication/guards/auth.guard';
 import { ResponseError, ResponseSuccess } from 'src/commons/response';
 import { ProductCategoryService } from '../services/product-category.service';
-import { Public } from 'src/commons/decorators/public.decorator';
+import { Public } from 'src/modules/authentication/decorators/public.decorator';
 
 @UseGuards(AuthGuard)
 @Controller('product-category')
