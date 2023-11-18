@@ -1,0 +1,127 @@
+{
+  "id": "9",
+  "uuid": "2e19929d-0f80-42bd-a7d2-606a978c8cf5",
+  "createdAt": "2023-11-17T20:53:10.708Z",
+  "updatedAt": "2023-11-17T21:56:48.000Z",
+  "title": "2 MILLION EDT",
+  "body_html": "<div style=\"display: none;\" data-mce-style=\"display: none;\"><br></div>\n<div style=\"display: none;\" data-mce-style=\"display: none;\"><br></div>\n<h2> An Eau de Parfum Perfume for Men</h2>\n<p>1 MILLION. The scent of success. Going for gold because decadence is thrilling. Not-so-gentle man. Elegant and impertinent in equal measure, an intoxicating, powerful blend that starts out fresh and moves onto a spicy leather accord. An arresting alchemy of full-on seduction. test<br></p>\n<p>Leather-spicy-fresh</p>\n<p>TOP NOTES: blood mandarine and peppermint</p>\n<p>HEART NOTES: rose absolute and cinnamon</p>\n<p>BASE NOTES: leather accord and amber ketal.<br></p>\n<p><br></p>\n<h2>How to use </h2>\n<p>Spray the perfume on pulse points (wrists, throat) <br></p>",
+  "status": "active",
+  "handle": "1-million-edt-2bd1eed7-46d0-11e4-0251-b1a65246008b",
+  "image": {
+    "id": "42810801029284",
+    "uuid": "f03eb4ab-a611-456c-be71-1183daadf762",
+    "createdAt": "2023-11-17T20:13:28.662Z",
+    "updatedAt": "2023-11-17T20:13:28.662Z",
+    "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-1.png?v=1683200174"
+  },
+  "images": [
+    {
+      "id": "42810800963748",
+      "uuid": "d953dca3-a2c2-4193-9347-e3993b9cf353",
+      "createdAt": "2023-11-17T20:13:28.676Z",
+      "updatedAt": "2023-11-17T20:13:28.676Z",
+      "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-2.jpg?v=1683200174"
+    },
+    {
+      "id": "42810800996516",
+      "uuid": "f600e640-c0dd-4418-96ad-f8df8d2c6178",
+      "createdAt": "2023-11-17T20:13:28.688Z",
+      "updatedAt": "2023-11-17T20:13:28.688Z",
+      "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-3.jpg?v=1683200174"
+    },
+    {
+      "id": "42810801029284",
+      "uuid": "f03eb4ab-a611-456c-be71-1183daadf762",
+      "createdAt": "2023-11-17T20:13:28.662Z",
+      "updatedAt": "2023-11-17T20:13:28.662Z",
+      "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-1.png?v=1683200174"
+    },
+    {
+      "id": "42810801062052",
+      "uuid": "a775542d-d700-47c9-bf76-75079878e150",
+      "createdAt": "2023-11-17T20:13:28.715Z",
+      "updatedAt": "2023-11-17T20:13:28.715Z",
+      "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-5.jpg?v=1683200163"
+    },
+    {
+      "id": "42810801094820",
+      "uuid": "4a29731e-7698-47c1-9f48-89994093dfe4",
+      "createdAt": "2023-11-17T20:13:28.700Z",
+      "updatedAt": "2023-11-17T20:13:28.700Z",
+      "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-4.jpg?v=1683200164"
+    },
+    {
+      "id": "42810801127588",
+      "uuid": "b5eeed27-555a-491d-ac7a-18d0d62adce7",
+      "createdAt": "2023-11-17T20:13:28.727Z",
+      "updatedAt": "2023-11-17T20:13:28.727Z",
+      "src": "https://cdn.shopify.com/s/files/1/0448/0617/6932/files/Paco-Rabanne-1-Million-Eau-de-Toilette-6.jpg?v=1683200164"
+    }
+  ],
+  "categories": [],
+  "tags": "40%, BEST SELLERS, BLACK FRIDAY, EDT, MAN, PERFUME",
+  "variants": [
+    {
+      "id": "31",
+      "uuid": "c65d8219-ae70-4ac7-ac32-84f25de7eb70",
+      "createdAt": "2023-11-17T21:56:48.747Z",
+      "updatedAt": "2023-11-17T21:56:48.000Z",
+      "title": "200ML",
+      "price": "13700",
+      "sku": "65135969",
+      "compare_at_price": null,
+      "option1": "200ml",
+      "option2": null,
+      "option3": null,
+      "weight": 0.5,
+      "inventory_quantity": 19,
+      "requires_shipping": true,
+      "status": "active"
+    },
+    {
+      "id": "32",
+      "uuid": "19a149dd-e952-47a8-9137-f87214482102",
+      "createdAt": "2023-11-17T21:56:48.764Z",
+      "updatedAt": "2023-11-17T21:56:48.000Z",
+      "title": "100ML",
+      "price": "9450",
+      "sku": "65051844",
+      "compare_at_price": null,
+      "option1": "100ml",
+      "option2": null,
+      "option3": null,
+      "weight": 0.5,
+      "inventory_quantity": 25,
+      "requires_shipping": true,
+      "status": "active"
+    },
+    {
+      "id": "33",
+      "uuid": "e15c10db-58d5-4b26-b482-954ee8931505",
+      "createdAt": "2023-11-17T21:56:48.776Z",
+      "updatedAt": "2023-11-17T21:56:48.000Z",
+      "title": "50ML 123",
+      "price": "6000",
+      "sku": "65051845",
+      "compare_at_price": null,
+      "option1": "50ml",
+      "option2": null,
+      "option3": null,
+      "weight": 0.5,
+      "inventory_quantity": 0,
+      "requires_shipping": true,
+      "status": "active"
+    }
+  ],
+  "options": [
+    {
+      "id": "8485425316004",
+      "uuid": "6597a7be-20d1-4cf5-bd76-e02dcb83391b",
+      "createdAt": "2023-11-17T20:31:38.183Z",
+      "updatedAt": "2023-11-17T21:52:34.000Z",
+      "name": "size",
+      "position": 1,
+      "values": ["200ml", "100ml", "50ml", "400ml"]
+    }
+  ]
+}
