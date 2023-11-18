@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -74,12 +75,10 @@ export class ProductController {
   @Public()
   @Put('')
   async update(@Body() body: UpdateProductDto) {
-    // console.log(body);
-    // return new ResponseError('test', 400);
     try {
       const product = await this.productService.findById(body?.id);
       if (!product) {
-        return new ResponseError('Not Found');
+        throw new NotFoundException();
       }
       const updatedProduct = await this.productService.update(product, body);
       return new ResponseSuccess('Success', updatedProduct);

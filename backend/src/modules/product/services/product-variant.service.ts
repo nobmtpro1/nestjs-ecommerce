@@ -42,4 +42,33 @@ export class ProductVariantService {
     }
     return variants;
   }
+
+  async updateOrCreate(productVariant: ProductVariantDto) {
+    let variant = await this.productVariantRepository.findOne({
+      where: {
+        id: productVariant.id,
+      },
+    });
+    console.log(productVariant);
+    console.log(variant);
+    if (!variant) {
+      variant = await this.create(productVariant);
+    } else {
+      delete productVariant.id;
+      for (const key in productVariant) {
+        variant[key] = productVariant[key];
+      }
+      await variant.save();
+    }
+    return variant;
+  }
+
+  async updateOrCreateMany(productVariants: ProductVariantDto[]) {
+    const variants: any = [];
+    for (const productVariant of productVariants) {
+      const option = await this.updateOrCreate(productVariant);
+      variants.push(option);
+    }
+    return variants;
+  }
 }

@@ -1,23 +1,20 @@
 export class ResponseError {
-  constructor(infoMessage: string, error?: any) {
-    this.statusCode = error.status || 500;
+  constructor(message: string, statusCode?: any) {
+    this.statusCode = statusCode || 500;
     this.success = false;
-    this.message = infoMessage;
-    this.error = error.response || error.message || error;
+    this.message = message;
   }
 
   message: string;
-  data: any[];
-  error: any;
   success: boolean;
   statusCode: number;
 }
 
 export class ResponseSuccess {
-  constructor(infoMessage: string, data?: any, statusCode?: number) {
+  constructor(message: string, data?: any, statusCode?: number) {
     this.statusCode = statusCode || 200;
     this.success = true;
-    this.message = infoMessage;
+    this.message = message;
     this.data = data;
   }
   message: string;
