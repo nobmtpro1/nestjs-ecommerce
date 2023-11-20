@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 import { BaseRepository } from '../../../commons/repositories/base.repository';
 import { Product } from 'src/entities/product.entity';
 import { SearchProductDto } from '../dtos/product.dto';
@@ -38,27 +38,19 @@ export class ProductRepository extends BaseRepository<Product> {
         order == EQueryOrder.DESC ? 'DESC' : 'ASC',
       )
       .limit(limit)
-      .offset(offset)
-      .getRawMany();
+      .offset(offset);
+    const total = await productsRawQuery.getCount();
+    const productsRaw = await productsRawQuery.getRawMany();
+    const productIds = productsRaw.map((product) => product.id);
 
-    const total = await this.createQueryBuilder('product').getCount();
-
-    const productIds = productsRawQuery.map((product) => product.id);
-
-    let products: any = await this.createQueryBuilder('product')
-      .where('product.id IN(:...ids)', { ids: productIds })
-      .leftJoinAndSelect('product.image', 'image')
-      .leftJoinAndSelect('product.images', 'images')
-      .leftJoinAndSelect('product.categories', 'categories')
-      .leftJoinAndSelect('product.tags', 'tags')
-      .leftJoinAndSelect('product.variants', 'variants')
-      .leftJoinAndSelect('product.options', 'options')
-      .getMany();
+    let products: any = await this.find({
+      where: { id: In(productIds) },
+    });
     products = products.sort(
       (a: Product, b: Product) =>
         productIds.indexOf(a.id) - productIds.indexOf(b.id),
     );
-    // console.log(productIds);
+    console.log(productIds);
 
     return new Pagination<Product>({
       results: products,
