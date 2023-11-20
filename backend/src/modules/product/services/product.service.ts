@@ -31,29 +31,7 @@ export class ProductService implements IProductService {
   ) {}
 
   async get(query: SearchProductDto) {
-    const { search, page, limit, orderBy, order } = query;
-    const where: any = {};
-    if (search) {
-      where.title = Like(`%${search}%`);
-    }
-    // const products = await this.productRepository.find({
-    //   where,
-    //   order: {
-    //     [orderBy]: order,
-    //   },
-    //   relations: { image: true },
-    // });
-    const products = await this.productRepository.paginate(
-      {
-        keywords: search,
-        limit,
-        page,
-      },
-      {
-        orderBy,
-        order,
-      },
-    );
+    const products = await this.productRepository.search(query);
     return products;
   }
 

@@ -67,8 +67,6 @@ export class BaseRepository<T> extends Repository<T> {
       totalItems: total,
       pageSize: limit,
       currentPage: page,
-      previous: page > 1 ? page - 1 : 0,
-      next: total > skip + limit ? page + 1 : 0,
     });
   }
 }

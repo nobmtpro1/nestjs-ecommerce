@@ -128,8 +128,8 @@ export class SearchProductDto {
   page?: number = 1;
 
   @ApiProperty({ required: false })
-  @IsIn(['title', 'createdAt', 'inventory_quantity'])
-  orderBy?: string = 'createdAt';
+  @IsIn(['title', 'created_at', 'inventory_quantity'])
+  orderBy?: string = 'created_at';
 
   @ApiProperty({ required: false })
   @IsIn(['asc', 'desc'])

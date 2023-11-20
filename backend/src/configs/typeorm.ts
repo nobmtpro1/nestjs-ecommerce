@@ -18,6 +18,7 @@ const config = {
   },
   autoLoadEntities: true,
   synchronize: false,
+  // logging: true,
 };
 
 export default config;
