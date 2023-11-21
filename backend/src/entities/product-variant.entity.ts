@@ -41,7 +41,9 @@ export class ProductVariant extends AuditEntity {
   @Column('varchar', { name: 'option3', nullable: true })
   option3: string;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, {
+    eager: true,
+  })
   @JoinColumn({ name: 'image_id' })
   image: Image;
 
