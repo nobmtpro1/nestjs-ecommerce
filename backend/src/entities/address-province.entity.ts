@@ -19,9 +19,6 @@ export class AddressProvince extends AuditEntity {
   @Column('varchar', { name: 'province_name', length: 255 })
   provinceName: string;
 
-  @Column('varchar', { name: 'province_id', length: 255, unique: true })
-  provinceId: string;
-
   @OneToMany(() => AddressDistrict, (district) => district.province)
   districts: AddressDistrict[];
 }

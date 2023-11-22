@@ -16,7 +16,9 @@ import { ProductStatus } from '../modules/product/enums/product.enum';
 
 @Entity({ name: 'product_variant' })
 export class ProductVariant extends AuditEntity {
-  @ManyToOne(() => Product, (product) => product.variants)
+  @ManyToOne(() => Product, (product) => product.variants, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 

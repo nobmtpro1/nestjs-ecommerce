@@ -11,7 +11,9 @@ import { Product } from './product.entity';
 
 @Entity({ name: 'product_option' })
 export class ProductOption extends AuditEntity {
-  @ManyToOne(() => Product, (product) => product.options)
+  @ManyToOne(() => Product, (product) => product.options, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 
