@@ -6,17 +6,24 @@ import { Inject } from '@nestjs/common';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { User } from 'src/entities/user.entity';
+import { GHNService } from 'src/modules/ghn/ghn.service';
 
 @Command({ name: 'seed', description: 'A parameter parse' })
 export class SeedCommand extends CommandRunner {
   constructor(
     private readonly dataSource: DataSource,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly ghnService: GHNService,
   ) {
     super();
   }
 
   async run(): Promise<void> {
+    await this.seedUser();
+    await this.seedAddress();
+  }
+
+  async seedUser() {
     try {
       const user = {
         name: 'admin',
@@ -46,7 +53,15 @@ export class SeedCommand extends CommandRunner {
           .execute();
       }
     } catch (error) {
-      this.logger.error('SeedCommand fail', { error });
+      this.logger.error('seedUser fail', { error });
+    }
+  }
+
+  async seedAddress() {
+    try {
+      await this.ghnService.syncAddress();
+    } catch (error) {
+      this.logger.error('seedAddress fail', { error: error.message });
     }
   }
 }

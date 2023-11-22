@@ -1,14 +1,6 @@
 import { AuditEntity } from './audit.entity';
-import {
-  Entity,
-  Column,
-  Unique,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { AddressProvince } from './address-province.entity';
-import { AddressWard } from './address-ward.entity';
 
 @Entity({ name: 'address_district' })
 export class AddressDistrict extends AuditEntity {
@@ -18,13 +10,10 @@ export class AddressDistrict extends AuditEntity {
   @Column('varchar', { name: 'district_name', length: 255 })
   districtName: string;
 
-  @Column('varchar', { name: 'province_code', length: 255 })
-  provinceCode: string;
+  @Column('bigint', { name: 'province_id' })
+  provinceId: number;
 
   @ManyToOne((type) => AddressProvince, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'province_code', referencedColumnName: 'provinceCode' })
+  @JoinColumn({ name: 'province_id' })
   province: AddressProvince;
-
-  @OneToMany(() => AddressWard, (ward) => ward.district)
-  wards: AddressWard[];
 }

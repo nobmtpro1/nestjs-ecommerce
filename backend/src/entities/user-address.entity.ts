@@ -3,7 +3,6 @@ import { Entity, Column, Unique, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 import { AddressProvince } from './address-province.entity';
 import { AddressDistrict } from './address-district.entity';
-import { AddressWard } from './address-ward.entity';
 
 @Entity({ name: 'user_address' })
 export class UserAddress extends AuditEntity {
@@ -13,6 +12,9 @@ export class UserAddress extends AuditEntity {
 
   @Column('varchar', { name: 'name', length: 255 })
   name: string;
+
+  @Column('varchar', { name: 'phone', length: 255 })
+  phone: string;
 
   @Column('varchar', { name: 'address', length: 255 })
   address: string;
@@ -31,10 +33,6 @@ export class UserAddress extends AuditEntity {
   @JoinColumn({ name: 'district_code', referencedColumnName: 'districtCode' })
   district: AddressDistrict;
 
-  @Column('varchar', { name: 'ward_code', length: 255 })
-  wardCode: string;
-
-  @ManyToOne((type) => AddressWard, { eager: true })
-  @JoinColumn({ name: 'ward_code', referencedColumnName: 'wardCode' })
-  ward: AddressWard;
+  @Column('boolean', { name: 'default', default: false })
+  default: boolean;
 }

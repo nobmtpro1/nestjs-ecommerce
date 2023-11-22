@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /public/uploads
-/.docker/*
+/.docker
 
 # Logs
 logs

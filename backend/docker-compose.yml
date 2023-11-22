@@ -5,6 +5,7 @@ services:
     image: mysql:5.7
     container_name: mysql
     restart: unless-stopped
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
     tty: true
     ports:
       - '3306:3306'

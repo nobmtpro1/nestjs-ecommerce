@@ -22,12 +22,15 @@ import winston from './configs/winston';
 import { TaskSchedulingModule } from './modules/task-scheduling/task-scheduling.module';
 import { CommandModule } from './modules/command/command.module';
 import { CommonModule } from './modules/common/common.module';
+import { GHNModule } from './modules/ghn/ghn.module';
+import ghn from './configs/ghn';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeorm, auth, mail, minio, redis],
+      load: [typeorm, auth, mail, minio, redis, ghn],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -51,6 +54,8 @@ import { CommonModule } from './modules/common/common.module';
     ImageModule,
     TestModule,
     CommonModule,
+    GHNModule,
+    AddressModule,
   ],
   controllers: [AppController],
   providers: [Logger],

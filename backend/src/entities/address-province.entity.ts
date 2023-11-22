@@ -1,14 +1,5 @@
-import { Exclude, Expose } from 'class-transformer';
 import { AuditEntity } from './audit.entity';
-import {
-  Entity,
-  Column,
-  Unique,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-} from 'typeorm';
-import { User } from './user.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { AddressDistrict } from './address-district.entity';
 
 @Entity({ name: 'address_province' })
