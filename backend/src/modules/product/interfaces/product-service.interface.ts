@@ -14,6 +14,8 @@ export interface IProductService {
 
   create(body: CreateProductDto): Promise<Product>;
 
+  bulkCreate(body: any): Promise<Product[]>;
+
   findById(id: number): Promise<Product>;
 
   findBySlug(handle: string): Promise<Product>;

@@ -17,6 +17,7 @@ import {
 import { AuthGuard } from '../../authentication/guards/auth.guard';
 import { ProductService } from '../services/product.service';
 import {
+  BulkCreateProductDto,
   CreateProductDto,
   DeleteProductDto,
   SearchProductDto,
@@ -52,19 +53,6 @@ export class ProductController {
     return new ResponseSuccess('Success', products);
   }
 
-  @Public()
-  @Get('related-data')
-  async getRelatedData() {
-    const productCategories = await this.productCategoryService.all();
-    const productStatus = await this.productService.getProductStatus();
-    const productTags = await this.productTagService.all();
-    return new ResponseSuccess('Success', {
-      productCategories,
-      productStatus,
-      productTags,
-    });
-  }
-
   @ApiBearerAuth()
   @Post('')
   async postCreate(@Body() body: CreateProductDto) {
@@ -73,11 +61,26 @@ export class ProductController {
     return new ResponseSuccess('Success', findProduct);
   }
 
+  @ApiBearerAuth()
+  @Post('bulk-create')
+  async bulkCreate(@Body() body: BulkCreateProductDto) {
+    const products = await this.productService.bulkCreate(body.products);
+    return new ResponseSuccess('Success', products);
+  }
+
   @Public()
   @Get(':id')
   @UseInterceptors(ClassSerializerInterceptor)
   async findById(@Param('id', ParseIntPipe) id: number) {
     let product = await this.productService.findById(id);
+    return new ResponseSuccess('Success', product);
+  }
+
+  @Public()
+  @Get('/handle/:handle')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async findByHandle(@Param('handle') handle: string) {
+    let product = await this.productService.findBySlug(handle);
     return new ResponseSuccess('Success', product);
   }
 

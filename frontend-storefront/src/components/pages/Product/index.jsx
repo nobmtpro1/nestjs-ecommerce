@@ -1,6 +1,5 @@
 import React from "react";
-import { generateImageUrl } from "ultils/helper";
-import { renderProductItemPrice, useFetchProduct } from "ultils/productHelpers";
+import { useFetchProduct } from "ultils/productHelpers";
 
 const Product = () => {
   const [product] = useFetchProduct();
@@ -10,22 +9,18 @@ const Product = () => {
     <div className="container mx-auto">
       <div className="flex">
         <div className="flex-1">
-          <img src={generateImageUrl(product?.image?.src)} alt="" />
+          <img src={product?.image?.src} alt="" />
         </div>
         <div className="flex-1">
-          <div className="text-3xl">{product?.name}</div>
+          <div className="text-3xl">{product?.title}</div>
           <div className="text-lg mt-2 text-red-500">
-            {renderProductItemPrice(product)}
+            {product?.variants?.[0]?.price} đ
           </div>
-          <div
-            className="mt-2"
-            dangerouslySetInnerHTML={{ __html: product?.shortDescription }}
-          ></div>
         </div>
       </div>
       <div
         className="mt-10"
-        dangerouslySetInnerHTML={{ __html: product?.description }}
+        dangerouslySetInnerHTML={{ __html: product?.body_html }}
       ></div>
     </div>
   );

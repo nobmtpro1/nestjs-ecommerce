@@ -62,7 +62,11 @@ export class ProductService implements IProductService {
       body.images,
     );
 
-    product.image = await this.imageService.createIfNotExistFromUrl(body.image);
+    if (body.image) {
+      product.image = await this.imageService.createIfNotExistFromUrl(
+        body.image,
+      );
+    }
 
     product.options = await this.productOptionService.createMany(body.options);
     product.variants = await this.productVariantService.createMany(
@@ -72,6 +76,15 @@ export class ProductService implements IProductService {
     const created = await this.productRepository.save(product, {
       reload: true,
     });
+    return created;
+  }
+
+  async bulkCreate(body: any) {
+    const created = [];
+    for (const product of body) {
+      const createdProduct = await this.create(product);
+      created.push(created);
+    }
     return created;
   }
 

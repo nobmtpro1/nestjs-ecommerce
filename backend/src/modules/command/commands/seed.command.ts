@@ -7,6 +7,10 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { User } from 'src/entities/user.entity';
 import { GHNService } from 'src/modules/ghn/ghn.service';
+import { ProductService } from 'src/modules/product/services/product.service';
+import products from './seed-data/products';
+import { CreateProductDto } from 'src/modules/product/dtos/product.dto';
+import { IProductService } from 'src/modules/product/interfaces/product-service.interface';
 
 @Command({ name: 'seed', description: 'A parameter parse' })
 export class SeedCommand extends CommandRunner {
@@ -14,6 +18,8 @@ export class SeedCommand extends CommandRunner {
     private readonly dataSource: DataSource,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     private readonly ghnService: GHNService,
+    @Inject(IProductService)
+    private readonly productService: IProductService,
   ) {
     super();
   }
@@ -21,6 +27,7 @@ export class SeedCommand extends CommandRunner {
   async run(): Promise<void> {
     await this.seedUser();
     await this.seedAddress();
+    await this.seedProduct();
   }
 
   async seedUser() {
@@ -45,6 +52,7 @@ export class SeedCommand extends CommandRunner {
             {
               name: 'admin',
               email: 'admin@gmail.com',
+              phone: '0855566906',
               password: await hashPassword('123'),
               roles: [Role.ADMIN, Role.USER],
               permissions: [],
@@ -60,6 +68,14 @@ export class SeedCommand extends CommandRunner {
   async seedAddress() {
     try {
       await this.ghnService.syncAddress();
+    } catch (error) {
+      this.logger.error('seedAddress fail', { error: error.message });
+    }
+  }
+
+  async seedProduct() {
+    try {
+      await this.productService.bulkCreate(products);
     } catch (error) {
       this.logger.error('seedAddress fail', { error: error.message });
     }

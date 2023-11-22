@@ -58,6 +58,12 @@ export class CreateProductDto {
   options: ProductOptionDto[];
 }
 
+export class BulkCreateProductDto {
+  @ApiProperty({ isArray: true, type: CreateProductDto })
+  @ValidateNested({ each: true })
+  products: CreateProductDto[];
+}
+
 export class UpdateProductDto {
   @ApiProperty()
   id?: number;
@@ -119,7 +125,7 @@ export class SearchProductDto {
   @IsOptional()
   @IsInt()
   @Transform((obj) => parseInt(obj.value))
-  limit?: number = 3;
+  limit?: number = 10;
 
   @ApiProperty({ required: false })
   @IsOptional()

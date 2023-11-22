@@ -9,8 +9,9 @@ const Home = () => {
   useEffect(() => {
     axios.get(`${API_PRODUCT}`).then((res) => {
       if (res.status == 200) {
-        setProducts(res?.data?.data);
+        setProducts(res?.data?.data?.results);
       }
+      console.log(res);
     });
   }, []);
 
