@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../authentication/guards/auth.guard';
-import { ResponseError, ResponseSuccess } from 'src/commons/response';
+import { ResponseError, ResponseSuccess } from 'src/modules/common/response';
 import { ProductCategoryService } from '../services/product-category.service';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
 

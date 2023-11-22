@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '../../authentication/guards/auth.guard';
-import { ResponseSuccess } from 'src/commons/response';
+import { ResponseSuccess } from 'src/modules/common/response';
 import { ImageService } from '../services/image.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';

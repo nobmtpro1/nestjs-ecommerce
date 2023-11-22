@@ -17,7 +17,7 @@ import { ProductVariantRepository } from 'src/modules/product/repositories/produ
 import { ImageModule } from '../image/image.module';
 import { ProductOptionService } from './services/product-option.service';
 import { ProductVariantService } from './services/product-variant.service';
-import { PROVIDE } from 'src/commons/constants';
+import { PROVIDE } from 'src/modules/common/constants';
 import { IProductService } from './interfaces/product-service.interface';
 
 @Module({

@@ -13,11 +13,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ResponseSuccess } from 'src/commons/response';
+import { ResponseSuccess } from 'src/modules/common/response';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { sleep, uploadFile } from '../../../commons/helpers';
+import { sleep, uploadFile } from '../../common/helpers';
 import { UserService } from '../../user/services/user.service';
 import { Role } from 'src/modules/authorization/enums/role.enum';
 import { Permission } from 'src/modules/authorization/enums/permission.enum';
@@ -31,13 +31,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as Multer from 'multer';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { LoggingInterceptor } from 'src/commons/interceptors/logging.interceptor';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { instanceToPlain } from 'class-transformer';
 import axios from 'axios';
 import xlsx from 'node-xlsx';
 import { UserRepository } from 'src/modules/user/repositories/user.repository';
+import { LoggingInterceptor } from 'src/modules/common/interceptors/logging.interceptor';
 
 @Controller('test')
 export class TestController {

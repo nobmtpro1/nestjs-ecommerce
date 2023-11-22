@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PERMISSION_KEY } from 'src/commons/constants';
+import { PERMISSION_KEY } from 'src/modules/common/constants';
 import { Permission } from 'src/modules/authorization/enums/permission.enum';
 import { AuthorizationService } from 'src/modules/authorization/authorization.service';
 

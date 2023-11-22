@@ -21,6 +21,7 @@ import { WinstonModule } from 'nest-winston';
 import winston from './configs/winston';
 import { TaskSchedulingModule } from './modules/task-scheduling/task-scheduling.module';
 import { CommandModule } from './modules/command/command.module';
+import { CommonModule } from './modules/common/common.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CommandModule } from './modules/command/command.module';
     ProductModule,
     ImageModule,
     TestModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [Logger],

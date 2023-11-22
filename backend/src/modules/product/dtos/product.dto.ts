@@ -15,7 +15,7 @@ import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductOptionDto } from './product-option.dto';
 import { ImageDto } from '../../image/dtos/image.dto';
-import { EQueryOrder } from 'src/commons/enums/query.enums';
+import { EQueryOrder } from 'src/modules/common/enums/query.enums';
 
 export class CreateProductDto {
   @ApiProperty()

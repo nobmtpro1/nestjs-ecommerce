@@ -22,7 +22,7 @@ import {
   SearchProductDto,
   UpdateProductDto,
 } from '../dtos/product.dto';
-import { ResponseError, ResponseSuccess } from 'src/commons/response';
+import { ResponseError, ResponseSuccess } from 'src/modules/common/response';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { ProductCategoryService } from '../services/product-category.service';
 import { ProductTagService } from '../services/product-tag.service';

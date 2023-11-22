@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../authentication/guards/auth.guard';
-import { ResponseError, ResponseSuccess } from 'src/commons/response';
+import { ResponseError, ResponseSuccess } from 'src/modules/common/response';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { ProductTagService } from '../services/product-tag.service';
 import { CreateProductTagDto } from '../dtos/product-tag.dto';

@@ -13,7 +13,7 @@ import {
 import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
-import { ResponseSuccess } from 'src/commons/response';
+import { ResponseSuccess } from 'src/modules/common/response';
 import { AuthLoginDto } from 'src/modules/authentication/dtos/auth.dto';
 
 @Controller('auth')

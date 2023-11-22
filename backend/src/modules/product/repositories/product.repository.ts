@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, In } from 'typeorm';
-import { BaseRepository } from '../../../commons/repositories/base.repository';
 import { Product } from 'src/entities/product.entity';
 import { SearchProductDto } from '../dtos/product.dto';
-import { EQueryOrder } from 'src/commons/enums/query.enums';
-import { Pagination } from 'src/commons/interfaces/pagination.interface';
+import { BaseRepository } from 'src/modules/common/repositories/base.repository';
+import { EQueryOrder } from 'src/modules/common/enums/query.enums';
+import { Pagination } from 'src/modules/common/interfaces/pagination.interface';
 
 @Injectable()
 export class ProductRepository extends BaseRepository<Product> {

@@ -1,5 +1,5 @@
 import { Command, CommandRunner } from 'nest-commander';
-import { hashPassword } from 'src/commons/helpers';
+import { hashPassword } from 'src/modules/common/helpers';
 import { Role } from 'src/modules/authorization/enums/role.enum';
 import { DataSource } from 'typeorm';
 import { Inject } from '@nestjs/common';

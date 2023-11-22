@@ -1,9 +1,9 @@
 import {
   Pagination,
   PaginationInfoInterface,
+  SearchFilterInterface,
   SearchOrderInterface,
-} from 'src/commons/interfaces/pagination.interface';
-import { SearchFilterInterface } from '../interfaces/pagination.interface';
+} from '../interfaces/pagination.interface';
 import { DeepPartial, FindManyOptions, ILike, Repository } from 'typeorm';
 
 export class BaseRepository<T> extends Repository<T> {

@@ -5,7 +5,7 @@ import {
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { ProductStatusView } from 'src/modules/product/enums/product.enum';
-import { Pagination } from 'src/commons/interfaces/pagination.interface';
+import { Pagination } from 'src/modules/common/interfaces/pagination.interface';
 
 export interface IProductService {
   get(query: SearchProductDto): Promise<Pagination<Product>>;
