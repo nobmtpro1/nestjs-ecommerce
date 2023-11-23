@@ -238,7 +238,7 @@ export class TestController {
   @Public()
   @Get('elasticsearch')
   async elasticsearch(@Query('search') search: string) {
-    // const index = await this.searchService.indexProduct();
+    const index = await this.searchService.indexProduct();
     // return new ResponseSuccess('Upload success', index);
     const searchResult = await this.searchService.searchProduct(search);
     return new ResponseSuccess('Upload success', searchResult);

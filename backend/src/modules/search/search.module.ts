@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { SearchService } from './search.service';
 import { ProductModule } from '../product/product.module';
@@ -9,7 +9,7 @@ import { ProductModule } from '../product/product.module';
       node: 'http://localhost:9200',
       maxRetries: 100,
     }),
-    ProductModule,
+    forwardRef(() => ProductModule),
   ],
   providers: [SearchService],
   exports: [SearchService],

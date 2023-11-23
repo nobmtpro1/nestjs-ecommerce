@@ -17,8 +17,8 @@ import { ProductVariantRepository } from 'src/modules/product/repositories/produ
 import { ImageModule } from '../image/image.module';
 import { ProductOptionService } from './services/product-option.service';
 import { ProductVariantService } from './services/product-variant.service';
-import { PROVIDE } from 'src/modules/common/constants';
 import { IProductService } from './interfaces/product-service.interface';
+import { SearchModule } from '../search/search.module';
 
 @Module({
   imports: [
@@ -27,6 +27,7 @@ import { IProductService } from './interfaces/product-service.interface';
     UserModule,
     AuthorizationModule,
     ImageModule,
+    SearchModule,
   ],
   controllers: [
     ProductController,

@@ -12,17 +12,24 @@ export class ProductRepository extends BaseRepository<Product> {
     super(Product, dataSource.createEntityManager());
   }
 
-  async search(query: SearchProductDto): Promise<Pagination<Product>> {
+  async search(
+    query: SearchProductDto,
+    productInIds: number[] | null,
+  ): Promise<Pagination<Product>> {
     const { search, limit, page, orderBy, order } = query;
     const offset = (page - 1) * limit;
 
     const queryBuilder = this.createQueryBuilder('product');
 
-    if (search) {
-      queryBuilder.where('product.title like :search', {
-        search: `%${search}%`,
-      });
+    if (productInIds) {
+      queryBuilder.where('product.id IN(:...ids)', { ids: productInIds });
     }
+
+    // if (search) {
+    //   queryBuilder.where('product.title like :search', {
+    //     search: `%${search}%`,
+    //   });
+    // }
 
     const productsRawQuery = await queryBuilder
       .leftJoin('product.variants', 'variant')

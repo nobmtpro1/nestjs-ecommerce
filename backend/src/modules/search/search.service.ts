@@ -17,6 +17,8 @@ export class SearchService {
   ) {}
 
   async indexProduct() {
+    await this.elasticsearchService.indices.delete({ index: this.index });
+
     const products = await this.productService.getAll();
     const dataset = products.map((product) => ({
       id: product.id,
@@ -29,10 +31,10 @@ export class SearchService {
       doc,
     ]);
 
-    // const bulkResponse = await this.elasticsearchService.bulk({
-    //   refresh: true,
-    //   operations,
-    // });
+    const bulkResponse = await this.elasticsearchService.bulk({
+      refresh: true,
+      operations,
+    });
 
     // const bulkResponse = await this.elasticsearchService.update({
     //   index: this.index,
@@ -44,15 +46,15 @@ export class SearchService {
     //   }
     // });
 
-    const bulkResponse = await this.elasticsearchService.delete({
-      id: 'DFMb-osBwRvrdfGza7ZM',
-      index: this.index,
-    });
+    // const bulkResponse = await this.elasticsearchService.delete({
+    //   id: 'DFMb-osBwRvrdfGza7ZM',
+    //   index: this.index,
+    // });
 
     return bulkResponse;
   }
 
-  async searchProduct(q: string) {
+  async searchProduct(q: string, size: number = 10) {
     const result = await this.elasticsearchService.search({
       index: this.index,
       body: {
@@ -64,7 +66,7 @@ export class SearchService {
           },
         },
       },
-      size: 100,
+      size: size,
     });
 
     return result;

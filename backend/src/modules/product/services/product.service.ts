@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Like } from 'typeorm';
 import { Product } from 'src/entities/product.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
@@ -19,6 +19,8 @@ import { ImageService } from 'src/modules/image/services/image.service';
 import { ProductOptionService } from './product-option.service';
 import { ProductVariantService } from './product-variant.service';
 import { IProductService } from '../interfaces/product-service.interface';
+import { SearchService } from 'src/modules/search/search.service';
+import { Pagination } from 'src/modules/common/interfaces/pagination.interface';
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -28,10 +30,29 @@ export class ProductService implements IProductService {
     private productOptionService: ProductOptionService,
     private productVariantService: ProductVariantService,
     private imageService: ImageService,
+    @Inject(forwardRef(() => SearchService))
+    private searchService: SearchService,
   ) {}
 
   async get(query: SearchProductDto) {
-    const products = await this.productRepository.search(query);
+    let productIds: any = null;
+    if (query.search) {
+      const searchIndex: any = await this.searchService.searchProduct(
+        query.search,
+        1000,
+      );
+      if (searchIndex.hits.total.value > 0) {
+        productIds = searchIndex.hits.hits.map((hit) => hit._source.id);
+      } else {
+        return new Pagination<Product>({
+          results: [],
+          totalItems: 0,
+          pageSize: query.limit,
+          currentPage: query.page,
+        });
+      }
+    }
+    const products = await this.productRepository.search(query, productIds);
     return products;
   }
 
