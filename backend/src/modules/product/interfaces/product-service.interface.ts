@@ -10,6 +10,8 @@ import { Pagination } from 'src/modules/common/interfaces/pagination.interface';
 export interface IProductService {
   get(query: SearchProductDto): Promise<Pagination<Product>>;
 
+  getAll(): Promise<Product[]>;
+
   getProductStatus(): ProductStatusView[];
 
   create(body: CreateProductDto): Promise<Product>;

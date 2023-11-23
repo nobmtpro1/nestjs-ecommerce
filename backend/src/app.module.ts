@@ -25,6 +25,7 @@ import { CommonModule } from './modules/common/common.module';
 import { GHNModule } from './modules/ghn/ghn.module';
 import ghn from './configs/ghn';
 import { AddressModule } from './modules/address/address.module';
+import { SearchModule } from './modules/search/search.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AddressModule } from './modules/address/address.module';
     CommonModule,
     GHNModule,
     AddressModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [Logger],

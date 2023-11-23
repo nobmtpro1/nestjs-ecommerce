@@ -35,6 +35,11 @@ export class ProductService implements IProductService {
     return products;
   }
 
+  async getAll() {
+    const products = await this.productRepository.find();
+    return products;
+  }
+
   getProductStatus(): ProductStatusView[] {
     return productStatus;
   }

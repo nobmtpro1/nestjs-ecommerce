@@ -38,6 +38,8 @@ import axios from 'axios';
 import xlsx from 'node-xlsx';
 import { UserRepository } from 'src/modules/user/repositories/user.repository';
 import { LoggingInterceptor } from 'src/modules/common/interceptors/logging.interceptor';
+import { SearchService } from 'src/modules/search/search.service';
+import { IProductService } from 'src/modules/product/interfaces/product-service.interface';
 
 @Controller('test')
 export class TestController {
@@ -50,6 +52,9 @@ export class TestController {
     private userRepository: UserRepository,
     @InjectQueue('email')
     private readonly emailQueue: Queue,
+    private readonly searchService: SearchService,
+    @Inject(IProductService)
+    private readonly productService: IProductService,
   ) {}
 
   @Public()
@@ -228,5 +233,14 @@ export class TestController {
     console.log(page);
     const users = await this.userRepository.paginate({ limit, page });
     return new ResponseSuccess('Upload success', users);
+  }
+
+  @Public()
+  @Get('elasticsearch')
+  async elasticsearch(@Query('search') search: string) {
+    // const index = await this.searchService.indexProduct();
+    // return new ResponseSuccess('Upload success', index);
+    const searchResult = await this.searchService.searchProduct(search);
+    return new ResponseSuccess('Upload success', searchResult);
   }
 }
