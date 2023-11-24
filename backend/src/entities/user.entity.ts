@@ -2,8 +2,16 @@ import { Exclude, Expose } from 'class-transformer';
 import { AuditEntity } from './audit.entity';
 import { Permission } from '../modules/authorization/enums/permission.enum';
 import { Role } from '../modules/authorization/enums/role.enum';
-import { Entity, Column, Unique, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  Unique,
+  OneToMany,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
 import { UserAddress } from './user-address.entity';
+import { UserToken } from './user-token.entity';
 
 @Entity({ name: 'user' })
 export class User extends AuditEntity {
@@ -33,4 +41,7 @@ export class User extends AuditEntity {
     eager: true,
   })
   addresses: UserAddress[];
+
+  @OneToOne(() => UserToken, (token) => token.user, { lazy: true })
+  token: UserToken;
 }

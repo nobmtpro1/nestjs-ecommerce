@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Request,
   Res,
   StreamableFile,
   UploadedFile,
@@ -40,6 +41,8 @@ import { UserRepository } from 'src/modules/user/repositories/user.repository';
 import { LoggingInterceptor } from 'src/modules/common/interceptors/logging.interceptor';
 import { SearchService } from 'src/modules/search/search.service';
 import { IProductService } from 'src/modules/product/interfaces/product-service.interface';
+import { LocalAuthGuard } from 'src/modules/authentication/guards/local-auth.guard';
+import { JwtAuthGuard } from 'src/modules/authentication/guards/jwt-auth.guard';
 
 @Controller('test')
 export class TestController {
@@ -242,5 +245,23 @@ export class TestController {
     // return new ResponseSuccess('Upload success', index);
     const searchResult = await this.searchService.searchProduct(search);
     return new ResponseSuccess('Upload success', searchResult);
+  }
+
+  @Get('passport-local')
+  @UseGuards(LocalAuthGuard)
+  async passportLocal() {
+    return new ResponseSuccess('Upload success');
+  }
+
+  @Get('passport-local-login')
+  @UseGuards(LocalAuthGuard)
+  async passportLocalLogin(@Request() req) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('passport-jwt-user')
+  getUser(@Request() req) {
+    return req.user;
   }
 }
