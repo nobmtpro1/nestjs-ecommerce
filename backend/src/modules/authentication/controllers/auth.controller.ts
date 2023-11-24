@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
   Request,
+  UnauthorizedException,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { ResponseSuccess } from 'src/modules/common/response';
 import { AuthLoginDto } from 'src/modules/authentication/dtos/auth.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +29,7 @@ export class AuthController {
     return this.authService.signIn(body.email, body.password);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('profile')
   getProfile(@Request() req) {
@@ -42,6 +44,9 @@ export class AuthController {
       body?.refresh_token,
       body?.access_token,
     );
+    if (!access_token) {
+      throw new UnauthorizedException();
+    }
     return access_token;
   }
 }

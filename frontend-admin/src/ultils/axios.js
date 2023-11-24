@@ -3,6 +3,8 @@ import { LOCAL_STORAGE_ACCOUNT } from "../constants/localstorage";
 import { handleLoginSuccess, logout } from "../ultils/helper";
 import { API_URL } from "../constants/config";
 import { API_REFRESH_TOKEN } from "constants/api";
+import { store } from "redux/store";
+import { setAccount } from "redux/account";
 
 const account = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT) || null)
   ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT) || null)
@@ -38,13 +40,18 @@ axios.interceptors.response.use(
       if (!refreshTokenPromise) {
         // check for an existing in-progress request
         // if nothing is in-progress, start a new refresh token request
+        const account = JSON.parse(
+          localStorage.getItem(LOCAL_STORAGE_ACCOUNT) || null
+        )
+          ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACCOUNT) || null)
+          : null;
         refreshTokenPromise = axios
           .post(API_REFRESH_TOKEN, {
-            token: account?.access_token,
-            refreshToken: account?.refresh_token,
+            access_token: account?.access_token,
+            refresh_token: account?.refresh_token,
           })
           .then((res) => {
-            handleLoginSuccess(res?.data);
+            store.dispatch(setAccount({ account: res?.data }));
             return res?.data;
           })
           .then((data) => {
@@ -56,6 +63,7 @@ axios.interceptors.response.use(
       return refreshTokenPromise.then((data) => {
         axios.defaults.headers.common["Authorization"] =
           "Bearer " + data?.access_token;
+        originalRequest.headers.Authorization = "Bearer " + data?.access_token;
         return axios(originalRequest);
       });
     }

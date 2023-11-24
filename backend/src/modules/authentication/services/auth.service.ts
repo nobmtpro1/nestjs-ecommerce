@@ -33,6 +33,7 @@ export class AuthService {
     try {
       const userToken = await this.userService.findToken(token, refreshToken);
       if (!userToken) {
+        console.log('dont have userToken');
         return false;
       }
       const payloadToken = await this.jwtService.verifyAsync(token, {
@@ -53,17 +54,20 @@ export class AuthService {
           email: payloadRefreshToken.email,
         };
         const userTokenCreated = await this.createToken(
-          userToken.user,
+          await userToken.user,
           payload,
         );
+        console.log('userTokenCreated');
         return {
           ...payload,
           access_token: userTokenCreated.accessToken,
           refresh_token: userTokenCreated.refreshToken,
         };
       }
+      console.log('payloadToken?.id == payloadRefreshToken?.id');
       return false;
     } catch (error) {
+      console.log('error', error.message);
       return false;
     }
   }

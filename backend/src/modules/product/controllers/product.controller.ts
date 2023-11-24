@@ -31,6 +31,7 @@ import { RolesGuard } from 'src/modules/authorization/guards/roles.guard';
 import { PermissionsGuard } from 'src/modules/authorization/guards/permissions.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { IProductService } from '../interfaces/product-service.interface';
+import { JwtAuthGuard } from 'src/modules/authentication/guards/jwt-auth.guard';
 
 // @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
 @Controller('product')
@@ -41,8 +42,9 @@ export class ProductController {
     private readonly productTagService: ProductTagService,
   ) {}
 
-  @Public()
+  // @Public()
   @Get('')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async get(
     @Query()

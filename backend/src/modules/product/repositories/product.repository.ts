@@ -57,7 +57,6 @@ export class ProductRepository extends BaseRepository<Product> {
       (a: Product, b: Product) =>
         productIds.indexOf(a.id) - productIds.indexOf(b.id),
     );
-    console.log(productIds);
 
     return new Pagination<Product>({
       results: products,

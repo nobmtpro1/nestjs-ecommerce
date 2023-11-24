@@ -19,7 +19,9 @@ const Product = () => {
     if (!searchParams.get("action")) {
       axios
         .get(`${API_PRODUCT}?search=${searchParams?.get("search") || ""}`)
-        .then((res) => setData(res?.data?.data));
+        .then((res) => {
+          // setData(res?.data?.data);
+        });
     }
   }, [searchParams]);
 
