@@ -44,7 +44,7 @@ export class ProductController {
 
   // @Public()
   @Get('')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async get(
     @Query()

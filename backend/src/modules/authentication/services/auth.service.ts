@@ -98,4 +98,23 @@ export class AuthService {
     );
     return userToken;
   }
+
+  async googleLogin(req) {
+    if (!req.user) {
+      return false;
+    }
+
+    const user = await this.userService.updateOrCreateUserOauth(
+      req.user.email,
+      `${req.user.firstName} ${req.user.lastName}`,
+      req.user.picture,
+    );
+    const payload = { id: user.id, email: user.email };
+    const userToken = await this.createToken(user, payload);
+    return {
+      ...payload,
+      access_token: userToken.accessToken,
+      refresh_token: userToken.refreshToken,
+    };
+  }
 }

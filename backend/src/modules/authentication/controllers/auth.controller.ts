@@ -17,6 +17,7 @@ import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { ResponseSuccess } from 'src/modules/common/response';
 import { AuthLoginDto } from 'src/modules/authentication/dtos/auth.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { GoogleOAuthGuard } from '../guards/google-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -48,5 +49,15 @@ export class AuthController {
       throw new UnauthorizedException();
     }
     return access_token;
+  }
+
+  @Get('google')
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuth(@Request() req) {}
+
+  @Get('google-callback')
+  @UseGuards(GoogleOAuthGuard)
+  googleAuthCallback(@Request() req) {
+    return this.authService.googleLogin(req);
   }
 }

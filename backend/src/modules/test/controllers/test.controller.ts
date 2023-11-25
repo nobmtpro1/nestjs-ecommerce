@@ -31,7 +31,7 @@ import { Permissions } from 'src/modules/authorization/decorators/permissions.de
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as Multer from 'multer';
 import { MinioClientService } from 'src/modules/minio-client/minio-client.service';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { instanceToPlain } from 'class-transformer';
@@ -260,6 +260,7 @@ export class TestController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get('passport-jwt-user')
   getUser(@Request() req) {
     return req.user;

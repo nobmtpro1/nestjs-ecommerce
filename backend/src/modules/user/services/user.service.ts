@@ -3,6 +3,7 @@ import { User } from '../../../entities/user.entity';
 import { UserRepository } from 'src/modules/user/repositories/user.repository';
 import { UserToken } from 'src/entities/user-token.entity';
 import { UserTokenRepository } from '../repositories/user-token.repository';
+import { Role } from 'src/modules/authorization/enums/role.enum';
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,24 @@ export class UserService {
         id,
       },
     });
+  }
+
+  async updateOrCreateUserOauth(email: string, name: string, avatar: string) {
+    let user = await this.userRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      user = new User();
+    }
+    user.email = email;
+    user.name = name;
+    user.avatar = avatar;
+    user.verifiedEmail = true;
+    user.roles = [Role.USER];
+    return await this.userRepository.save(user, { reload: true });
   }
 
   async createToken(user: User, accessToken: string, refreshToken: string) {

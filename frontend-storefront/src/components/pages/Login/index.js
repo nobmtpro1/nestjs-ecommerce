@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
+import { API_OAUTH_GOOGLE } from "constants/api";
+import { API_URL } from "constants/config";
 
 const Login = () => {
   //   const account = useSelector((state) => state?.account?.account);
@@ -69,6 +71,11 @@ const Login = () => {
           <Button primary className="mr-3" htmlType="submit">
             Log in
           </Button>
+          <a href={`${API_URL}${API_OAUTH_GOOGLE}`}>
+            <Button primary className="mr-3">
+              Log in with Google
+            </Button>
+          </a>
         </Form.Item>
       </Form>
     </div>
