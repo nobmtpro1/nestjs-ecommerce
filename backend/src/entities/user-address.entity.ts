@@ -1,8 +1,16 @@
 import { AuditEntity } from './audit.entity';
-import { Entity, Column, Unique, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  Unique,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
 import { User } from './user.entity';
 import { AddressProvince } from './address-province.entity';
 import { AddressDistrict } from './address-district.entity';
+import { CheckoutCart } from './checkout-cart.entity';
 
 @Entity({ name: 'user_address' })
 export class UserAddress extends AuditEntity {
@@ -35,4 +43,9 @@ export class UserAddress extends AuditEntity {
 
   @Column('boolean', { name: 'default', default: false })
   default: boolean;
+
+  @OneToMany(() => CheckoutCart, (cart) => cart.shippingAddress, {
+    lazy: true,
+  })
+  carts: CheckoutCart[];
 }

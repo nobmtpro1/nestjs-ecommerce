@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { UserAddress } from './user-address.entity';
 import { UserToken } from './user-token.entity';
+import { CheckoutCart } from './checkout-cart.entity';
 
 @Entity({ name: 'user' })
 export class User extends AuditEntity {
@@ -54,6 +55,11 @@ export class User extends AuditEntity {
 
   @Column('varchar', { name: 'avatar', length: 255, nullable: true })
   avatar: string;
+
+  @OneToMany(() => CheckoutCart, (cart) => cart.user, {
+    lazy: true,
+  })
+  carts: CheckoutCart[];
 
   @BeforeUpdate()
   @BeforeInsert()
