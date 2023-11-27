@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
-import { AuditEntity } from './audit.entity';
-import { Permission } from '../modules/authorization/enums/permission.enum';
-import { Role } from '../modules/authorization/enums/role.enum';
+import { AuditEntity } from '../../common/entities/audit.entity';
+import { Permission } from '../../authorization/enums/permission.enum';
+import { Role } from '../../authorization/enums/role.enum';
 import {
   Entity,
   Column,
@@ -14,7 +14,7 @@ import {
 } from 'typeorm';
 import { UserAddress } from './user-address.entity';
 import { UserToken } from './user-token.entity';
-import { CheckoutCart } from './checkout-cart.entity';
+import { CheckoutCart } from '../../checkout/entities/checkout-cart.entity';
 
 @Entity({ name: 'user' })
 export class User extends AuditEntity {

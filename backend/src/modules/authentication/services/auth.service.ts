@@ -8,7 +8,7 @@ import { UserService } from '../../user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { comparePassword } from '../../common/helpers';
 import { ConfigService } from '@nestjs/config';
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {

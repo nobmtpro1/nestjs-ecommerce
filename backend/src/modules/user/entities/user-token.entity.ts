@@ -1,4 +1,4 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import { Entity, Column, JoinColumn, OneToOne } from 'typeorm';
 import { User } from './user.entity';
 

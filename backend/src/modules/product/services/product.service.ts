@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Like } from 'typeorm';
-import { Product } from 'src/entities/product.entity';
-import { ProductCategory } from 'src/entities/product-category.entity';
+import { Product } from 'src/modules/product/entities/product.entity';
+import { ProductCategory } from 'src/modules/product/entities/product-category.entity';
 import {
   ProductStatusView,
   productStatus,

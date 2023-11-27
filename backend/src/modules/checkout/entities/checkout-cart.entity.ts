@@ -1,9 +1,9 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
-import { User } from './user.entity';
-import { UserAddress } from './user-address.entity';
+import { User } from '../../user/entities/user.entity';
+import { UserAddress } from '../../user/entities/user-address.entity';
 import { CheckoutCartItem } from './checkout-cart-item.entity';
-import { Discount } from './discount.entity';
+import { Discount } from '../../discount/entities/discount.entity';
 
 @Entity({ name: 'checkout_cart' })
 export class CheckoutCart extends AuditEntity {
@@ -58,6 +58,7 @@ export class CheckoutCart extends AuditEntity {
   @ManyToOne(() => Discount, {
     eager: true,
     lazy: true,
+    nullable: true,
   })
   @JoinColumn({ name: 'discount_id' })
   discount: Discount;

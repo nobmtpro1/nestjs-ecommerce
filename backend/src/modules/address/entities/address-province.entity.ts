@@ -1,4 +1,4 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { AddressDistrict } from './address-district.entity';
 

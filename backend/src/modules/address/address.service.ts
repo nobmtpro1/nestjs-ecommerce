@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { AddressProvinceRepository } from './repositories/address-province.repository';
 import { AddressDistrictRepository } from './repositories/address-district.repository';
-import { AddressProvince } from 'src/entities/address-province.entity';
-import { AddressDistrict } from 'src/entities/address-district.entity';
+import { AddressProvince } from 'src/modules/address/entities/address-province.entity';
+import { AddressDistrict } from 'src/modules/address/entities/address-district.entity';
 
 @Injectable()
 export class AddressService {

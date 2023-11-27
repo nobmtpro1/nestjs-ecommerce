@@ -1,4 +1,4 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import { Entity, Column, ManyToMany } from 'typeorm';
 import { Product } from './product.entity';
 

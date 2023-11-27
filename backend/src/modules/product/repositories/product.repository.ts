@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, In } from 'typeorm';
-import { Product } from 'src/entities/product.entity';
+import { Product } from 'src/modules/product/entities/product.entity';
 import { SearchProductDto } from '../dtos/product.dto';
 import { BaseRepository } from 'src/modules/common/repositories/base.repository';
 import { EQueryOrder } from 'src/modules/common/enums/query.enums';

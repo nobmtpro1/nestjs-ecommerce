@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { Product } from 'src/entities/product.entity';
+import { Product } from 'src/modules/product/entities/product.entity';
 import {
   ProductSearchBody,
   ProductSearchResult,

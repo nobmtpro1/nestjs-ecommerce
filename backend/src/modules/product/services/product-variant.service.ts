@@ -3,7 +3,7 @@ import { ProductOptionRepository } from 'src/modules/product/repositories/produc
 import { ProductOptionDto } from 'src/modules/product/dtos/product-option.dto';
 import { ProductVariantRepository } from 'src/modules/product/repositories/product-variant.repository';
 import { ProductVariantDto } from 'src/modules/product/dtos/product-variant.dto';
-import { Image } from 'src/entities/image.entity';
+import { Image } from 'src/modules/image/entities/image.entity';
 
 @Injectable()
 export class ProductVariantService {

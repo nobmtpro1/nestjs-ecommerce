@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 import { Permission } from './enums/permission.enum';
 import { Role } from 'src/modules/authorization/enums/role.enum';
 import AUTHORIZATION from 'src/modules/authorization/authorization';

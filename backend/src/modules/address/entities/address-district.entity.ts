@@ -1,4 +1,4 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { AddressProvince } from './address-province.entity';
 

@@ -1,4 +1,4 @@
-import { Product } from 'src/entities/product.entity';
+import { Product } from 'src/modules/product/entities/product.entity';
 import {
   CreateProductDto,
   SearchProductDto,

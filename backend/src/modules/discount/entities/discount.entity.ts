@@ -1,6 +1,6 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import { Entity, Column } from 'typeorm';
-import { DiscountValueType } from '../modules/discount/enums/discount.enum';
+import { DiscountValueType } from '../enums/discount.enum';
 
 @Entity({ name: 'discount' })
 export class Discount extends AuditEntity {

@@ -3,7 +3,7 @@ import { MinioClientService } from 'src/modules/minio-client/minio-client.servic
 import { ImageRepository } from 'src/modules/image/repositories/image.repository';
 import * as Multer from 'multer';
 import { ImageDto } from 'src/modules/image/dtos/image.dto';
-import { Image } from 'src/entities/image.entity';
+import { Image } from 'src/modules/image/entities/image.entity';
 
 @Injectable()
 export class ImageService {

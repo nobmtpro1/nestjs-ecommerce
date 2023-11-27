@@ -1,4 +1,4 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import {
   Entity,
   Column,
@@ -8,9 +8,9 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
-import { AddressProvince } from './address-province.entity';
-import { AddressDistrict } from './address-district.entity';
-import { CheckoutCart } from './checkout-cart.entity';
+import { AddressProvince } from '../../address/entities/address-province.entity';
+import { AddressDistrict } from '../../address/entities/address-district.entity';
+import { CheckoutCart } from '../../checkout/entities/checkout-cart.entity';
 
 @Entity({ name: 'user_address' })
 export class UserAddress extends AuditEntity {

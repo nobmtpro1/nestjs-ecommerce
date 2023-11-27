@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AddressProvince } from 'src/entities/address-province.entity';
+import { AddressProvince } from 'src/modules/address/entities/address-province.entity';
 import { BaseRepository } from 'src/modules/common/repositories/base.repository';
 import { DataSource } from 'typeorm';
 

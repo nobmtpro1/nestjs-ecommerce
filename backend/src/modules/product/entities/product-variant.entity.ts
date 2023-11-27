@@ -1,4 +1,4 @@
-import { AuditEntity } from './audit.entity';
+import { AuditEntity } from '../../common/entities/audit.entity';
 import {
   Entity,
   Column,
@@ -11,8 +11,8 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import { Product } from './product.entity';
-import { Image } from './image.entity';
-import { ProductStatus } from '../modules/product/enums/product.enum';
+import { Image } from '../../image/entities/image.entity';
+import { ProductStatus } from '../enums/product.enum';
 
 @Entity({ name: 'product_variant' })
 export class ProductVariant extends AuditEntity {

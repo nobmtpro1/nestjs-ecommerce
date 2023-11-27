@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ProductOptionRepository } from 'src/modules/product/repositories/product-option.repository';
 import { ProductOptionDto } from 'src/modules/product/dtos/product-option.dto';
-import { ProductOption } from 'src/entities/product-option.entity';
+import { ProductOption } from 'src/modules/product/entities/product-option.entity';
 
 @Injectable()
 export class ProductOptionService {

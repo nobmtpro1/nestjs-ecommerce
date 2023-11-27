@@ -5,7 +5,7 @@ import { DataSource } from 'typeorm';
 import { Inject } from '@nestjs/common';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 import { GHNService } from 'src/modules/ghn/ghn.service';
 import { ProductService } from 'src/modules/product/services/product.service';
 import products from './seed-data/products';
