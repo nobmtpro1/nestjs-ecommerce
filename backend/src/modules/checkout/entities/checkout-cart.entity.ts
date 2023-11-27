@@ -11,6 +11,7 @@ export class CheckoutCart extends AuditEntity {
     eager: true,
     lazy: true,
     onDelete: 'CASCADE',
+    nullable: true,
   })
   @JoinColumn({ name: 'user_id' })
   user: User;
@@ -18,6 +19,7 @@ export class CheckoutCart extends AuditEntity {
   @ManyToOne(() => UserAddress, (address) => address.carts, {
     eager: true,
     lazy: true,
+    nullable: true,
   })
   @JoinColumn({ name: 'shipping_address_id' })
   shippingAddress: UserAddress;

@@ -26,6 +26,7 @@ import { GHNModule } from './modules/ghn/ghn.module';
 import ghn from './configs/ghn';
 import { AddressModule } from './modules/address/address.module';
 import { SearchModule } from './modules/search/search.module';
+import { CheckoutModule } from './modules/checkout/checkout.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { SearchModule } from './modules/search/search.module';
     GHNModule,
     AddressModule,
     SearchModule,
+    CheckoutModule,
   ],
   controllers: [AppController],
   providers: [Logger],

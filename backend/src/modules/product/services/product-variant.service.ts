@@ -4,6 +4,7 @@ import { ProductOptionDto } from 'src/modules/product/dtos/product-option.dto';
 import { ProductVariantRepository } from 'src/modules/product/repositories/product-variant.repository';
 import { ProductVariantDto } from 'src/modules/product/dtos/product-variant.dto';
 import { Image } from 'src/modules/image/entities/image.entity';
+import { ProductStatus } from '../enums/product.enum';
 
 @Injectable()
 export class ProductVariantService {
@@ -70,5 +71,21 @@ export class ProductVariantService {
       variants.push(option);
     }
     return variants;
+  }
+
+  async findById(id: number) {
+    const variant = await this.productVariantRepository.findOne({
+      where: {
+        id: id,
+        status: ProductStatus.ACTIVE,
+      },
+      relations: {
+        product: true,
+      },
+    });
+    if (variant.product.status != ProductStatus.ACTIVE) {
+      return null;
+    }
+    return variant;
   }
 }

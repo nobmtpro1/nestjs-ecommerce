@@ -1,6 +1,7 @@
 import { ROUTE_PRODUCT } from "constants/routes";
 import React from "react";
 import { Link } from "react-router-dom";
+import { handleAddToCart } from "ultils/cartHelpers";
 
 const ProductListItem = ({ product }) => {
   return (
@@ -16,7 +17,8 @@ const ProductListItem = ({ product }) => {
       </div>
       <div className="flex justify-between align-middle gap-3 mt-3">
         <a
-          href=""
+          style={{ cursor: "pointer" }}
+          onClick={() => handleAddToCart(product)}
           className="bg-black text-white p-3 flex-1 text-center text-sm"
         >
           ADD TO CART

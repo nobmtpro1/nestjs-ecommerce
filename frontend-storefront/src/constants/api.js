@@ -11,3 +11,5 @@ export const API_PRODUCT_DETAIL = "/product/handle/:handle";
 export const API_PRODUCT_RELATED_DATA = "/product/related-data";
 
 export const API_USER_PROFILE = "/user/profile";
+
+export const API_CHECKOUT_CART = "/checkout/cart";
