@@ -43,7 +43,7 @@ export class CheckoutCartService {
     if (items) {
       const cartItems = [];
       for (const item of items) {
-        const obj = await this.updateOrCreateCartItem(item);
+        const obj = await this.updateOrCreateCartItem(cart, item);
         if (!obj) {
           continue;
         }
@@ -76,16 +76,21 @@ export class CheckoutCartService {
     return cart;
   }
 
-  async updateOrCreateCartItem(item) {
+  async updateOrCreateCartItem(cart, item) {
     let cartItem = new CheckoutCartItem();
-    if (item?.id) {
-      const existCartItem = await this.getCartItemById(item?.id);
-      if (existCartItem) {
-        cartItem = existCartItem;
-      }
+    const existCartItem = await this.getCartItemByVariantId(
+      cart.id,
+      item?.variantId,
+    );
+    if (existCartItem) {
+      cartItem = existCartItem;
     }
+
     const variant = await this.productVariantService.findById(item.variantId);
     if (!variant) {
+      if (existCartItem) {
+        await existCartItem.remove();
+      }
       return null;
     }
     cartItem.variant = variant;
@@ -95,10 +100,11 @@ export class CheckoutCartService {
     return cartItem;
   }
 
-  async getCartItemById(id: number) {
+  async getCartItemByVariantId(cartId, variantId: number) {
     const cartItem = await this.checkoutCartItemRepository.findOne({
       where: {
-        id: id,
+        variant: { id: variantId },
+        cart: { id: cartId },
       },
     });
     return cartItem;
