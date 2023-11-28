@@ -9,7 +9,6 @@ import { Discount } from '../../discount/entities/discount.entity';
 export class CheckoutCart extends AuditEntity {
   @ManyToOne(() => User, (user) => user.carts, {
     eager: true,
-    lazy: true,
     onDelete: 'CASCADE',
     nullable: true,
   })
@@ -18,7 +17,6 @@ export class CheckoutCart extends AuditEntity {
 
   @ManyToOne(() => UserAddress, (address) => address.carts, {
     eager: true,
-    lazy: true,
     nullable: true,
   })
   @JoinColumn({ name: 'shipping_address_id' })
@@ -53,13 +51,11 @@ export class CheckoutCart extends AuditEntity {
 
   @OneToMany(() => CheckoutCartItem, (item) => item.cart, {
     eager: true,
-    lazy: true,
   })
   items: CheckoutCartItem[];
 
   @ManyToOne(() => Discount, {
     eager: true,
-    lazy: true,
     nullable: true,
   })
   @JoinColumn({ name: 'discount_id' })

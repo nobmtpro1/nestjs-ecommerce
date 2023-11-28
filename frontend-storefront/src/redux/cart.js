@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { LOCAL_STORAGE_CART_ID } from "constants/localstorage";
 
 const initialState = { cart: null };
 
@@ -7,7 +8,9 @@ export const scheduleSlice = createSlice({
   initialState,
   reducers: {
     setCart: (state, action) => {
-      state.cart = { ...state.cart, ...action.payload };
+      console.log(state.cart);
+      state.cart = { ...action.payload };
+      localStorage.setItem(LOCAL_STORAGE_CART_ID, state?.cart?.cart?.id || "");
     },
   },
 });

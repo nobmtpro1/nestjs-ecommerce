@@ -2,6 +2,8 @@ import { store } from "redux/store";
 import axios from "../ultils/axios";
 import { API_CHECKOUT_CART } from "constants/api";
 import { LOCAL_STORAGE_CART_ID } from "constants/localstorage";
+import { setCart } from "redux/cart";
+import { alertResponseErrors } from "./helpers";
 
 export const getCart = () => {
   const cart_id = localStorage.getItem(LOCAL_STORAGE_CART_ID);
@@ -9,6 +11,7 @@ export const getCart = () => {
     .get(`${API_CHECKOUT_CART}?cart_id=${parseInt(cart_id) || ""}`)
     .then((res) => {
       console.log(res);
+      store.dispatch(setCart(res?.data?.data));
     })
     .catch((err) => {
       console.log(err);
@@ -26,16 +29,20 @@ export const handleAddToCart = async (
   }
   const state = store.getState();
   const cart = state?.cart?.cart;
-  const cartItems = state?.cart?.cart?.items;
-  let cartItemsPost = state?.cart?.cart?.items?.map((item) => ({
-    id: item.id,
+  const cartItems = cart?.items;
+  console.log(cartItems);
+  let cartItemsPost = cartItems?.map((item) => ({
     variantId: item.variant.id,
     quantity: item.quantity,
   }));
 
   if (cartItemsPost) {
-    const itemExistIndex = cartItemsPost?.findIndex((x) => x.id == variant.id);
-    if (itemExistIndex) {
+    const itemExistIndex = cartItemsPost?.findIndex(
+      (x) => x.variantId == variant.id
+    );
+    console.log(itemExistIndex);
+    if (itemExistIndex >= 0) {
+      console.log(cartItemsPost[itemExistIndex]);
       cartItemsPost[itemExistIndex]["quantity"] =
         parseInt(cartItemsPost[itemExistIndex]["quantity"]) +
         parseInt(quantity);
@@ -67,10 +74,12 @@ export const updateCart = async ({ items }) => {
   axios
     .post(`${API_CHECKOUT_CART}?cart_id=${parseInt(cart_id) || ""}`, postData)
     .then((res) => {
-      console.log(res);
-      localStorage.setItem(LOCAL_STORAGE_CART_ID, res?.data?.data?.id);
+      if (res?.data?.success) {
+        store.dispatch(setCart(res?.data?.data));
+      }
     })
     .catch((err) => {
       console.log(err);
+      alertResponseErrors(err);
     });
 };

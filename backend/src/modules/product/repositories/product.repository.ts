@@ -5,6 +5,7 @@ import { SearchProductDto } from '../dtos/product.dto';
 import { BaseRepository } from 'src/modules/common/repositories/base.repository';
 import { EQueryOrder } from 'src/modules/common/enums/query.enums';
 import { Pagination } from 'src/modules/common/interfaces/pagination.interface';
+import { ProductStatus } from '../enums/product.enum';
 
 @Injectable()
 export class ProductRepository extends BaseRepository<Product> {
@@ -19,7 +20,10 @@ export class ProductRepository extends BaseRepository<Product> {
     const { search, limit, page, orderBy, order } = query;
     const offset = (page - 1) * limit;
 
-    const queryBuilder = this.createQueryBuilder('product');
+    const queryBuilder = this.createQueryBuilder('product').where(
+      'product.status = :status',
+      { status: ProductStatus.ACTIVE },
+    );
 
     if (productInIds) {
       queryBuilder.where('product.id IN(:...ids)', { ids: productInIds });

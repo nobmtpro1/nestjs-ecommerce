@@ -8,7 +8,6 @@ import { Discount } from '../../discount/entities/discount.entity';
 @Entity({ name: 'checkout_cart_item' })
 export class CheckoutCartItem extends AuditEntity {
   @ManyToOne(() => CheckoutCart, (cart) => cart.items, {
-    lazy: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'checkout_cart_id' })
@@ -16,7 +15,6 @@ export class CheckoutCartItem extends AuditEntity {
 
   @ManyToOne(() => Product, {
     eager: true,
-    lazy: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'product_id' })
@@ -24,7 +22,6 @@ export class CheckoutCartItem extends AuditEntity {
 
   @ManyToOne(() => ProductVariant, {
     eager: true,
-    lazy: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'product_variant_id' })
@@ -35,7 +32,6 @@ export class CheckoutCartItem extends AuditEntity {
 
   @ManyToOne(() => Discount, {
     eager: true,
-    lazy: true,
     nullable: true,
   })
   @JoinColumn({ name: 'discount_id' })

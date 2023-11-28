@@ -2,7 +2,7 @@ import { ROUTE_CART, ROUTE_HOME, ROUTE_LOGIN } from "constants/routes";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { logout } from "ultils/helpers";
+import { logout } from "ultils/accountHelpers";
 
 const Header = () => {
   const accountReducer = useSelector((state) => state.account);
