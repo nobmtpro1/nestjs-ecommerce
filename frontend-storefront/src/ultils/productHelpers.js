@@ -25,3 +25,15 @@ export const useFetchProduct = () => {
   }, []);
   return [product];
 };
+
+export const getVariantImage = (product, variant) => {
+  if (variant?.image) {
+    return variant?.image;
+  } else {
+    return product?.image;
+  }
+};
+
+export const renderPrice = (price) => {
+  return `${parseInt(price)?.toLocaleString()}đ`;
+};

@@ -81,5 +81,19 @@ export const updateCart = async ({ items }) => {
     .catch((err) => {
       console.log(err);
       alertResponseErrors(err);
+      store.dispatch(
+        setCart({ ...store.getState()?.cart?.cart, time: new Date() })
+      );
     });
+};
+
+export const getCartTotalQuantity = (cart) => {
+  if (!cart) {
+    return 0;
+  }
+  let totalQuantity = 0;
+  for (const item of cart?.items || []) {
+    totalQuantity += parseInt(item?.quantity);
+  }
+  return totalQuantity;
 };
