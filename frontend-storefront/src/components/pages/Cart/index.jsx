@@ -38,7 +38,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="container mx-auto pt-3">
+    <div className="container mx-auto pt-3 pb-10">
       <div className="w-full flex justify-between gap-10">
         <div className="flex-initial w-1/2 shadow-xl p-5 rounded-xl">
           <h3>SHOPPING INFOMATION</h3>
@@ -77,6 +77,20 @@ const Cart = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex flex-col	gap-5 mt-5">
+            <div className="flex justify-between">
+              <div>Subtotal:</div>
+              <div>{renderPrice(cart?.subtotal)}</div>
+            </div>
+            <div className="flex justify-between">
+              <div>Shipping:</div>
+              <div>{renderPrice(cart?.shippingPrice)}</div>
+            </div>
+            <div className="flex justify-between">
+              <div>Total:</div>
+              <div>{renderPrice(cart?.total)}</div>
+            </div>
           </div>
         </div>
       </div>
