@@ -67,5 +67,12 @@ export class User extends AuditEntity {
     if (!this.avatar) {
       this.avatar = `https://ui-avatars.com/api/?name=${this.name}&background=random`;
     }
+    if (!this.roles) {
+      this.roles = [];
+    }
+
+    if (!this.permissions) {
+      this.permissions = [];
+    }
   }
 }

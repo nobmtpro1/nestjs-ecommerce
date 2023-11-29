@@ -34,7 +34,7 @@ import { MinioClientService } from 'src/modules/minio-client/minio-client.servic
 import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { instanceToPlain } from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 import axios from 'axios';
 import xlsx from 'node-xlsx';
 import { UserRepository } from 'src/modules/user/repositories/user.repository';
@@ -43,6 +43,7 @@ import { SearchService } from 'src/modules/search/search.service';
 import { IProductService } from 'src/modules/product/interfaces/product-service.interface';
 import { LocalAuthGuard } from 'src/modules/authentication/guards/local-auth.guard';
 import { JwtAuthGuard } from 'src/modules/authentication/guards/jwt-auth.guard';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Controller('test')
 export class TestController {
@@ -264,5 +265,20 @@ export class TestController {
   @Get('passport-jwt-user')
   getUser(@Request() req) {
     return req.user;
+  }
+
+  @Get('plain-to-class')
+  async getPlainToClass() {
+    const data = {
+      id: 1123,
+      email: '1abc@gmail.com',
+      name: '1abc',
+      phone: '1123',
+    };
+    console.log(data);
+    const user = plainToInstance(User, data);
+    await user.save();
+    console.log(user);
+    return user;
   }
 }

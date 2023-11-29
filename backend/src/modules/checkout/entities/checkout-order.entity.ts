@@ -34,7 +34,7 @@ export class CheckoutOrder extends AuditEntity {
   cartId: number;
 
   @OneToOne(() => CheckoutCart, (cart) => cart.order)
-  @JoinColumn({ name: 'cart_id', referencedColumnName: 'cartId' })
+  @JoinColumn({ name: 'cart_id' })
   cart: CheckoutCart;
 
   @Column('timestamp', { name: 'closed_at', nullable: true })
