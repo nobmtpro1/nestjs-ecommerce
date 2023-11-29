@@ -13,14 +13,10 @@ import {
   FulfillmentStatusEnum,
   PaymentEnum,
 } from '../enums/order.enum';
-import { User } from 'src/modules/user/entities/user.entity';
-import { UserAddress } from 'src/modules/user/entities/user-address.entity';
-import { Discount } from 'src/modules/discount/entities/discount.entity';
-import {
-  OrderDiscountInterface,
-  OrderItemInterface,
-  OrderShippingAddressInterface,
-} from '../interfaces/order.interfaces';
+import { User } from '../../user/entities/user.entity';
+import { UserAddress } from '../../user/entities/user-address.entity';
+import { Discount } from '../../discount/entities/discount.entity';
+import { CheckoutCartItem } from './checkout-cart-item.entity';
 
 @Entity({ name: 'checkout_order' })
 export class CheckoutOrder extends AuditEntity {
@@ -87,10 +83,10 @@ export class CheckoutOrder extends AuditEntity {
   user: User;
 
   @Column('simple-json', { nullable: true })
-  shippingAddress: OrderShippingAddressInterface;
+  shippingAddress: UserAddress;
 
   @Column('simple-json', { nullable: true })
-  appliedDiscount: OrderDiscountInterface;
+  appliedDiscount: Discount;
 
   @Column('varchar', {
     name: 'payment',
@@ -99,5 +95,8 @@ export class CheckoutOrder extends AuditEntity {
   payment: PaymentEnum;
 
   @Column('simple-json', { nullable: true })
-  items: OrderItemInterface[];
+  items: CheckoutCartItem[];
+
+  @Column('simple-array', { name: 'tags', nullable: true })
+  tags: string[];
 }

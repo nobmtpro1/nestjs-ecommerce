@@ -48,6 +48,9 @@ export class CheckoutCart extends AuditEntity {
   @Column('bigint', { name: 'shipping_price', default: 0 })
   shippingPrice: number;
 
+  @Column('bigint', { name: 'discount_price', default: 0 })
+  discountPrice: number;
+
   @Column('bigint', { name: 'subtotal', default: 0 })
   subtotal: number;
 
