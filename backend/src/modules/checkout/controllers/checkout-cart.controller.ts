@@ -14,6 +14,7 @@ import { ResponseSuccess } from 'src/modules/common/response';
 import { JwtAuthGuard } from 'src/modules/authentication/guards/jwt-auth.guard';
 import { Public } from 'src/modules/authentication/decorators/public.decorator';
 import { UpdateCartDto } from '../dtos/checkout-cart.dto';
+import { PlaceOrderDto } from '../dtos/checkout-order.dto';
 
 @Controller('checkout/cart')
 export class CheckoutCartController {
@@ -40,6 +41,22 @@ export class CheckoutCartController {
   ) {
     console.log(request.user, cartId, body);
     const cart = await this.checkoutCartService.updateCart(
+      request.user,
+      cartId,
+      body,
+    );
+    return new ResponseSuccess('Success', cart);
+  }
+
+  @Post('place-order')
+  @UseGuards(JwtAuthGuard)
+  @Public()
+  async placeOrder(
+    @Query('cart_id', ParseIntPipe) cartId: number,
+    @Body() body: PlaceOrderDto,
+    @Request() request,
+  ) {
+    const cart = await this.checkoutCartService.placeOrder(
       request.user,
       cartId,
       body,

@@ -5,6 +5,7 @@ import { CheckoutCartController } from './controllers/checkout-cart.controller';
 import { UserModule } from '../user/user.module';
 import { CheckoutCartItemRepository } from './repositories/checkout-cart-item.repository';
 import { ProductModule } from '../product/product.module';
+import { CheckoutOrderService } from './services/checkout-order.service';
 
 @Module({
   imports: [UserModule, ProductModule],
@@ -13,11 +14,13 @@ import { ProductModule } from '../product/product.module';
     CheckoutCartRepository,
     CheckoutCartItemRepository,
     CheckoutCartService,
+    CheckoutOrderService,
   ],
   exports: [
     CheckoutCartRepository,
     CheckoutCartItemRepository,
     CheckoutCartService,
+    CheckoutOrderService,
   ],
 })
 export class CheckoutModule {}

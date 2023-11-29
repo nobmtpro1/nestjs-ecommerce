@@ -4,6 +4,7 @@ import { API_ADDRESS } from "constants/api";
 import { alertResponseErrors } from "ultils/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { setPayment, setShippingAddress } from "redux/cart";
+import { placeOrder } from "ultils/cartHelpers";
 
 const CartInfomation = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,10 @@ const CartInfomation = () => {
 
   const handleChangeAddress = (e, field) => {
     dispatch(setShippingAddress({ [field]: e.target.value }));
+  };
+
+  const handlePlaceOrder = () => {
+    placeOrder();
   };
 
   return (
@@ -99,7 +104,10 @@ const CartInfomation = () => {
           </label>
         </div>
       ))}
-      <button className="bg-black p-5 w-full rounded-xl text-white mt-10">
+      <button
+        className="bg-black p-5 w-full rounded-xl text-white mt-10"
+        onClick={handlePlaceOrder}
+      >
         PLACE ORDER
       </button>
     </div>

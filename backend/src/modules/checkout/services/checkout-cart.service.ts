@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CheckoutCartRepository } from '../repositories/checkout-cart.repository';
 import { UserService } from 'src/modules/user/services/user.service';
 import { CheckoutCart } from '../entities/checkout-cart.entity';
@@ -7,6 +7,9 @@ import { CheckoutCartItem } from '../entities/checkout-cart-item.entity';
 import { CheckoutCartItemRepository } from '../repositories/checkout-cart-item.repository';
 import { ProductVariantService } from 'src/modules/product/services/product-variant.service';
 import { UserAddressService } from 'src/modules/user/services/user-address.service';
+import { UpdateCartDto } from '../dtos/checkout-cart.dto';
+import { CheckoutOrderService } from './checkout-order.service';
+import { PlaceOrderDto } from '../dtos/checkout-order.dto';
 
 @Injectable()
 export class CheckoutCartService {
@@ -16,36 +19,27 @@ export class CheckoutCartService {
     private productVariantService: ProductVariantService,
     private userService: UserService,
     private userAddressService: UserAddressService,
+    private checkoutOrderService: CheckoutOrderService,
   ) {}
 
   async getCart(user: User, cartId: number) {
-    let cart = null;
     if (user) {
-      cart = await this.getCartByUser(user);
-    } else if (cartId) {
-      cart = await this.getCartById(cartId);
+      user = await this.userService.findById(user.id);
     }
+    let cart = await this.findCart(user, cartId);
     if (!cart) {
       return null;
     }
-
-    cart = await this.calculatePrice(cart);
-
-    return await this.checkoutCartRepository.save(cart, { reload: true });
+    return await this.prepareCart(cart);
   }
 
-  async updateCart(user: User, cartId: number, body) {
+  async updateCart(user: User, cartId: number, body: UpdateCartDto) {
     const { items } = body;
     if (user) {
       user = await this.userService.findById(user.id);
     }
 
-    let cart = null;
-    if (user) {
-      cart = await this.getCartByUser(user);
-    } else if (cartId) {
-      cart = await this.getCartById(cartId);
-    }
+    let cart = await this.findCart(user, cartId);
 
     if (!cart) {
       cart = new CheckoutCart();
@@ -56,12 +50,32 @@ export class CheckoutCartService {
     }
 
     if (items) {
-      await this.checkoutCartItemRepository.remove(await cart.items);
+      const oldItems = await cart.items;
+      if (oldItems) {
+        await this.checkoutCartItemRepository.remove(await cart.items);
+      }
       cart.items = await this.createCartItems(items);
     }
 
-    await this.checkoutCartRepository.save(cart, { reload: true });
-    return await this.getCart(user, cartId);
+    cart = await this.checkoutCartRepository.save(cart, { reload: true });
+    return await this.prepareCart(cart);
+  }
+
+  async prepareCart(cart: CheckoutCart) {
+    cart = await this.calculateSubtotal(cart);
+    cart = await this.calculateShippingPrice(cart);
+    cart = await this.calculateTotal(cart);
+    return await this.checkoutCartRepository.save(cart, { reload: true });
+  }
+
+  async findCart(user: User, cartId: number) {
+    let cart = null;
+    if (user) {
+      cart = await this.getCartByUser(user);
+    } else if (cartId) {
+      cart = await this.getCartById(cartId);
+    }
+    return cart;
   }
 
   async getCartByUser(user: User) {
@@ -100,7 +114,6 @@ export class CheckoutCartService {
   async createCartItem(item) {
     let cartItem = new CheckoutCartItem();
     const variant = await this.productVariantService.findById(item.variantId);
-    console.log('variant', variant);
     if (!variant) {
       return null;
     }
@@ -166,17 +179,37 @@ export class CheckoutCartService {
     return cart;
   }
 
+  async calculateDiscountPrice(cart: CheckoutCart) {
+    let discountPrice = 0;
+    cart.discountPrice = discountPrice;
+    return cart;
+  }
+
   async calculateTotal(cart: CheckoutCart) {
     let total = 0;
-    total = cart.subtotal + cart.shippingPrice;
+    total = cart.subtotal + cart.shippingPrice - cart.discountPrice;
     cart.total = total;
     return cart;
   }
 
-  async calculatePrice(cart: CheckoutCart) {
-    cart = await this.calculateSubtotal(cart);
-    cart = await this.calculateShippingPrice(cart);
-    cart = await this.calculateTotal(cart);
-    return cart;
+  async placeOrder(user: User, cartId: number, body: PlaceOrderDto) {
+    const { shippingAddress, payment } = body;
+    if (user) {
+      user = await this.userService.findById(user.id);
+    }
+
+    let cart = await this.findCart(user, cartId);
+
+    if (!cart) {
+      throw new NotFoundException();
+    }
+
+    cart = await this.prepareCart(cart);
+    const order = await this.checkoutOrderService.createOrder(
+      cart,
+      shippingAddress,
+      payment,
+    );
+    return order;
   }
 }

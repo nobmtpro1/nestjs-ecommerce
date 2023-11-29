@@ -19,7 +19,7 @@ export const scheduleSlice = createSlice({
   reducers: {
     setCart: (state, action) => {
       state.cart = { ...action.payload };
-      localStorage.setItem(LOCAL_STORAGE_CART_ID, state?.cart?.cart?.id || "");
+      localStorage.setItem(LOCAL_STORAGE_CART_ID, state?.cart?.id || "");
     },
     setShippingAddress: (state, action) => {
       state.shippingAddress = { ...state.shippingAddress, ...action.payload };

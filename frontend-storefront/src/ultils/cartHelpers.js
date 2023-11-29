@@ -1,6 +1,6 @@
 import { store } from "redux/store";
 import axios from "../ultils/axios";
-import { API_CHECKOUT_CART } from "constants/api";
+import { API_CHECKOUT_CART, API_CHECKOUT_PLACE_ORDER } from "constants/api";
 import { LOCAL_STORAGE_CART_ID } from "constants/localstorage";
 import { setCart } from "redux/cart";
 import { alertResponseErrors } from "./helpers";
@@ -96,4 +96,21 @@ export const getCartTotalQuantity = (cart) => {
     totalQuantity += parseInt(item?.quantity);
   }
   return totalQuantity;
+};
+
+export const placeOrder = () => {
+  const cart_id = localStorage.getItem(LOCAL_STORAGE_CART_ID);
+  const cartReducer = store.getState()?.cart;
+  const shippingAddress = cartReducer?.shippingAddress;
+  const payment = cartReducer?.payment;
+
+  axios
+    .post(`${API_CHECKOUT_PLACE_ORDER}?cart_id=${parseInt(cart_id) || ""}`, {
+      shippingAddress,
+      payment,
+    })
+    .then((res) => {
+      console.log(res?.data);
+    })
+    .catch((err) => alertResponseErrors(err));
 };
