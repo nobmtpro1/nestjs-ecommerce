@@ -6,6 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { User } from './user.entity';
 import { AddressProvince } from '../../address/entities/address-province.entity';
@@ -14,7 +15,7 @@ import { CheckoutCart } from '../../checkout/entities/checkout-cart.entity';
 
 @Entity({ name: 'user_address' })
 export class UserAddress extends AuditEntity {
-  @ManyToOne(() => User, (user) => user.addresses, { onDelete: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.address, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
@@ -40,9 +41,6 @@ export class UserAddress extends AuditEntity {
   @ManyToOne((type) => AddressDistrict, { eager: true })
   @JoinColumn({ name: 'district_code', referencedColumnName: 'districtCode' })
   district: AddressDistrict;
-
-  @Column('boolean', { name: 'default', default: false })
-  default: boolean;
 
   @OneToMany(() => CheckoutCart, (cart) => cart.shippingAddress, {
     lazy: true,

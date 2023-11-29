@@ -11,6 +11,15 @@ export class AddressService {
     private readonly addressDistrictRepository: AddressDistrictRepository,
   ) {}
 
+  async getAll() {
+    const province = await this.addressProvinceRepository.find();
+    const district = await this.addressDistrictRepository.find();
+    return {
+      province,
+      district,
+    };
+  }
+
   async bulkUpdateOrCreateProvince(
     data: {
       id: number;

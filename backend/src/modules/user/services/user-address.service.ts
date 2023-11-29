@@ -10,7 +10,6 @@ export class UserAddressService {
     const address = await this.userAddressRepository.findOne({
       where: {
         user: { id: user.id },
-        default: true,
       },
     });
     return address;

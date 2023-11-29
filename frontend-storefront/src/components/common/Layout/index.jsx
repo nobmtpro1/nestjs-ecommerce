@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Header";
-import Footer from "../Footer";
-import axios from "../../../ultils/axios";
-import { API_USER_PROFILE } from "constants/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setAccount } from "redux/account";
 import { getCart } from "ultils/cartHelpers";
 import { getAccountProfile } from "ultils/accountHelpers";
+import { getCommonData } from "ultils/helpers";
+import { useSelector }from 'react-redux'
 
 const Layout = () => {
-  const dispatch = useDispatch();
   const accountReducer = useSelector((state) => state.account);
 
   useEffect(() => {
     getAccountProfile();
     getCart();
+    getCommonData();
   }, [accountReducer?.account?.access_token]);
 
   return (

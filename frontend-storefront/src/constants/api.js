@@ -13,3 +13,8 @@ export const API_PRODUCT_RELATED_DATA = "/product/related-data";
 export const API_USER_PROFILE = "/user/profile";
 
 export const API_CHECKOUT_CART = "/checkout/cart";
+
+export const API_ADDRESS = "/address";
+
+export const API_COMMON = "/common";
+

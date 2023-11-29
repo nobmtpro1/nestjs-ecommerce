@@ -45,10 +45,10 @@ export class User extends AuditEntity {
   @Column('simple-array', { name: 'permissions', nullable: true })
   permissions: Permission[];
 
-  @OneToMany(() => UserAddress, (address) => address.user, {
+  @OneToOne(() => UserAddress, (address) => address.user, {
     eager: true,
   })
-  addresses: UserAddress[];
+  address: UserAddress[];
 
   @OneToOne(() => UserToken, (token) => token.user, { lazy: true })
   token: UserToken;
