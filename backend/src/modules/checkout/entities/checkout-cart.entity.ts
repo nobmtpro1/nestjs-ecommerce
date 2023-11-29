@@ -1,9 +1,17 @@
 import { AuditEntity } from '../../common/entities/audit.entity';
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { UserAddress } from '../../user/entities/user-address.entity';
 import { CheckoutCartItem } from './checkout-cart-item.entity';
 import { Discount } from '../../discount/entities/discount.entity';
+import { CheckoutOrder } from './checkout-order.entity';
 
 @Entity({ name: 'checkout_cart' })
 export class CheckoutCart extends AuditEntity {
@@ -60,4 +68,7 @@ export class CheckoutCart extends AuditEntity {
   })
   @JoinColumn({ name: 'discount_id' })
   discount: Discount;
+
+  @OneToOne(() => CheckoutOrder, (order) => order.cart)
+  order: CheckoutOrder;
 }
