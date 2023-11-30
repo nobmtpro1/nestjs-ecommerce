@@ -6,6 +6,7 @@ import {
   IsObject,
   Length,
   ValidateNested,
+  IsEmail,
 } from 'class-validator';
 import { PaymentEnum } from '../enums/order.enum';
 import { Type } from 'class-transformer';
@@ -13,6 +14,10 @@ import { Type } from 'class-transformer';
 export class ShippingAddressDto {
   @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   phone: string;

@@ -1,26 +1,58 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CheckoutCartRepository } from '../repositories/checkout-cart.repository';
-import { UserService } from 'src/modules/user/services/user.service';
+import { Injectable } from '@nestjs/common';
 import { CheckoutCart } from '../entities/checkout-cart.entity';
-import { User } from 'src/modules/user/entities/user.entity';
-import { CheckoutCartItem } from '../entities/checkout-cart-item.entity';
-import { CheckoutCartItemRepository } from '../repositories/checkout-cart-item.repository';
-import { ProductVariantService } from 'src/modules/product/services/product-variant.service';
 import { UserAddressService } from 'src/modules/user/services/user-address.service';
-import { UpdateCartDto } from '../dtos/checkout-cart.dto';
 import { PaymentEnum } from '../enums/order.enum';
+import { ShippingAddressDto } from '../dtos/checkout-order.dto';
+import { CheckoutOrder } from '../entities/checkout-order.entity';
+import { CheckoutOrderRepository } from '../repositories/checkout-order.repository';
+import { LessThan } from 'typeorm';
 
 @Injectable()
 export class CheckoutOrderService {
   constructor(
-    private checkoutCartRepository: CheckoutCartRepository,
-    private checkoutCartItemRepository: CheckoutCartItemRepository,
-    private productVariantService: ProductVariantService,
-    private userService: UserService,
+    private checkoutOrderRepository: CheckoutOrderRepository,
     private userAddressService: UserAddressService,
   ) {}
 
-  async createOrder(cart: CheckoutCart, shippingAddress, payment: PaymentEnum) {
-    return {};
+  async getOrderByUuid(uuid: string) {
+    const order = await this.checkoutOrderRepository.findOne({
+      where: {
+        uuid,
+      },
+    });
+
+    return order;
+  }
+
+  async createOrder(
+    cart: CheckoutCart,
+    shippingAddress: ShippingAddressDto,
+    payment: PaymentEnum,
+  ) {
+    let order = new CheckoutOrder();
+    order.user = cart.user;
+    order.cart = cart;
+    order.subtotal = cart.subtotal;
+    order.discountPrice = cart.discountPrice;
+    order.shippingPrice = cart.shippingPrice;
+    order.total = cart.total;
+    order.email = cart.email || shippingAddress.email;
+    order.note = cart.note;
+
+    let totalWeight = 0;
+    for (const item of cart.items) {
+      let variant = item.variant;
+      if (!variant) {
+        variant = await item.variant;
+      }
+      totalWeight += variant.weight || 0;
+    }
+    order.totalWeight = totalWeight;
+    order.shippingAddress =
+      await this.userAddressService.createInstanceFromPlain(shippingAddress);
+    order.payment = payment;
+    order.tags = cart.tags;
+    order.items = cart.items;
+    return await this.checkoutOrderRepository.save(order, { reload: true });
   }
 }

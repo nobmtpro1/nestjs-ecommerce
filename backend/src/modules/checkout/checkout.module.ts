@@ -6,19 +6,23 @@ import { UserModule } from '../user/user.module';
 import { CheckoutCartItemRepository } from './repositories/checkout-cart-item.repository';
 import { ProductModule } from '../product/product.module';
 import { CheckoutOrderService } from './services/checkout-order.service';
+import { CheckoutOrderRepository } from './repositories/checkout-order.repository';
+import { CheckoutOrderController } from './controllers/checkout-order.controller';
 
 @Module({
   imports: [UserModule, ProductModule],
-  controllers: [CheckoutCartController],
+  controllers: [CheckoutCartController, CheckoutOrderController],
   providers: [
     CheckoutCartRepository,
     CheckoutCartItemRepository,
+    CheckoutOrderRepository,
     CheckoutCartService,
     CheckoutOrderService,
   ],
   exports: [
     CheckoutCartRepository,
     CheckoutCartItemRepository,
+    CheckoutOrderRepository,
     CheckoutCartService,
     CheckoutOrderService,
   ],

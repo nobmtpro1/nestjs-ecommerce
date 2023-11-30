@@ -14,6 +14,7 @@ export const API_USER_PROFILE = "/user/profile";
 
 export const API_CHECKOUT_CART = "/checkout/cart";
 export const API_CHECKOUT_PLACE_ORDER = "/checkout/cart/place-order";
+export const API_CHECKOUT_ORDER_DETAIL = "/checkout/order/:uuid";
 
 export const API_ADDRESS = "/address";
 

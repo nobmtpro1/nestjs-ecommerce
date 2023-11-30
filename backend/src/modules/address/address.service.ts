@@ -73,4 +73,22 @@ export class AddressService {
       };
     }
   }
+
+  async findProvinceByCode(provinceCode: string) {
+    const province = await this.addressProvinceRepository.findOne({
+      where: {
+        provinceCode,
+      },
+    });
+    return province;
+  }
+
+  async findDistrictByCode(districtCode: string) {
+    const district = await this.addressDistrictRepository.findOne({
+      where: {
+        districtCode,
+      },
+    });
+    return district;
+  }
 }

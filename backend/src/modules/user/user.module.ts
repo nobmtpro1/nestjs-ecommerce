@@ -7,9 +7,10 @@ import { UserRepository } from 'src/modules/user/repositories/user.repository';
 import { UserTokenRepository } from './repositories/user-token.repository';
 import { UserAddressRepository } from './repositories/user-address.repository';
 import { UserAddressService } from './services/user-address.service';
+import { AddressModule } from '../address/address.module';
 
 @Module({
-  imports: [TypeOrmModule, JwtModule],
+  imports: [TypeOrmModule, JwtModule, AddressModule],
   controllers: [UserController],
   providers: [
     UserService,

@@ -10,7 +10,10 @@ export const generateImageUrl = (src) => {
 };
 
 export const alertResponseErrors = (error) => {
-  const message = error?.response?.data?.message;
+  let message = error?.message;
+  if (!message) {
+    message = error?.response?.data?.message;
+  }
   if (Array.isArray(message)) {
     for (const msg of message) {
       toast.error(msg);

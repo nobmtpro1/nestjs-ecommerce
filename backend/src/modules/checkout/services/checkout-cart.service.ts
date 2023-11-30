@@ -74,6 +74,12 @@ export class CheckoutCartService {
       cart = await this.getCartByUser(user);
     } else if (cartId) {
       cart = await this.getCartById(cartId);
+      if (await cart.user) {
+        cart = null;
+      }
+    }
+    if (cart && cart.completedAt) {
+      cart = null;
     }
     return cart;
   }
@@ -196,6 +202,7 @@ export class CheckoutCartService {
     const { shippingAddress, payment } = body;
     if (user) {
       user = await this.userService.findById(user.id);
+      await this.userAddressService.updateOrCreate(user, shippingAddress);
     }
 
     let cart = await this.findCart(user, cartId);
@@ -210,6 +217,11 @@ export class CheckoutCartService {
       shippingAddress,
       payment,
     );
-    return order;
+    if (order) {
+      cart.completedAt = new Date();
+      cart.save();
+      return order;
+    }
+    return null;
   }
 }

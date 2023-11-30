@@ -98,19 +98,27 @@ export const getCartTotalQuantity = (cart) => {
   return totalQuantity;
 };
 
-export const placeOrder = () => {
+export const placeOrder = async () => {
   const cart_id = localStorage.getItem(LOCAL_STORAGE_CART_ID);
   const cartReducer = store.getState()?.cart;
   const shippingAddress = cartReducer?.shippingAddress;
   const payment = cartReducer?.payment;
 
-  axios
+  return await axios
     .post(`${API_CHECKOUT_PLACE_ORDER}?cart_id=${parseInt(cart_id) || ""}`, {
       shippingAddress,
       payment,
     })
     .then((res) => {
-      console.log(res?.data);
+      if (res?.data?.success) {
+        return res?.data?.data;
+      } else {
+        alertResponseErrors(res?.data);
+        return false;
+      }
     })
-    .catch((err) => alertResponseErrors(err));
+    .catch((err) => {
+      alertResponseErrors(err);
+      return false;
+    });
 };

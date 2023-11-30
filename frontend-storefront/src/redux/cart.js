@@ -5,6 +5,7 @@ const initialState = {
   cart: null,
   shippingAddress: {
     name: "",
+    email: "",
     phone: "",
     address: "",
     provinceCode: "",

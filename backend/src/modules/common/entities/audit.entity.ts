@@ -11,7 +11,7 @@ export abstract class AuditEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column()
+  @Column({ name: 'uuid' })
   @Generated('uuid')
   uuid: string;
 
