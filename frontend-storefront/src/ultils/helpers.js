@@ -10,9 +10,10 @@ export const generateImageUrl = (src) => {
 };
 
 export const alertResponseErrors = (error) => {
-  let message = error?.message;
+  // let message = error?.message;
+  let message = error?.response?.data?.message
   if (!message) {
-    message = error?.response?.data?.message;
+    message =error?.message
   }
   if (Array.isArray(message)) {
     for (const msg of message) {

@@ -25,6 +25,7 @@ export class CheckoutOrderService {
   }
 
   async createOrder(
+    manager,
     cart: CheckoutCart,
     shippingAddress: ShippingAddressDto,
     payment: PaymentEnum,
@@ -53,6 +54,8 @@ export class CheckoutOrderService {
     order.payment = payment;
     order.tags = cart.tags;
     order.items = cart.items;
-    return await this.checkoutOrderRepository.save(order, { reload: true });
+    await manager.save(order);
+    return order;
+    // return await this.checkoutOrderRepository.save(order, { reload: true });
   }
 }

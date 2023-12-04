@@ -10,6 +10,7 @@ import { UserAddressService } from 'src/modules/user/services/user-address.servi
 import { UpdateCartDto } from '../dtos/checkout-cart.dto';
 import { CheckoutOrderService } from './checkout-order.service';
 import { PlaceOrderDto } from '../dtos/checkout-order.dto';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class CheckoutCartService {
@@ -20,6 +21,7 @@ export class CheckoutCartService {
     private userService: UserService,
     private userAddressService: UserAddressService,
     private checkoutOrderService: CheckoutOrderService,
+    private dataSource: DataSource,
   ) {}
 
   async getCart(user: User, cartId: number) {
@@ -212,16 +214,20 @@ export class CheckoutCartService {
     }
 
     cart = await this.prepareCart(cart);
-    const order = await this.checkoutOrderService.createOrder(
-      cart,
-      shippingAddress,
-      payment,
-    );
-    if (order) {
-      cart.completedAt = new Date();
-      cart.save();
-      return order;
-    }
-    return null;
+
+    return await this.dataSource.transaction(async (manager) => {
+      const order = await this.checkoutOrderService.createOrder(
+        manager,
+        cart,
+        shippingAddress,
+        payment,
+      );
+      if (order) {
+        cart.completedAt = new Date();
+        await manager.save(cart);
+        return order;
+      }
+      return null;
+    });
   }
 }
