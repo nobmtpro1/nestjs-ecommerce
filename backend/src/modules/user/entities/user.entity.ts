@@ -15,6 +15,7 @@ import {
 import { UserAddress } from './user-address.entity';
 import { UserToken } from './user-token.entity';
 import { CheckoutCart } from '../../checkout/entities/checkout-cart.entity';
+import { CheckoutOrder } from 'src/modules/checkout/entities/checkout-order.entity';
 
 @Entity({ name: 'user' })
 export class User extends AuditEntity {
@@ -60,6 +61,9 @@ export class User extends AuditEntity {
     lazy: true,
   })
   carts: CheckoutCart[];
+
+  @OneToMany(() => CheckoutOrder, (order) => order.user)
+  orders: CheckoutCart[];
 
   @BeforeUpdate()
   @BeforeInsert()

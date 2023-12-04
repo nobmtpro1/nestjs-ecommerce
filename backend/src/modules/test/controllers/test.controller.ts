@@ -44,6 +44,8 @@ import { IProductService } from 'src/modules/product/interfaces/product-service.
 import { LocalAuthGuard } from 'src/modules/authentication/guards/local-auth.guard';
 import { JwtAuthGuard } from 'src/modules/authentication/guards/jwt-auth.guard';
 import { User } from 'src/modules/user/entities/user.entity';
+import { ProductRepository } from 'src/modules/product/repositories/product.repository';
+import { ProductTag } from 'src/modules/product/entities/product-tag.entity';
 
 @Controller('test')
 export class TestController {
@@ -59,6 +61,7 @@ export class TestController {
     private readonly searchService: SearchService,
     @Inject(IProductService)
     private readonly productService: IProductService,
+    private readonly productRepository: ProductRepository,
   ) {}
 
   @Public()
@@ -270,15 +273,39 @@ export class TestController {
   @Get('plain-to-class')
   async getPlainToClass() {
     const data = {
-      id: 1123,
-      email: '1abc@gmail.com',
-      name: '1abc',
-      phone: '1123',
+      id: Math.random() * 1000000000,
+      email: `${Math.random() * 1000000000}@gmail.com`,
+      name: `${Math.random() * 1000000000} Name`,
+      phone: `${Math.random() * 1000000000}`,
     };
     console.log(data);
     const user = plainToInstance(User, data);
     await user.save();
     console.log(user);
     return user;
+  }
+
+  @Get('query')
+  async query() {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.orders', 'order')
+      .where('order.id = :orderId', { orderId: 13 })
+      .getOne();
+
+    let product: any = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.tags', 'tag')
+      .where('tag.created_at >= :time', { time: '2023-11-23' })
+      .getOne();
+
+    product = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.tags', 'tag', 'tag.id > 5')
+      .loadRelationCountAndMap('product.tagCount', 'product.tags', 'tag', (q) =>
+        q.where('tag.id > 5'),
+      )
+      .getMany();
+    return new ResponseSuccess('Success', product);
   }
 }
