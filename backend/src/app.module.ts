@@ -27,9 +27,18 @@ import ghn from './configs/ghn';
 import { AddressModule } from './modules/address/address.module';
 import { SearchModule } from './modules/search/search.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AppResolver } from './app.resolver';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      // installSubscriptionHandlers: true,
+      autoSchemaFile: true,
+      // playground: false,
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeorm, auth, mail, minio, redis, ghn],
@@ -62,6 +71,6 @@ import { CheckoutModule } from './modules/checkout/checkout.module';
     CheckoutModule,
   ],
   controllers: [AppController],
-  providers: [Logger],
+  providers: [Logger, AppResolver],
 })
 export class AppModule {}

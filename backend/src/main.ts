@@ -17,7 +17,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   process.env.NODE_ENV == 'prod' &&
     app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
-  app.use(helmet());
+  // app.use(helmet());
   app.enableCors();
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'public'), {
